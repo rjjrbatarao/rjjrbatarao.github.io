@@ -1,136 +1,200 @@
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>WizyQr</title>
-  <script src="./jsQR.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
-  <link rel="stylesheet" href="./animate.css">
-  <style>
-    body {
-      font-family: 'Ropa Sans', sans-serif;
-      color: #333;
-      max-width: 640px;
-      margin: 0 auto;
-      position: relative;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <title>WizyQr</title>
+    <script src="js/jsQR.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Ropa+Sans"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootbox.min.js"></script>
+    <script src="js/bootbox.locales.min.js"></script>
+    <style>
+      body {
+        font-family: "Ropa Sans", sans-serif;
+        color: #333;
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+      } 
 
-    #githubLink {
-      position: absolute;
-      right: 0;
-      top: 12px;
-      color: #2D99FF;
-    }
-
-    h1 {
-      margin: 10px 0;
-      font-size: 40px;
-    }
-
-    #loadingMessage {
-      text-align: center;
-      padding: 40px;
-      background-color: #eee;
-    }
-
-    #canvas {
-      width: 400px;
-	  height: 400px;
-	  position:absolute;
-	  top:0;bottom:50%;right:0;left:0;
-	  margin:auto;
-    }
-
-    #output {
-      margin-top: 20px;
-      background: #eee;
-      padding: 10px;
-      padding-bottom: 0;
-    }
-
-    #output div {
-      padding-bottom: 10px;
-      word-wrap: break-word;
-    }
-
-    #noQRFound {
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-<div>
-  <h1 align="center">WIZY HOTSPOT QR SCANNER</h1>
-  <p align="center">Scan using your mobile phone camera</p>
-</div>
-  <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-  <canvas class="puff-in-center" id="canvas" hidden></canvas>
-  <div id="output" hidden>
-    <div id="outputMessage">No QR code detected.</div>
-    <div hidden><b>Data:</b> <span id="outputData"></span></div>
-  </div>
-  <script>
-    var video = document.createElement("video");
-    var canvasElement = document.getElementById("canvas");
-    var canvas = canvasElement.getContext("2d");
-    var loadingMessage = document.getElementById("loadingMessage");
-    var outputContainer = document.getElementById("output");
-    var outputMessage = document.getElementById("outputMessage");
-    var outputData = document.getElementById("outputData");
-
-    function drawLine(begin, end, color) {
-      canvas.beginPath();
-      canvas.moveTo(begin.x, begin.y);
-      canvas.lineTo(end.x, end.y);
-      canvas.lineWidth = 4;
-      canvas.strokeStyle = color;
-      canvas.stroke();
-    }
-
-    // Use facingMode: environment to attemt to get the front camera on phones
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-      video.srcObject = stream;
-      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      video.play();
-      requestAnimationFrame(tick);
-    });
-
-    function tick() {
-      loadingMessage.innerText = "⌛ Loading video..."
-      if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        loadingMessage.hidden = true;
-        canvasElement.hidden = false;
-        outputContainer.hidden = false;
-
-        canvasElement.height = video.videoHeight;
-        canvasElement.width = video.videoWidth;
-        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        var code = jsQR(imageData.data, imageData.width, imageData.height, {
-          inversionAttempts: "dontInvert",
-        });
-        if (code) {
-          drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
-          drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
-          drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
-          drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-          outputMessage.hidden = true;
-          outputData.parentElement.hidden = false;
-		  var regMatcher = /^(https?:\/\/)?[a-zA-Z][a-zA-Z0-9]{0,19}\.[a-zA-Z]{1,5}\/login\?username=[a-zA-Z0-9][a-zA-Z0-9]{2,16}&password=[a-zA-Z0-9][a-zA-Z0-9]{2,16}$/gm;
-		  var isMatched = regMatcher.test(code.data);
-		  if(isMatched == true){
-				window.location.href = code.data;
-		  }else{
-			outputData.innerText = code.data; // not matched sorry
-		  }
-		   //https or http://hotspot.com/login?username=1q2w3e&password=qwer123 regex format ^(https?:\/\/)?[a-zA-Z][a-zA-Z0-9]{0,19}\.[a-zA-Z]{1,5}\/login\?username=[a-zA-Z0-9][a-zA-Z0-9]{2,16}&password=[a-zA-Z0-9][a-zA-Z0-9]{2,16}$ 
-        } else {
-          outputMessage.hidden = false;
-          outputData.parentElement.hidden = true;
-        }
+      h1 {
+        margin-top: 100px;
+        font-size: 50px;
+        font-weight: bold;
+        color: #eee;
       }
-      requestAnimationFrame(tick);
-    }
-	
-  </script>
-</body>
+      p {
+        color: wheat;
+      }
+      #loadingMessage {
+        text-align: center;
+        padding: 40px;
+        background-color: #eee;
+      }
+
+      #canvas {
+        width: 400px;
+        height: 400px;
+        position: relative;
+        margin: 10%;
+        border-radius: 15px;
+      }
+
+      #output {
+        margin-top: 20px;
+        background: #eee;
+        padding: 10px;
+        padding-bottom: 0;
+      }
+
+      #output div {
+        padding-bottom: 10px;
+        word-wrap: break-word;
+      }
+
+      #noQRFound {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="color-change-2x">
+    <div class="text-shadow-drop-center">
+      <h1 align="center">
+        WIZY HOTSPOT <span class="qr-color">QR</span> SCANNER
+      </h1>
+      <p align="center">Scan using your mobile phone camera</p>
+    </div>
+    <section>
+    <div class="wrapper text-center">
+      <canvas class="puff-in-center pulse" id="canvas" hidden></canvas>
+    </div>
+
+    <div
+      id="output"
+      style="border-radius: 20px; background-color: darkslategrey;"
+    >
+      <div
+        class="text-center"
+        id="outputMessage"
+        style="font-size: 20px; color: floralwhite;"
+      >
+        No QR code detected.
+      </div>
+      <div hidden><b>Data:</b> <span id="outputData"></span></div>
+    </div>
+    <div id="loadingMessage" hidden>
+      🎥 Unable to access video stream (please make sure you have a webcam
+      enabled)
+    </div>
+    </section>
+    <section>
+      <div style="margin-top: 15%; display: block; position: relative;">
+          <img src="img/gamesbg.png" alt="Non Stop Gaming" height="600" width="700"/>
+      </div>
+    </section> 
+    <script>
+      var video = document.createElement("video");
+      var canvasElement = document.getElementById("canvas");
+      var canvas = canvasElement.getContext("2d");
+      var loadingMessage = document.getElementById("loadingMessage");
+      var outputContainer = document.getElementById("output");
+      var outputMessage = document.getElementById("outputMessage");
+      var outputData = document.getElementById("outputData");
+
+      function drawLine(begin, end, color) {
+        canvas.beginPath();
+        canvas.moveTo(begin.x, begin.y);
+        canvas.lineTo(end.x, end.y);
+        canvas.lineWidth = 4;
+        canvas.strokeStyle = color;
+        canvas.stroke();
+      }
+
+      // Use facingMode: environment to attemt to get the front camera on phones
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: "environment" } })
+        .then(function(stream) {
+          video.srcObject = stream;
+          video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+          video.play();
+          requestAnimationFrame(tick);
+        });
+
+      function tick() {
+        loadingMessage.innerText = "⌛ Loading video...";
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          loadingMessage.hidden = true;
+          canvasElement.hidden = false;
+          outputContainer.hidden = false;
+          // do something in the background
+          dialog.modal("hide");
+          canvasElement.height = video.videoHeight;
+          canvasElement.width = video.videoWidth;
+          canvas.drawImage(
+            video,
+            0,
+            0,
+            canvasElement.width,
+            canvasElement.height
+          );
+          var imageData = canvas.getImageData(
+            0,
+            0,
+            canvasElement.width,
+            canvasElement.height
+          );
+          var code = jsQR(imageData.data, imageData.width, imageData.height, {
+            inversionAttempts: "dontInvert"
+          });
+          if (code) {
+            drawLine(
+              code.location.topLeftCorner,
+              code.location.topRightCorner,
+              "#FF3B58"
+            );
+            drawLine(
+              code.location.topRightCorner,
+              code.location.bottomRightCorner,
+              "#FF3B58"
+            );
+            drawLine(
+              code.location.bottomRightCorner,
+              code.location.bottomLeftCorner,
+              "#FF3B58"
+            );
+            drawLine(
+              code.location.bottomLeftCorner,
+              code.location.topLeftCorner,
+              "#FF3B58"
+            );
+            outputMessage.hidden = true;
+            outputData.parentElement.hidden = false;
+            var regMatcher = /^(https?:\/\/)?[a-zA-Z][a-zA-Z0-9]{0,19}\.[a-zA-Z]{1,5}\/login\?username=[a-zA-Z0-9][a-zA-Z0-9]{2,16}&password=[a-zA-Z0-9][a-zA-Z0-9]{2,16}$/gm;
+            var isMatched = regMatcher.test(code.data);
+            if (isMatched == true) {
+              window.location.href = code.data;
+            } else {
+              outputData.innerText = code.data; // not matched sorry
+            }
+            //https or http://hotspot.com/login?username=1q2w3e&password=qwer123 regex format ^(https?:\/\/)?[a-zA-Z][a-zA-Z0-9]{0,19}\.[a-zA-Z]{1,5}\/login\?username=[a-zA-Z0-9][a-zA-Z0-9]{2,16}&password=[a-zA-Z0-9][a-zA-Z0-9]{2,16}$
+          } else {
+            outputMessage.hidden = false;
+            outputData.parentElement.hidden = true;
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      var dialog = bootbox.dialog({
+        message:
+          '<div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>',
+        closeButton: false
+      });
+    </script>
+  </body>
 </html>
