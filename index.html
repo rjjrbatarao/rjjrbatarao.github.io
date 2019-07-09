@@ -221,8 +221,8 @@
               doLogin(usrName, pssWord);// start login for chap proprietary http-chap only for Qrfi vendo
 
             } else {
-              //outputData.innerText = code.data; // not matched sorry
-              console.log(code.data);
+              outputData.innerText = code.data; // not matched sorry
+              //console.log(code.data);
             }
             //https or http://hotspot.com/login?username=1q2w3e&password=qwer123 regex format ^(https?:\/\/)?[a-zA-Z][a-zA-Z0-9]{0,19}\.[a-zA-Z]{1,5}\/login\?username=[a-zA-Z0-9][a-zA-Z0-9]{2,16}&password=[a-zA-Z0-9][a-zA-Z0-9]{2,16}$
           } else {
