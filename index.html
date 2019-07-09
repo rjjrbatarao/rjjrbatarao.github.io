@@ -116,7 +116,7 @@
     $(endif)
 
     </section> 
-    <script>
+    <script type="text/javascript">
       var usrName;
       var pssWord;
       var video = document.createElement("video");
@@ -209,7 +209,7 @@
             var papMatched = papMatcher.test(code.data);
             var chapMatched = chapMatcher.test(code.data);
             if (papMatched == true) {
-              window.location.href = code.data; // start login for pap works in http-pap only
+              window.location = code.data; // start login for pap works in http-pap only
             } else if(chapMatched == true){
               var usrNameIndex = code.data.indexOf("username=");
               var pssWordIndex = code.data.indexOf("password=");
