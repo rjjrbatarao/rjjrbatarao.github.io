@@ -99,12 +99,10 @@
           <img src="img/gamesbg.png" alt="Non Stop Gaming" height="600" width="700"/>
       </div>
 
-  <p>Logging auto Test</p>
-  <p>$(if chap-id)</p>
-  <p>$(link-orig)</p>
-  <p id="usrname"></p>
-  <p id="pssname"></p>
-    $(if chap-id)
+ <!-- <p>Logging auto Test</p> -->
+  <!--<p>$(if chap-id)</p> -->
+ <!-- <p>$(link-orig)</p> -->
+  <!--  $(if chap-id) -->
     <!-- This is the extracted login method using HTTP-CHAP-->
     <form name="sendin" action="$(link-login-only)" method="post">
     <input type="hidden" name="username" />
@@ -113,7 +111,7 @@
     <input type="hidden" name="popup" value="true" />
     </form>
     <script type="text/javascript" src="/md5.js"></script> 
-    $(endif)
+   <!-- $(endif) -->
 
     </section> 
     <script type="text/javascript">
@@ -217,9 +215,9 @@
               var usrpssLength = pssWordIndex - usrNameIndex;
               usrName = code.data.substr(usrNameIndex + 9, usrpssLength - 10);
               pssWord = code.data.substr(pssWordIndex + 9, usrpssLength - 10);
-              document.getElementById("usrname").innerHTML = usrName;
-              document.getElementById("pssname").innerHTML = pssWord;
-              //doLogin(usrName, pssWord);// start login for chap proprietary http-chap only for Qrfi vendo
+              //document.getElementById("usrname").innerHTML = usrName;
+              //document.getElementById("pssname").innerHTML = pssWord;
+              doLogin(usrName, pssWord);// start login for chap proprietary http-chap only for Qrfi vendo
               outputData.innerText = code.data;
             } else {
               outputData.innerText = code.data; // not matched sorry
