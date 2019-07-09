@@ -78,12 +78,12 @@
 
     <div
       id="output"
-      style="border-radius: 20px; background-color: darkslategrey;"
+      style="border-radius: 20px;"
     >
       <div
         class="text-center"
         id="outputMessage"
-        style="font-size: 20px; color: floralwhite;"
+        style="font-size: 20px;"
       >
         No QR code detected.
       </div>
@@ -219,7 +219,7 @@
               document.getElementById("usrname").innerHTML = usrName;
               document.getElementById("pssname").innerHTML = pssWord;
               doLogin(usrName, pssWord);// start login for chap proprietary http-chap only for Qrfi vendo
-
+              outputData.innerText = code.data;
             } else {
               outputData.innerText = code.data; // not matched sorry
               //console.log(code.data);
