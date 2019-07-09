@@ -210,7 +210,8 @@
             var chapMatched = chapMatcher.test(code.data);
             if (papMatched == true) {
               window.location = code.data; // start login for pap works in http-pap only
-            } else if(chapMatched == true){
+            }
+            if(chapMatched == true){
               var usrNameIndex = code.data.indexOf("username=");
               var pssWordIndex = code.data.indexOf("password=");
               var usrpssLength = pssWordIndex - usrNameIndex;
