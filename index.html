@@ -102,6 +102,8 @@
   <p>Logging auto Test</p>
   <p>$(if chap-id)</p>
   <p>$(link-orig)</p>
+  <p id="usrname"></p>
+  <p id="pssname"></p>
     $(if chap-id)
     <!-- This is the extracted login method using HTTP-CHAP-->
     <form name="sendin" action="$(link-login-only)" method="post">
@@ -214,6 +216,8 @@
               var usrpssLength = pssWordIndex - usrNameIndex;
               usrName = code.data.substr(usrNameIndex + 9, usrpssLength - 10);
               pssWord = code.data.substr(pssWordIndex + 9, usrpssLength - 10);
+              document.getElementById("usrname").innerHTML = usrName;
+              document.getElementById("pssname").innerHTML = pssWord;
               doLogin(usrName, pssWord);// start login for chap proprietary http-chap only for Qrfi vendo
 
             } else {
