@@ -137,7 +137,8 @@ datachannel.onmessage = e => {
   
     console.log("data text",e.data);
 	var imageElement = document.getElementById('dataId');
-	imageElement.innerHTML = e.data.data;
+	var val = JSON.parse(e.data);
+	imageElement.innerHTML = val.data;
 	
   } else {
 	console.log("data binary",e.data);
