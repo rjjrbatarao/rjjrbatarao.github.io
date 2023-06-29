@@ -133,9 +133,11 @@ datachannel.onopen = () => console.log('datachannel has opened');
 datachannel.onmessage = e => {
 
   if (e.data.byteLength === undefined) {
-
-    console.log(e.data);
-
+  
+    console.log(e.data, JSON.parse(e.data));
+	var imageElement = document.getElementById('imgStream');
+	imageElement.innerHTML = e.data;
+	
   } else {
 
     // is binary data. mjpeg stream
