@@ -134,12 +134,12 @@ datachannel.onmessage = e => {
 
   if (e.data.byteLength === undefined) {
   
-    console.log(e.data);
+    console.log("data text",e.data);
 	var imageElement = document.getElementById('imgStream');
 	imageElement.innerHTML = e.data;
 	
   } else {
-
+	console.log("data binary",e.data);
     // is binary data. mjpeg stream
     var arrayBufferView = new Uint8Array(e.data);
     var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
