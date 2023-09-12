@@ -173,12 +173,15 @@ html {
         <p class="top-left" id="device-id"></p>
         <p class="top-right" id="status">waiting</p>
       </div>
-      <div id="dataStream"></div>
+      
     <div class="btn-group" style="width:100%">
       <button style="width:33%" class="btn" onclick="onVolume()"><i id="volume-icon" class="fa-solid fa-volume-xmark"></i></button>
       <button style="width:34%" class="btn" onclick="onMuted()"><i id="mute-icon" class="fa-solid fa-microphone-slash"></i></button>
       <button style="width:33%" class="btn" onclick="onRotate()"><i class="fa-solid fa-arrows-rotate"></i></button>
-
+    </div>
+    <div class="card">
+	<div>Json Message</div>
+	<div id="dataStream"></div> 
     </div>
   </div>
 </div>
