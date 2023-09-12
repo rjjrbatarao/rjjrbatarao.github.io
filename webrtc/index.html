@@ -179,13 +179,14 @@ html {
       <button style="width:34%" class="btn" onclick="onMuted()"><i id="mute-icon" class="fa-solid fa-microphone-slash"></i></button>
       <button style="width:33%" class="btn" onclick="onRotate()"><i class="fa-solid fa-arrows-rotate"></i></button>
     </div>
-    <div class="card">
-	<div>Json Message</div>
-	<div id="dataStream"></div> 
-    </div>
   </div>
 </div>
- 
+     <div class="card">
+	<div class="container">
+	<div>Json Message</div>
+	<div id="dataStream"></div>
+	</div>
+    </div>
 
 <div style="display: block;" id="getting-started">
 </div>
@@ -238,27 +239,12 @@ var answerId = Math.floor((Math.random() * 1000) + 1);
 var pc = new RTCPeerConnection({
   iceServers: [
       {
-        urls: "stun:stun.relay.metered.ca:80",
+        urls: "stun:stun.l.google.com:19302",
       },
       {
-        urls: "turn:a.relay.metered.ca:80",
-        username: "ec840914c9f4db1f111b4eed",
-        credential: "So2ivQhcZ1FMTq9w",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:80?transport=tcp",
-        username: "ec840914c9f4db1f111b4eed",
-        credential: "So2ivQhcZ1FMTq9w",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:443",
-        username: "ec840914c9f4db1f111b4eed",
-        credential: "So2ivQhcZ1FMTq9w",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:443?transport=tcp",
-        username: "ec840914c9f4db1f111b4eed",
-        credential: "So2ivQhcZ1FMTq9w",
+        urls: "turn:relay1.expressturn.com:3478",
+        username: "ef44CAFSFFDZEB1JWQ",
+        credential: "GGNRKR0x5dgsgHge",
       }
   ],
 });
