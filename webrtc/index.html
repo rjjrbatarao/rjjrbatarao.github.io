@@ -168,19 +168,10 @@ html {
 <div class="column" id="video">
   <div class="card">
     <div class="container">
-      <img id="imgStream" style="width: 100%">
-      <video id="videoStream" playsinline style="width:100%; display: none"></video>
-      <audio id="audioStream" style="display: none"></audio>
+        <p class="bottom-right" id="device-message">?</p>
         <p class="top-left" id="device-id"></p>
         <p class="top-right" id="status">waiting</p>
       </div>
-    <div class="btn-group" style="width:100%">
-      <button style="width:25%" class="btn" onclick="onVolume()"><i id="volume-icon" class="fa-solid fa-volume-xmark"></i></button>
-      <button style="width:25%" class="btn" onclick="onMuted()"><i id="mute-icon" class="fa-solid fa-microphone-slash"></i></button>
-      <button style="width:25%" class="btn" onclick="onRotate()"><i class="fa-solid fa-arrows-rotate"></i></button>
-      <button style="width:25%" class="btn" onclick="onStop()"><i id="stop-icon" class="fa-solid fa-circle-stop"></i></button>
-
-    </div>
   </div>
 </div>
 <div class="column" id="video">
@@ -451,7 +442,10 @@ datachannel.onmessage = e => {
     // is binary data. mjpeg stream
     
     var arrayBufferView = new Uint8Array(e.data);
-    console.log(e.data, utf8ArrayToString(arrayBufferView));
+    var msg = utf8ArrayToString(arrayBufferView);
+    console.log(JSON.parse(msg));
+    document.getElementById('device-message').innerHTML = msg;
+	  
     // var arrayBufferView = new Uint8Array(e.data);
     // var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
     // var urlCreator = window.URL || window.webkitURL;
