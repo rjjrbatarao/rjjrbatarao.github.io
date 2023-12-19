@@ -253,18 +253,15 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: false })
 
 function onVolume() {
 
-  var audioStream = document.getElementById('audioStream');
   hasVolume = !hasVolume;
 
   if (hasVolume) {
 
-     audioStream.play();
-     document.getElementById('volume-icon').className = 'fa-solid fa-volume-high';
+
 
   } else {
 
-     audioStream.pause();
-     document.getElementById('volume-icon').className = 'fa-solid fa-volume-xmark';
+
   }
 
 }
@@ -277,7 +274,7 @@ function onStop() {
 
   if (isPlaying) {
 
-     document.getElementById('stop-icon').className = 'fa-solid fa-circle-stop';
+
   } else {
 
      client.publish('webrtc/' + deviceId + '/jsonrpc', JSON.stringify({
@@ -286,7 +283,6 @@ function onStop() {
        id: closeId,
       }))
 
-     document.getElementById('stop-icon').className = 'fa-solid fa-circle-play';
   }
 }
 
@@ -300,8 +296,6 @@ function onRotate() {
     rotate = 0;
   }
 
-  document.getElementById('imgStream').style.transform = 'rotate(' + rotate + 'deg)';
-  document.getElementById('videoStream').style.transform = 'rotate(' + rotate + 'deg)';
 
 }
 
@@ -311,32 +305,10 @@ function onMuted() {
 
   if (isMuted) {
 
-     document.getElementById('mute-icon').className = 'fa-solid fa-microphone-slash';
-
-     pc.getSenders().forEach(function (sender) {
-
-       // stop audio track
-       if (sender.track != null && sender.track.kind == 'audio') {
-         sender.track.stop();
-       }
-
-     })
 
   } else {
 
-     document.getElementById('mute-icon').className = 'fa-solid fa-microphone';
 
-     // access mic again
-     navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-       .then(stream => {
-         stream.getTracks().forEach(track => {
-           pc.getSenders().forEach(function (sender) {
-             if (sender.track != null && sender.track.kind == 'audio') {
-               sender.replaceTrack(track);
-             }
-           })
-         });
-       }).catch(log);
   }
 
 }
