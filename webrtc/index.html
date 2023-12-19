@@ -384,25 +384,14 @@ pc.ontrack = function (event) {
 
   if (event.track.kind == 'video') {
 
-    var el = document.getElementById('videoStream');
-    var newStream = new MediaStream();
-    newStream.addTrack(event.track);
-    el.srcObject = newStream;
-    el.autoplay = true
-    el.controls = false
-    el.muted = true
-    document.getElementById('imgStream').style.display = 'none';  
-    document.getElementById('videoStream').style.display = 'block';
+	console.log("video stream");
 
   } else if (event.track.kind == 'audio') {
 
-    var el = document.getElementById('audioStream');
-    var newStream = new MediaStream();
-    newStream.addTrack(event.track);
-    el.srcObject = newStream;
-    el.controls = false 
-    el.muted = false
+	console.log("audio stream");
 
+  } else {
+        console.log("messaging stream");
   }
 }
 
