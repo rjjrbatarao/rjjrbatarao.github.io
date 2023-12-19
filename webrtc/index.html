@@ -414,7 +414,7 @@ datachannel.onopen = () => {
 }
 
 datachannel.onmessage = e => {
-
+  console.log("data: ",e);
   if (e.data.byteLength === undefined) {
 
     console.log(e.data);
