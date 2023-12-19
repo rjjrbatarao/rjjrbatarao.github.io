@@ -209,22 +209,10 @@ window.onload = function() {
 
   if (deviceId == undefined) {
 
-    document.getElementById('video').style.display = 'none';
-    document.getElementById('getting-started').style.display = 'block';
+
   } 
 
-  const canvas = document.createElement('canvas')
-  canvas.width = 640
-  canvas.height = 480
-  
-  const ctx = canvas.getContext('2d')
-  ctx.fillStyle = 'rgba(200, 200, 200, 100)'
-  ctx.fillRect(0, 0, 640, 480)
 
-  const img = new Image(640, 480)
-  img.src = canvas.toDataURL()
-
-  document.getElementById('imgStream').src = img.src;
 }
 
 function connect() {
