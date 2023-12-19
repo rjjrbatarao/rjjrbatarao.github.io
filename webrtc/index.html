@@ -457,11 +457,11 @@ pc.onicecandidate = event => {
 	
 client.on('connect', function () {
 	// attemp to close existing session
-	client.publish('webrtc/' + deviceId + '/jsonrpc', JSON.stringify({
-	       jsonrpc: '2.0',
-	       method: 'close',
-	       id: closeId,
-	}));	
+	// client.publish('webrtc/' + deviceId + '/jsonrpc', JSON.stringify({
+	//        jsonrpc: '2.0',
+	//        method: 'close',
+	//        id: closeId,
+	// }));	
   console.log("connected");
   client.subscribe('webrtc/' + deviceId + '/jsonrpc-reply', function (err) {
     if (!err) {
