@@ -250,12 +250,12 @@ var closeId = Math.floor((Math.random() * 1000) + 1);
 var pc = new RTCPeerConnection({
   iceServers: [
       {
-        urls: "stun:stun.relay.metered.ca:80",
+        urls: "stun:ec2-52-64-128-211.ap-southeast-2.compute.amazonaws.com:3478",
       },
       {
-        urls: "turn:a.relay.metered.ca:80",
-        username: "ec840914c9f4db1f111b4eed",
-        credential: "So2ivQhcZ1FMTq9w",
+        urls: "turn:ec2-52-64-128-211.ap-southeast-2.compute.amazonaws.com:3478",
+        username: "alice",
+        credential: "l0vesBob",
       },
   ],
 });
