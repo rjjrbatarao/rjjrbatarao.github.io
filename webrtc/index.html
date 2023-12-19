@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://unpkg.com/mqtt@4.1.0/dist/mqtt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>	  
   <script src="https://kit.fontawesome.com/8c8bbe3334.js" crossorigin="anonymous"></script>
   <title>WebRTC</title>
 <style>
@@ -182,6 +183,13 @@ html {
     </div>
   </div>
 </div>
+<div class="column" id="video">
+  <div class="card">
+    <div class="container">
+	<div id="qrcode"></div>    
+    </div>
+  </div>
+</div>
  
 
 <div style="display: block;" id="getting-started">
@@ -203,7 +211,7 @@ var options = {
 }
 
 const client  = mqtt.connect('wss://test.mosquitto.org:8081/mqtt')
-
+new QRCode(document.getElementById("qrcode"), "https://rjjrbatarao.github.io/webrtc/?deviceId=esp32-30c6f704a954");
 
 
 window.onload = function() {
