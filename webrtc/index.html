@@ -430,7 +430,7 @@ datachannel.onmessage = e => {
 
 pc.onicecandidate = event => {
   if (event.candidate === null) {
-    console.log("SDP----->",btoa(JSON.stringify(pc.localDescription));
+    console.log("SDP----->",btoa(JSON.stringify(pc.localDescription)));
     console.log(pc.localDescription.sdp);
     let json = {
      jsonrpc: '2.0',
