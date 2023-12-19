@@ -240,6 +240,9 @@ var answerId = Math.floor((Math.random() * 1000) + 1);
 var pc = new RTCPeerConnection({
   iceServers: [
       {
+        urls: "stun:stun.relay.metered.ca:80",
+      },
+      {
         urls: "turn:a.relay.metered.ca:80",
         username: "ec840914c9f4db1f111b4eed",
         credential: "So2ivQhcZ1FMTq9w",
@@ -406,7 +409,7 @@ datachannel.onmessage = e => {
 
 pc.onicecandidate = event => {
   if (event.candidate === null) {
-    console.log(pc.localDescription.sdp)
+    console.log("sdp---->",pc.localDescription.sdp)
     let json = {
      jsonrpc: '2.0',
      method: 'PEER_ANSWER',
