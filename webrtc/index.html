@@ -456,7 +456,13 @@ pc.onicecandidate = event => {
 //  pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log);
 	
 client.on('connect', function () {
-  console.log("connected")
+	// attemp to close existing session
+	client.publish('webrtc/' + deviceId + '/jsonrpc', JSON.stringify({
+	       jsonrpc: '2.0',
+	       method: 'close',
+	       id: closeId,
+	}));	
+  console.log("connected");
   client.subscribe('webrtc/' + deviceId + '/jsonrpc-reply', function (err) {
     if (!err) {
     }
