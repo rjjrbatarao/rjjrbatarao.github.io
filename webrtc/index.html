@@ -422,7 +422,9 @@ datachannel.onmessage = e => {
   } else {
 
     // is binary data. mjpeg stream
-    console.log(e.data);
+    
+    var arrayBufferView = new Uint8Array(e.data);
+    console.log(e.data, arrayBufferView.toString());
     // var arrayBufferView = new Uint8Array(e.data);
     // var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
     // var urlCreator = window.URL || window.webkitURL;
