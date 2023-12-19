@@ -392,8 +392,9 @@ datachannel.onmessage = e => {
     
     var arrayBufferView = new Uint8Array(e.data);
     var msg = utf8ArrayToString(arrayBufferView);
-    console.log(JSON.parse(msg));
-    document.getElementById('device-message').innerHTML = msg;
+    var dt = JSON.parse(msg);
+    console.log(dt);
+    document.getElementById('device-message').innerHTML = dt.data;
 	  
     // var arrayBufferView = new Uint8Array(e.data);
     // var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
