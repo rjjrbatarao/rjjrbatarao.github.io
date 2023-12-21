@@ -452,8 +452,8 @@ pc.onicecandidate = event => {
   }
 }
 
-//pc.onnegotiationneeded = e =>
-//  pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log);
+pc.onnegotiationneeded = e =>
+  pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log);
 	
 client.on('connect', function () {
 	// attemp to close existing session
@@ -487,7 +487,7 @@ client.on('message', function (topic, message) {
 
     log(offer)
     pc.setRemoteDescription(offer);
-    pc.createAnswer().then(d => pc.setLocalDescription(d)).catch(log)
+    //pc.createAnswer().then(d => pc.setLocalDescription(d)).catch(log)
 
   } else if (msg.id == answerId) {
 
