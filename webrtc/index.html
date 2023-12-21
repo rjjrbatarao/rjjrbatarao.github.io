@@ -357,7 +357,7 @@ pc.ontrack = function (event) {
 
 pc.oniceconnectionstatechange = e => {
 
-  log(pc.iceConnectionState)
+   console.log("ice con state: ",pc.iceConnectionState)
   document.getElementById('status').innerHTML = pc.iceConnectionState;
   if (pc.iceConnectionState == 'connected') {
     // default to muted
@@ -411,7 +411,6 @@ datachannel.onmessage = e => {
 
 pc.onicecandidate = event => {
   if (event.candidate === null) {
-    console.log("SDP----->",btoa(JSON.stringify(pc.localDescription)));
     console.log(pc.localDescription.sdp);
     let json = {
      jsonrpc: '2.0',
@@ -419,7 +418,7 @@ pc.onicecandidate = event => {
      params: pc.localDescription.sdp,
      id: answerId,
     }
-    console.log(json)
+    console.log("answer ",json)
     client.publish('webrtc/' + deviceId + '/jsonrpc', JSON.stringify(json))
 
     setInterval(() => {
@@ -488,13 +487,13 @@ client.on('message', function (topic, message) {
     let sdp = msg.result;
     let offer = {type: 'offer', sdp: sdp};
 
-    log(offer)
+    console.log("mqtt received: ",offer)
     pc.setRemoteDescription(offer);
     pc.createAnswer().then(d => pc.setLocalDescription(d)).catch(log)
 
   } else if (msg.id == answerId) {
 
-    log('receive answer ok')
+    console.log('receive answer ok')
   } 
 
 })
