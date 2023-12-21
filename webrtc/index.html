@@ -470,11 +470,13 @@ client.on('connect', function () {
   })
 
   console.log('publish to webrtc/' + deviceId + '/jsonrpc')
-  client.publish('webrtc/' + deviceId + '/jsonrpc', JSON.stringify({
+  var payload = JSON.stringify({
    jsonrpc: '2.0',
    method: 'offer',
    id: offerId,
-  }), {qos: 2})
+  });
+  console.log("publish: ", payload);
+  client.publish('webrtc/' + deviceId + '/jsonrpc', payload, {qos: 2})
 
 })
 
