@@ -482,16 +482,16 @@ client.on('connect', function () {
 client.on('message', function (topic, message) {
 
   let msg = JSON.parse(message.toString())
-  if (msg.id == offerId) {
+  if (msg.id == offerId && msg["result"] != "busy") {
 
-    let sdp = msg.result;
+    let sdp = msg.result.replace("passive", "actpass");
     let offer = {type: 'offer', sdp: sdp};
 
     console.log("mqtt received: ",offer)
     pc.setRemoteDescription(offer);
     pc.createAnswer().then(d => pc.setLocalDescription(d)).catch(log)
 
-  } else if (msg.id == answerId) {
+  } else if (msg.id == answerId && msg["result"] != "busy") {
 
     console.log('receive answer ok')
   } 
