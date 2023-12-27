@@ -484,7 +484,7 @@ client.on('message', function (topic, message) {
   let msg = JSON.parse(message.toString())
   if (msg.id == offerId && msg["result"] != "busy") {
 
-    let sdp = msg.result.replace("passive", "actpass");
+    let sdp = msg.result;//.replace("passive", "actpass");
     let offer = {type: 'offer', sdp: sdp};
 
     console.log("mqtt received: ",offer)
