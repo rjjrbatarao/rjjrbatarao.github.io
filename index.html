@@ -335,25 +335,25 @@
 			getEl("submit-id").click();
 		}
 		function handleInsert(){
-			fetch(getUrlRand('insert'))
+			fetch('http://'+getUrlRand('insert'))
 			.then(response => response.json())
 			.then(data => queueCheck(data))
 			.catch(error => console.error('Error:', error));
 		}
 		function handleCancel(){
-			fetch(getUrlRand('cancel'))
+			fetch('http://'+getUrlRand('cancel'))
 			.then(response => response.json())
 			.then(data => console.log(data))
 			.catch(error => console.error('Error:', error));
 		}
 		function handleServing(){
-			fetch(getUrlRand('serving'))
+			fetch('http://'+getUrlRand('serving'))
 			.then(response => response.json())
 			.then(data => creditCheck(data))
 			.catch(error => console.error('Error:', error));
 		}
 		function handleDone(){
-			fetch(getUrlRand('done'))
+			fetch('http://'+getUrlRand('done'))
 			.then(response => response.json())
 			.then(data => voucherSubmit(data))
 			.catch(error => console.error('Error:', error));
@@ -429,4 +429,5 @@
 	</script>
 </body>
 </html>
+
 
