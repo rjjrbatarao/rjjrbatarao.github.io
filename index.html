@@ -276,7 +276,7 @@
 		var submitUrl = 'http://' + getQueryString('target') + '/portal/auth';
 		var counterInstance = null;
 		var previousCredit = 0;
-		var testUrl = "";
+		var serverUrl = getQueryString('server');
 		var customerMac = getQueryString('clientMac');
 		var errCode = getQueryString('errCode');
 		getEl('error-id').innerHTML  = errCode == null ? "" : "Err: Failed Login";
@@ -292,7 +292,7 @@
 		   return `${Math.floor(minutes / 24 / 60)}D:${Math.floor((minutes / 60) % 24)}H:${Math.floor(minutes % 60)}M`;
 		}		
 		function getUrlRand(path){
-			return `${testUrl}/${path}?mac=${customerMac}&rand=` + Math.round(Date.now()/ 1000);
+			return `${serverUrl}/${path}?mac=${customerMac}&rand=` + Math.round(Date.now()/ 1000);
 		}
 		function getEl(el){
 			return document.getElementById(el);
@@ -429,3 +429,4 @@
 	</script>
 </body>
 </html>
+
