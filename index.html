@@ -339,7 +339,7 @@
 			//.then(response => response.json())
 			//.then(data => queueCheck(data))
 			//.catch(error => console.error('Error:', error));
-			window.location.href = "chrome://open";
+			window.location.href = "googlechrome://navigate?url=https://google.com";
 		}
 		function handleCancel(){
 			fetch('http://'+getUrlRand('cancel'))
