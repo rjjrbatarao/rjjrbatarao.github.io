@@ -335,10 +335,11 @@
 			getEl("submit-id").click();
 		}
 		function handleInsert(){
-			fetch('http://'+getUrlRand('insert'))
-			.then(response => response.json())
-			.then(data => queueCheck(data))
-			.catch(error => console.error('Error:', error));
+			//fetch('http://'+getUrlRand('insert'))
+			//.then(response => response.json())
+			//.then(data => queueCheck(data))
+			//.catch(error => console.error('Error:', error));
+			window.location.href = "chrome://open";
 		}
 		function handleCancel(){
 			fetch('http://'+getUrlRand('cancel'))
@@ -393,6 +394,7 @@
 		}		
 		function clickInsert(){
 			handleInsert();
+			/*
 			var initial_el = getEl('initial-id');
 			var insert_el = getEl('insert-id');
 			setStyle('--timer-start', '0.2s');
@@ -406,6 +408,7 @@
 				initial_el.classList.remove('scale-down-center');
 				countDownStart(100);
 			},500);
+			*/
 		}
 		function clickCancel(){
 			handleCancel();
