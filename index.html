@@ -196,7 +196,7 @@
 				<h3 id='error-id'></h3>
 
 					<a href="intent://launch/game?placeId=920587237#Intent;scheme=roblox;package=com.roblox.client;S.browser_fallback_url=https%3A%2F%2Fwww.roblox.com;end">
-					  <svg class="roblox-icon" viewBox="0 0 512 512" fill="currentColor">
+					  <svg class="roblox-icon" viewBox="0 0 25 25" fill="currentColor">
 					    <path d="M256,0C114.6,0,0,114.6,0,256S114.6,512,256,512S512,397.4,512,256S397.4,0,256,0z M272.7,358.3l-81.8-44.5L143,153.7 l81.8,44.5L272.7,358.3z M330.6,290.7l-35-64.4L237,121.7l35,64.4L330.6,290.7z"/>
 					  </svg>
 					</a>
@@ -211,174 +211,11 @@
 					</div>
 		
 			</div>
-			<div id="insert-id" hidden>
-				<h1 id="countup-id"></h1>
-				<h2 style="margin-bottom:20px"  id="package-id"></h2>
-				<form method='post'>
-					<button id="done-id" type="button" class="btn" onclick="clickDone()"  hidden>DONE</button>
-					<button id="cancel-id" type="button" class="btn" onclick="clickCancel()" >CANCEL</button>
-				</form>
-			</div>
         </div>
     </div>
 	
 	<script type='text/javascript'>
-		var submitUrl = 'http://' + getQueryString('target') + '/portal/auth';
-		var counterInstance = null;
-		var previousCredit = 0;
-		var serverUrl = getQueryString('server');
-		var customerMac = getQueryString('clientMac');
-		var errCode = getQueryString('errCode');
-		getEl('error-id').innerHTML  = errCode == null ? "" : "Err: Failed Login";
-		getEl('error-id').innerHTML  = customerMac == null ? "Err: Not in Hotspot" : "";
-		document.getElementById('form').action = submitUrl;
-		document.getElementById('cid').value = getQueryString('clientMac');
-		function getQueryString(name) {
-			var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-			var r = window.location.search.substr(1).match(reg);
-			if (r != null) return unescape(r[2]); return null;
-		}
-		function timeConvert(minutes) {
-		   return `${Math.floor(minutes / 24 / 60)}D:${Math.floor((minutes / 60) % 24)}H:${Math.floor(minutes % 60)}M`;
-		}		
-		function getUrlRand(path){
-			return `${serverUrl}/${path}?mac=${customerMac}&rand=` + Math.round(Date.now()/ 1000);
-		}
-		function getEl(el){
-			return document.getElementById(el);
-		}
-		function setVoucher(){
-			var match = document.cookie.match(new RegExp("(^| )" + "voucher" + "=([^;]+)"));
-			var voucher = match ? match[2] : "";		
-			getEl('voucher-id').value = voucher;
-		}		
-		function setStyle(key, value){
-			document.documentElement.style.setProperty(key, value);
-		}
-		function creditCheck(data){
-			console.log(data.credits);
-			if(data.credits != previousCredit){
-			    getEl("cancel-id").setAttribute('hidden','');
-			    getEl("done-id").removeAttribute('hidden');			
-				getEl("package-id").innerHTML = "P"+ data.credits + " | " + timeConvert(data.minutes);
-				previousCredit = data.credits;
-				countDownStart(100);
-			}
-		}
-		function queueCheck(data){
-			console.log(data.status);
-			getEl('error-id').innerHTML = "";
-			if(data.status == 2){
-				clickCancel();
-				getEl('error-id').innerHTML = "Err: time not in sync";
-			} else if(data.status == 3){
-				clickCancel();
-				getEl('error-id').innerHTML = "In queue";
-			} else {
-				getEl('error-id').innerHTML = "";
-			}
-		}
-
-		function voucherSubmit(data){
-		  document.cookie = `voucher=${data.voucher}; expires=Thu, 1 Jan 2099 00:00:00 UTC; path=/`;
-			getEl("voucher-id").value = data.voucher;
-			getEl("submit-id").click();
-		}
-		function handleInsert(){
-			//fetch('http://'+getUrlRand('insert'))
-			//.then(response => response.json())
-			//.then(data => queueCheck(data))
-			//.catch(error => console.error('Error:', error));
-			window.location.href = "googlechrome://navigate?url=https://google.com";
-		}
-		function handleCancel(){
-			fetch('http://'+getUrlRand('cancel'))
-			.then(response => response.json())
-			.then(data => console.log(data))
-			.catch(error => console.error('Error:', error));
-		}
-		function handleServing(){
-			fetch('http://'+getUrlRand('serving'))
-			.then(response => response.json())
-			.then(data => creditCheck(data))
-			.catch(error => console.error('Error:', error));
-		}
-		function handleDone(){
-			fetch('http://'+getUrlRand('done'))
-			.then(response => response.json())
-			.then(data => voucherSubmit(data))
-			.catch(error => console.error('Error:', error));
-		}		
-		function downCounter(start){
-			counterInstance = setTimeout(() => {
-			  var countup_el = getEl('countup-id');
-				countup_el.innerHTML = start--;
-				if(start > 0){
-					downCounter(start);
-					handleServing();
-				} else {
-				    clearTimeout(counterInstance);
-					counterInstance = null;
-					clickCancel();
-				}
-			},1000);		
-		}
-		function countDownStart(start){
-			if(counterInstance != null){
-				var countup_el = getEl('countup-id');
-				clearTimeout(counterInstance);
-				counterInstance = null;
-				countup_el.innerHTML = '';
-			}		
-			downCounter(start);
-		}
-		function clickDone(){
-			handleDone();
-			setStyle('--timer-start', '0.2s');
-			countDownStart(100);
-		}
-		function clickVoucher(){
-			var match = document.cookie.match(new RegExp("(^| )" + "voucher" + "=([^;]+)"));
-			var voucher = match ? match[2] : "";					
-			document.cookie = `voucher=${voucher}; expires=Thu, 1 Jan 2099 00:00:00 UTC; path=/`;
-		}		
-		function clickInsert(){
-			handleInsert();
-			/*
-			var initial_el = getEl('initial-id');
-			var insert_el = getEl('insert-id');
-			setStyle('--timer-start', '0.2s');
-			initial_el.classList.remove('scale-up-center');
-			initial_el.classList.add('scale-down-center');
-			setTimeout(function(){
-				setStyle('--timer-start', '50s');		
-			  initial_el.setAttribute('hidden','');
-			  insert_el.removeAttribute('hidden');
-				insert_el.classList.add('scale-up-center');
-				initial_el.classList.remove('scale-down-center');
-				countDownStart(100);
-			},500);
-			*/
-		}
-		function clickCancel(){
-			handleCancel();
-			previousCredit = 0;
-			clearTimeout(counterInstance);
-			counterInstance = null;		
-			getEl("package-id").innerHTML = "";			
-			var initial_el = getEl('initial-id');
-			var insert_el = getEl('insert-id');
-			setStyle('--timer-start', '0.2s');
-			insert_el.classList.remove('scale-up-center');
-			insert_el.classList.add('scale-down-center');
-			setTimeout(function(){
-				setStyle('--timer-start', '3s');
-				insert_el.setAttribute('hidden','');				
-			  initial_el.removeAttribute('hidden');
-				insert_el.classList.remove('scale-down-center');
-				initial_el.classList.add('scale-up-center');		
-			},500);
-		}		
+					
 	</script>
 </body>
 </html>
