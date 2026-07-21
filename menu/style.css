@@ -79,8 +79,9 @@ body {
 .contrast {
   filter: contrast(150%);
 }
+
 .blur {
-  filter: blur(3px);
+  filter: blur(5px);
 }
 
 
@@ -166,8 +167,8 @@ body {
 
 @-webkit-keyframes scale-up-center {
   0% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
   }
   100% {
     -webkit-transform: scale(1);
@@ -176,8 +177,8 @@ body {
 }
 @keyframes scale-up-center {
   0% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
   }
   100% {
     -webkit-transform: scale(1);
@@ -197,8 +198,8 @@ body {
             transform: scale(1);
   }
   100% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
   }
 }
 @keyframes scale-down-center {
@@ -207,8 +208,8 @@ body {
             transform: scale(1);
   }
   100% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
   }
 }
 
