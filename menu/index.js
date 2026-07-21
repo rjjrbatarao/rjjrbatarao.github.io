@@ -3,14 +3,14 @@ var swiper = new Swiper(".x-slider", {
   grabCursor: true,
   centeredSlides: true,
   //slidesPerView: "auto",
-  slidesPerView: 5,
+  slidesPerView: 4,
   spaceBetween: 0,
   loop: true,
   coverflowEffect: {
     rotate: 0,
     stretch: 0,
-    depth: 0,
-    modifier: 0.0,
+    depth: 50,
+    modifier: 2.0,
     slideShadows: true,
   },
 //  pagination: {
@@ -45,14 +45,14 @@ swiper.on("slideChange", function () {
   this.slides.forEach((element, idx) => {
     element.classList.remove("contrast");
     element.classList.add("blur");
-    element.classList.remove("scale-up-center");
-    element.classList.add("scale-down-center");	
+    //element.classList.remove("scale-up-center");
+    //element.classList.add("scale-down-center");	
   });
   console.log(index_activeSlide);
   currentSlide.classList.remove("blur");
   currentSlide.classList.add("contrast");
-  currentSlide.classList.remove("scale-down-center");
-  currentSlide.classList.add("scale-up-center");  
+  //currentSlide.classList.remove("scale-down-center");
+  //currentSlide.classList.add("scale-up-center");  
 });
 
 function clickButton(){
