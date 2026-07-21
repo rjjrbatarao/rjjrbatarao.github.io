@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Swiper demo</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
+    />
+    <!-- Link Swiper's CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.43/polyfill.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="shortcut icon" href="data:," />
+    <!-- X styles -->
+    <link rel="stylesheet" href="style.css"></link>
+  </head>
+
+  <body>
+    <!-- Swiper  -->
+<div class="wave">
+  <div class="wave--one"></div>
+  <div class="wave--two"></div>
+  <div class="wave--three"></div>
+</div>  
+
+
+    <div class="x-content"><h1 class="x-center">Top Games</h1></div>
+    <div class="swiper x-slider">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide blur container">
+           <h1>Battle</h1>
+		   <button class="btn" onclick="clickButton()">
+			Click Me
+		   </button>
+           <img
+            src="./img/battle.png"
+		    width="600" height="600"
+           />
+        </div>
+        <div class="swiper-slide blur container">
+          <h1>Death Stranding</h1>
+		   <button class="btn" onclick="clickButton()">
+			Click Me
+		   </button>
+          <img
+            src="./img/death.png"
+			width="600" height="600"
+          />
+		  
+        </div>
+        <div class="swiper-slide blur container">
+          <h1>Destiny</h1>
+		   <button class="btn" onclick="clickButton()">
+			Click Me
+		   </button>
+          <img
+            src="./img/destiny.png"
+			width="600" height="600"
+          />
+		  
+        </div>
+        <div class="swiper-slide blur container">
+          <h1>Last of Us II</h1>
+		   <button class="btn" onclick="clickButton()">
+			Click Me
+		   </button>
+          <img
+            src="./img/last.png"
+			width="600" height="600"
+          />
+		  
+        </div>
+        <div class="swiper-slide blur container">
+          <h1>Battlefield 1</h1>
+		   <button class="btn" onclick="clickButton()">
+			Click Me
+		   </button>
+          <img
+            src="./img/battle.png"
+			width="600" height="600"
+          />
+        </div>
+        <div class="swiper-slide blur container">
+          <h1>God of War</h1>
+		   <button class="btn" onclick="clickButton()">
+			Click Me
+		   </button>
+          <img
+            src="./img/god.png"
+			width="600" height="600"
+          />
+		  
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script src="./index.js"></script>
+  </body>
+</html>

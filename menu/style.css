@@ -1,0 +1,251 @@
+@font-face {
+  font-family: 'ps4';
+  src: url('sst.ttf') format("truetype");
+}
+
+html,
+body {
+  height: 100%;
+  position: relative;
+  background-color: #0e6cc4;
+  font-size: 17px;
+  font-family: 'ps4', sans-serif;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+
+}
+
+.swiper {
+
+ 
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  
+}
+
+.swiper-slide img {
+  display: block;
+}
+
+.x-slider {
+  top: 50%;
+  margin: 0px;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.x-slider .swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  margin: 0 15px !important;
+	
+}
+
+.x-slider .swiper-button-next {
+  color: #ef0107;
+}
+
+.x-slider .swiper-button-prev {
+  color: #ef0107;
+}
+.x-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.x-content {
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.x-center {
+  text-align: center;
+  margin: auto;
+}
+
+.contrast {
+  filter: contrast(150%);
+}
+.blur {
+  filter: blur(3px);
+}
+
+
+.wave {
+  position: fixed;
+  top: 0;
+  transform: rotate(80deg);
+  left: 0;
+}
+
+.wave > div {
+  width: 1500px;
+  height: 1300px;
+  margin-left: -150px;
+  margin-top: -250px;
+  transform-origin: 50% 48%;
+  border-radius: 43%;
+  opacity: 0.4;
+  position: fixed;
+  top: 3%;
+  left: 10%;
+}
+
+.wave--one {
+  background: #0af;
+  animation: drift 7000ms infinite linear;
+}
+
+.wave--two {
+  animation: drift 3000ms infinite linear;
+  opacity: 0.1;
+  background: black;
+}
+
+.wave--three {
+  animation: drift 7500ms infinite linear;
+  background-color: #77daff;
+}
+
+@keyframes drift {
+  from {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
+  }
+}
+
+
+.swal2-popup {
+  width: 100vw !important;
+  height: 98vh !important;
+  margin: 0 !important; /* Remove default margins */
+  border-radius: 0 !important; /* Remove default border-radius */
+}
+
+.swal2-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.my-confirm-button-class {
+  background-color: #4CAF50 !important; /* Green */
+  color: white !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+}
+
+.my-cancel-button-class {
+  background-color: #f44336 !important; /* Red */
+  color: white !important;
+  border: 2px solid #f44336 !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+}
+
+
+.scale-up-center {
+	-webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@-webkit-keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+
+.scale-down-center {
+	-webkit-animation: scale-down-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: scale-down-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@-webkit-keyframes scale-down-center {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+}
+@keyframes scale-down-center {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+}
+
+
+.container {
+  position: relative;
+  width: 30%;
+}
+
+/* Make the image responsive */
+.container img {
+  width: 100%;
+  height: auto;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.container .btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  background: #ad5389;
+  background: linear-gradient(
+    0deg,
+    rgba(20, 167, 62, 1) 0%,
+    rgba(102, 247, 113, 1) 100%
+  );
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.container .btn:hover {
+  background-color: black;
+}
