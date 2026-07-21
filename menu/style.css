@@ -7,7 +7,7 @@ html,
 body {
   height: 100%;
   position: relative;
-  background-color: #0e6cc4;
+  background-color: #008189;
   font-size: 17px;
   font-family: 'ps4', sans-serif;
   color: #ffffff;
@@ -105,7 +105,7 @@ body {
 }
 
 .wave--one {
-  background: #0af;
+  background: #00ffee;
   animation: drift 7000ms infinite linear;
 }
 
@@ -117,7 +117,7 @@ body {
 
 .wave--three {
   animation: drift 7500ms infinite linear;
-  background-color: #77daff;
+  background-color: #008980;
 }
 
 @keyframes drift {
