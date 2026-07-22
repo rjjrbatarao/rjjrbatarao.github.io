@@ -10,6 +10,6 @@ function triggerToast() {
         function fetchVersion() {
             if (window.TaraBridge) {
                 const version = window.TaraBridge.getAppVersion();
-                alert("Native App Version: " + version);
+                console.log("Native App Version: " + version);
             }
         }
