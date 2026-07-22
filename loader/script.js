@@ -33,14 +33,9 @@ function getDeviceInfo() {
 			
         };
         console.log("Device System Info:", info);
-        return info;
-    } else {
-        console.warn("TaraBridge interface not found");
-        return null;
-    }
-	
-	
-	// 1. Get simple list of package strings
+		
+		
+			// 1. Get simple list of package strings
 const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
 console.log("Whitelisted Packages:", whitelistedPackageNames);
 // Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
@@ -54,4 +49,13 @@ console.log("Whitelisted App Details:", whitelistedDetails);
   { "packageName": "com.android.chrome", "appName": "Google Chrome" }
 ]
 */
+		
+        return info;
+    } else {
+        console.warn("TaraBridge interface not found");
+        return null;
+    }
+	
+	
+
 }
