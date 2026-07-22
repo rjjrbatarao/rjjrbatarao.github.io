@@ -18,7 +18,11 @@ function getDeviceInfo() {
             manufacturer: window.TaraBridge.getManufacturer(),
             appVersion: window.TaraBridge.getAppVersion(),
             batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
-            isCharging: window.TaraBridge.isCharging()
+            isCharging: window.TaraBridge.isCharging(),
+			wifiMac: window.TaraBridge.getWifiMacAddress(),
+			ethMac: window.TaraBridge.getEthernetMacAddress(),
+			deviceSerial: window.TaraBridge.getDeviceSerial()
+			
         };
         console.log("Device System Info:", info);
         return info;
