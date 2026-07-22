@@ -21,7 +21,8 @@ function getDeviceInfo() {
             isCharging: window.TaraBridge.isCharging(),
 			wifiIp: window.TaraBridge.getWifiIpAddress(),
 			ethIp: window.TaraBridge.getEthernetIpAddress(),
-			deviceSerial: window.TaraBridge.getDeviceSerial()
+			deviceSerial: window.TaraBridge.getDeviceSerial(),
+			displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
 			
         };
         console.log("Device System Info:", info);
