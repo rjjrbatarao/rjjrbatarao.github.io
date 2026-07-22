@@ -7,7 +7,7 @@
     <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="getDeviceInfo()">
 <div id="wrapper">
 
   <div id="triangle">
@@ -38,14 +38,7 @@
 	LOCKED
      </h2>
   </div>
-  
-  <!-- Trigger native Toast -->
-    <button onclick="triggerToast()">Show Native Toast</button>
-
-    <!-- Call native method that returns a value -->
-    <button onclick="fetchVersion()">Get App Version</button>
-      <!-- Call native method that returns a value -->
-    <button onclick="getDeviceInfo()">Get All Info</button>
+ 
 </div>
     <script src="script.js"></script>
 </body>

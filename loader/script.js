@@ -7,14 +7,9 @@ function triggerToast() {
             }
 }
 
-function fetchVersion() {
-        if (window.TaraBridge) {
-            const version = window.TaraBridge.getAppVersion();
-            console.log("Native App Version: " + version);
-        }
-}
 		
 function getDeviceInfo() {
+	triggerToast();
     if (window.TaraBridge) {
         const info = {
             osVersion: window.TaraBridge.getOsVersion(),
@@ -25,7 +20,6 @@ function getDeviceInfo() {
             batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
             isCharging: window.TaraBridge.isCharging()
         };
-
         console.log("Device System Info:", info);
         return info;
     } else {
