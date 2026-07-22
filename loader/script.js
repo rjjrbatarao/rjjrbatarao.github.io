@@ -7,6 +7,13 @@ function triggerToast() {
             }
 }
 
+// 3. Launch an app programmatically from JS
+function openChrome() {
+    const success = window.TaraBridge.launchApp("com.android.chrome");
+    if (!success) {
+        alert("App could not be launched!");
+    }
+}
 		
 function getDeviceInfo() {
 	triggerToast();
@@ -31,4 +38,20 @@ function getDeviceInfo() {
         console.warn("TaraBridge interface not found");
         return null;
     }
+	
+	
+	// 1. Get simple list of package strings
+const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
+console.log("Whitelisted Packages:", whitelistedPackageNames);
+// Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
+
+// 2. Get detailed list with App Names
+const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+console.log("Whitelisted App Details:", whitelistedDetails);
+/* Output:
+[
+  { "packageName": "pl.snowdog.kiosk", "appName": "Tara Kiosk" },
+  { "packageName": "com.android.chrome", "appName": "Google Chrome" }
+]
+*/
 }
