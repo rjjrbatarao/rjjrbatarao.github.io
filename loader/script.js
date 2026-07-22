@@ -19,8 +19,8 @@ function getDeviceInfo() {
             appVersion: window.TaraBridge.getAppVersion(),
             batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
             isCharging: window.TaraBridge.isCharging(),
-			wifiMac: window.TaraBridge.getWifiMacAddress(),
-			ethMac: window.TaraBridge.getEthernetMacAddress(),
+			wifiIp: window.TaraBridge.getWifiIpAddress(),
+			ethIp: window.TaraBridge.getEthernetIpAddress(),
 			deviceSerial: window.TaraBridge.getDeviceSerial()
 			
         };
