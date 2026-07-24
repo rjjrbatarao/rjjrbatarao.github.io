@@ -1,10 +1,10 @@
 function triggerToast() {
-            // Check if running inside our Android WebView container
-        if (window.TaraBridge) {
-                window.TaraBridge.showToast("Hello from Webview JS!");
-            } else {
-                console.log("Not running inside Android WebView container");
-            }
+    // Check if running inside our Android WebView container
+    if (window.TaraBridge) {
+        window.TaraBridge.showToast("Hello from Webview JS!");
+    } else {
+        console.log("Not running inside Android WebView container");
+    }
 }
 
 // 3. Launch an app programmatically from JS
@@ -14,10 +14,11 @@ function openChrome() {
         alert("App could not be launched!");
     }
 }
-		
+
 function getDeviceInfo() {
-	triggerToast();
+    triggerToast();
     if (window.TaraBridge) {
+        // 1. Get tablet info
         const info = {
             osVersion: window.TaraBridge.getOsVersion(),
             sdkVersion: window.TaraBridge.getSdkInt(),
@@ -26,36 +27,31 @@ function getDeviceInfo() {
             appVersion: window.TaraBridge.getAppVersion(),
             batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
             isCharging: window.TaraBridge.isCharging(),
-			wifiIp: window.TaraBridge.getWifiIpAddress(),
-			ethIp: window.TaraBridge.getEthernetIpAddress(),
-			deviceSerial: window.TaraBridge.getDeviceSerial(),
-			displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
-			
+            wifiIp: window.TaraBridge.getWifiIpAddress(),
+            ethIp: window.TaraBridge.getEthernetIpAddress(),
+            deviceSerial: window.TaraBridge.getDeviceSerial(),
+            displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
+
         };
         console.log("Device System Info:", info);
-		
-		
-			// 1. Get simple list of package strings
-const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
-console.log("Whitelisted Packages:", whitelistedPackageNames);
-// Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
 
-// 2. Get detailed list with App Names
-const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
-console.log("Whitelisted App Details:", whitelistedDetails);
-/* Output:
-[
-  { "packageName": "pl.snowdog.kiosk", "appName": "Tara Kiosk" },
-  { "packageName": "com.android.chrome", "appName": "Google Chrome" }
-]
-*/
+        // 1. Get simple list of package strings
+        const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
+        console.log("Whitelisted Packages:", whitelistedPackageNames);
+        // Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
+
+        // 2. Get detailed list with App Names
+        const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+        console.log("Whitelisted App Details:", whitelistedDetails);
 		
+        // 3. Get detailed list with Categorized App Names
+        const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
+        console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
+
         return info;
     } else {
         console.warn("TaraBridge interface not found");
         return null;
     }
-	
-	
 
 }
