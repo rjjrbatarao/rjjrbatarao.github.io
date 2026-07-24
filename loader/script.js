@@ -42,11 +42,15 @@ function getDeviceInfo() {
 
         // 2. Get detailed list with App Names
         const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
-        console.log("Whitelisted App Details:", whitelistedDetails);
+        console.log("Whitelisted App Details:", whitelistedDetails); 
 		
         // 3. Get detailed list with Categorized App Names
         const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
         console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
+
+        // 3. Get detailed list with Online and offline catagory App Names
+        const whitelistedConnectivityDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByConnectivity());
+        console.log("Whitelisted App Connectivity Details:", whitelistedConnectivityDetails);
 
         return info;
     } else {
