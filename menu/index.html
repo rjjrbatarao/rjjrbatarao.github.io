@@ -13,7 +13,6 @@
       href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.43/polyfill.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="shortcut icon" href="data:," />
     <!-- X styles -->
     <link rel="stylesheet" href="style.css"></link>
@@ -26,76 +25,8 @@
   <div class="wave--two"></div>
   <div class="wave--three"></div>
 </div>  
-
-
     <div class="x-content"><h1 class="x-center">Top Games</h1></div>
-    <div class="swiper x-slider">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide blur container">
-           <h1>Battle</h1>
-		   <button class="btn" onclick="clickButton()">
-			
-		   </button>
-           <img
-            src="./img/battle.png"
-		    width="600" height="600"
-           />
-        </div>
-        <div class="swiper-slide blur container">
-          <h1>Death Stranding</h1>
-		   <button class="btn" onclick="clickButton()">
-		
-		   </button>
-          <img
-            src="./img/death.png"
-			width="600" height="600"
-          />
-		  
-        </div>
-        <div class="swiper-slide blur container">
-          <h1>Destiny</h1>
-		   <button class="btn" onclick="clickButton()">
-			
-		   </button>
-          <img
-            src="./img/destiny.png"
-			width="600" height="600"
-          />
-		  
-        </div>
-        <div class="swiper-slide blur container">
-          <h1>Last of Us II</h1>
-		   <button class="btn" onclick="clickButton()">
-			
-		   </button>
-          <img
-            src="./img/last.png"
-			width="600" height="600"
-          />
-		  
-        </div>
-        <div class="swiper-slide blur container">
-          <h1>Battlefield 1</h1>
-		   <button class="btn" onclick="clickButton()">
-			
-		   </button>
-          <img
-            src="./img/battle.png"
-			width="600" height="600"
-          />
-        </div>
-        <div class="swiper-slide blur container">
-          <h1>God of War</h1>
-		   <button class="btn" onclick="clickButton()">
-			
-		   </button>
-          <img
-            src="./img/god.png"
-			width="600" height="600"
-          />
-		  
-        </div>
-      </div>
+    <div class="swiper x-slider" id="app">
     </div>
 <div class="swiper-pagination"></div>
     <!-- Swiper JS -->
@@ -103,5 +34,6 @@
 
     <!-- Initialize Swiper -->
     <script src="./index.js"></script>
+    <script src="./obra.js"></script>
   </body>
 </html>

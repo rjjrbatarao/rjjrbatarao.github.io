@@ -1,3 +1,6 @@
+const tara = new ObraJS();
+
+
 var swiper = new Swiper(".x-slider", {
   effect: "coverflow",
   grabCursor: true,
@@ -61,25 +64,89 @@ swiper.on("slideChange", function () {
 
 function clickButton() {
   // swiper.autoplay.stop();
-  // Swal.fire({
-  //   imageUrl: "https://placeholder.pics/svg/300x300",
-  //   imageHeight: 100,
-  //   imageAlt: "A tall image",
-  //   buttonsStyling: true,
-  //   showCancelButton: true,
-  //   confirmButtonText: "Confirm",
-  //   cancelButtonText: "Back",
-  //   customClass: {
-  //     confirmButton: "my-confirm-button-class",
-  //     cancelButton: "my-cancel-button-class",
-  //   },
-  // }).then((result) => {
-  //   if (result.isConfirmed) {
-  //     swiper.autoplay.start();
-  //     // Perform your delete action here
-  //   } else if (result.dismiss === Swal.DismissReason.cancel) {
-  //     // Perform your cancel action here
-  //     swiper.autoplay.start();
-  //   }
-  // });
 }
+
+
+
+function triggerToast() {
+  // Check if running inside our Android WebView container
+  if (window.TaraBridge) {
+    window.TaraBridge.showToast("Hello from Webview JS!");
+  } else {
+    console.log("Not running inside Android WebView container");
+  }
+}
+
+// 3. Launch an app programmatically from JS
+function openChrome() {
+  const success = window.TaraBridge.launchApp("com.android.chrome");
+  if (!success) {
+    alert("App could not be launched!");
+  }
+}
+
+function getDeviceInfo() {
+  triggerToast();
+  if (window.TaraBridge) {
+    // 1. Get tablet info
+    const info = {
+      osVersion: window.TaraBridge.getOsVersion(),
+      sdkVersion: window.TaraBridge.getSdkInt(),
+      deviceModel: window.TaraBridge.getDeviceModel(),
+      manufacturer: window.TaraBridge.getManufacturer(),
+      appVersion: window.TaraBridge.getAppVersion(),
+      batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
+      isCharging: window.TaraBridge.isCharging(),
+      wifiIp: window.TaraBridge.getWifiIpAddress(),
+      ethIp: window.TaraBridge.getEthernetIpAddress(),
+      deviceSerial: window.TaraBridge.getDeviceSerial(),
+      displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
+    };
+    console.log("Device System Info:", info);
+
+    // 1. Get simple list of package strings
+    const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
+    console.log("Whitelisted Packages:", whitelistedPackageNames);
+    // Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
+
+    // 2. Get detailed list with App Names
+    const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+    console.log("Whitelisted App Details:", whitelistedDetails);
+
+    // 3. Get detailed list with Categorized App Names
+    const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
+    console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
+
+    // 3. Get detailed list with Online and offline catagory App Names
+    const whitelistedConnectivityDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByConnectivity());
+    console.log("Whitelisted App Connectivity Details:", whitelistedConnectivityDetails);
+
+    return info;
+  } else {
+    console.warn("TaraBridge interface not found");
+    return null;
+  }
+
+}
+
+
+/**
+ *
+ * @returns template rendered from users array
+ * count is global variable
+ */
+const allApps = () => {
+  const apps = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+  let app_map = "";
+  apps.map((app) => {
+    app_map += tara.oString("./templates/app_item.html", {
+      app_name: app.appName,
+      app_id: app.packageName,
+      app_icon: app.icon,
+    });
+  });
+  return app_map;
+};
+
+
+tara.oHtml("app", "./templates/app_layout.html", {});
