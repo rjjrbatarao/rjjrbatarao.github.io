@@ -31,7 +31,6 @@ function getDeviceInfo() {
             ethIp: window.TaraBridge.getEthernetIpAddress(),
             deviceSerial: window.TaraBridge.getDeviceSerial(),
             displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
-
         };
         console.log("Device System Info:", info);
 
@@ -42,8 +41,8 @@ function getDeviceInfo() {
 
         // 2. Get detailed list with App Names
         const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
-        console.log("Whitelisted App Details:", whitelistedDetails); 
-		
+        console.log("Whitelisted App Details:", whitelistedDetails);
+
         // 3. Get detailed list with Categorized App Names
         const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
         console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
