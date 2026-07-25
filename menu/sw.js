@@ -1,6 +1,6 @@
 const CACHE_NAME = 'app-assets-v1';
 // Assets to cache immediately
-const PRECACHE_ASSETS = ['/', '/index.html', '/style.css', '/script.js', '/obrajs.js', 'sst.ttf', '/templates/app_item.html','/templates/app_layout.html','/templates/header_layout.html'];
+const PRECACHE_ASSETS = ['/menu', '/menu/index.html', '/menu/style.css', '/menu/script.js', '/menu/obrajs.js', '/menu/sst.ttf', '/menu/templates/app_item.html','/menu/templates/app_layout.html','/menu/templates/header_layout.html'];
 
 // Install: Cache core files
 self.addEventListener('install', event => {
