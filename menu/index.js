@@ -72,11 +72,9 @@ function getDeviceInfo() {
 }
 
 
-/**
- *
- * @returns template rendered from users array
- * count is global variable
- */
+getDeviceInfo();
+
+
 const allApps = () => {
   const apps = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
   let app_map = "";
@@ -94,67 +92,41 @@ const allApps = () => {
   return app_map;
 };
 
-
 tara.oHtml("app", "./templates/app_layout.html", {
   swiper: () => {
-    var swiper = new Swiper(".x-slider", {
-      effect: "coverflow",
+    var swiper1 = new Swiper(".slider1", {
+      effect: 'coverflow',
       grabCursor: true,
-      centeredSlides: true,
-      //slidesPerView: "auto",
       slidesPerView: 3,
-      spaceBetween: 0,
-      loop: true,
+      spaceBetween: 10,
       coverflowEffect: {
-        rotate: 0,
+        rotate: 50,
         stretch: 0,
-        depth: 50,
-        modifier: 2.0,
+        depth: 100,
+        modifier: 1,
         slideShadows: true,
       },
       pagination: {
-        el: ".swiper-pagination",
+        el: '.swiper-pagination',
+        clickable: true,
         dynamicBullets: true,
       },
-      keyboard: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: true,
-        pauseOnMouseEnter: true,
-      },
+      loop: true,
     });
-
-    swiper.on("keyPress", (swiper, keyCode) => {
-      console.log(keyCode);
-      switch (keyCode) {
-        case 38:
-          swiper.slidePrev();
-          break;
-        case 40:
-          swiper.slideNext();
-          break;
-      }
-    });
-
-    swiper.on("slideChange", function () {
-      //console.log(this.realIndex);
-      const index_currentSlide = this.realIndex;
-      const index_activeSlide = this.activeIndex;
-      const currentSlide = this.slides[index_activeSlide];
-      const totalSlides = this.slides.length;
-      this.slides.forEach((element, idx) => {
-        element.classList.remove("contrast");
-        element.classList.add("blur");
-        ps4_select.play();
-        //element.classList.remove("scale-up-center");
-        //element.classList.add("scale-down-center");
-      });
-      console.log(index_activeSlide);
-      currentSlide.classList.remove("blur");
-      currentSlide.classList.add("contrast");
-      //currentSlide.classList.remove("scale-down-center");
-      //currentSlide.classList.add("scale-up-center");
-    });
-
   }
 });
+
+
+
+tara.oHtml("header", "./templates/header_layout.html", {
+  battery_value: window.TaraBridge.getBatteryLevel() + "%",
+  refresh_rate: window.TaraBridge.getScreenRefreshRate() + "HZ",
+  initialize: () => {
+    setInterval(() => {
+      //const batteryLevel = window.TaraBridge.getBatteryLevel();
+      //const displayRefreshRate = window.TaraBridge.getScreenRefreshRate();
+      //document.getElementById("battery_id").innerHTML = batteryLevel + "%";
+      //document.getElementById("refresh_id").innerHTML = displayRefreshRate + "hz";
+    }, 2000);
+  }
+})
