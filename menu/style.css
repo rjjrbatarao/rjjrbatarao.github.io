@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'ps4';
-  src: url('sst.ttf') format("truetype");
+  font-family: "ps4";
+  src: url("sst.ttf") format("truetype");
 }
 
 html,
@@ -9,41 +9,47 @@ body {
   position: relative;
   background-color: #008189;
   font-size: 17px;
-  font-family: 'ps4', sans-serif;
+  font-family: "ps4", sans-serif;
   color: #ffffff;
   margin: 0;
   padding: 0;
-
-}
-
-.swiper {
-
- 
 }
 
 .swiper-slide {
-  background-position: center;
-  background-size: cover;
+  font-size: 18px;
   background: rgba(0, 0, 0, 0.5);
-  padding: 5px;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow:
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  border-radius: 5px;
 }
 
 .swiper-slide img {
-  display: block;
+  width: 100px; /* Or a fixed width like 300px */
+  height: 100px; /* Or a fixed height */
+  object-fit: cover; /* Keeps aspect ratio by cropping to fill the box */
 }
 
-.x-slider {
-  top: 50%;
-  transform: translateY(-50%);
+.swiper {
   width: 100%;
+  height: 300px;
+  margin: 20px 0;
+  padding: 50px;
+}
+
+.swiper-pagination {
+  bottom: -50px !important; /* Adjust pixels as needed */
 }
 
 .swiper-pagination-bullet {
   width: 20px;
   height: 20px;
   margin: 50px 15px !important;
-  
 }
 
 .swiper-pagination-bullet-active {
@@ -54,12 +60,41 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+/*
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+}
+
+
+.swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  margin: 50px 15px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.swiper-pagination-bullet {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.x-slider {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
 .x-slider .swiper-button-next {
-  color: #ef0107;
+  color: #01ef64;
 }
 
 .x-slider .swiper-button-prev {
-  color: #ef0107;
+  color: #01ef64;
 }
 .x-video {
   position: fixed;
@@ -68,19 +103,60 @@ body {
   min-width: 100%;
   min-height: 100%;
 }
+*/
 
 .x-content {
   width: 100%;
   height: 60px;
   position: fixed;
+  background: rgba(0, 0, 0, 0.5);
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
+
   z-index: 999;
 }
+
+.x-item-left {
+  width: 100%;
+  height: 50px;
+  padding: 20px;
+}
+
+.x-item-right {
+  width: 100%;
+  height: 50px;
+  padding: 20px;
+}
+
+.x-card {
+  padding: 20px;
+  border-radius: 15px;
+  width: 500px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.x-time {
+  font-size: 90px;
+}
+
+.x-hero {
+  margin-top: 10%;
+  place-items: center;
+  z-index: 999;
+}
+
 .x-center {
-  text-align: center;
-  margin: auto;
+  display: grid;
+  top: 50%;
+  place-items: center; /* Centers horizontally and vertically at once */
+  height: 50vh;
+  z-index: 999;
+}
+
+.x-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .contrast {
@@ -90,7 +166,6 @@ body {
 .blur {
   filter: blur(5px);
 }
-
 
 .wave {
   position: fixed;
@@ -137,133 +212,86 @@ body {
   }
 }
 
-
-.swal2-popup {
-  width: 100vw !important;
-  height: 98vh !important;
-  margin: 0 !important; /* Remove default margins */
-  border-radius: 0 !important; /* Remove default border-radius */
-}
-
-.swal2-container {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.my-confirm-button-class {
-  background-color: #4CAF50 !important; /* Green */
-  color: white !important;
-  border-radius: 10px !important;
-  padding: 10px 20px !important;
-}
-
-.my-cancel-button-class {
-  background-color: #f44336 !important; /* Red */
-  color: white !important;
-  border: 2px solid #f44336 !important;
-  border-radius: 10px !important;
-  padding: 10px 20px !important;
-}
-
-
 .scale-up-center {
-	-webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  -webkit-animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
+    both;
+  animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 
 @-webkit-keyframes scale-up-center {
   0% {
     -webkit-transform: scale(0.7);
-            transform: scale(0.7);
+    transform: scale(0.7);
   }
   100% {
     -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
   }
 }
 @keyframes scale-up-center {
   0% {
     -webkit-transform: scale(0.7);
-            transform: scale(0.7);
+    transform: scale(0.7);
   }
   100% {
     -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
   }
 }
 
-
 .scale-down-center {
-	-webkit-animation: scale-down-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	        animation: scale-down-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  -webkit-animation: scale-down-center 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: scale-down-center 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @-webkit-keyframes scale-down-center {
   0% {
     -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
   }
   100% {
     -webkit-transform: scale(0.7);
-            transform: scale(0.7);
+    transform: scale(0.7);
   }
 }
 @keyframes scale-down-center {
   0% {
     -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
   }
   100% {
     -webkit-transform: scale(0.7);
-            transform: scale(0.7);
+    transform: scale(0.7);
   }
 }
 
-
 .container {
   position: relative;
-  width: 30%;
 }
-
-/* Make the image responsive */
-.container img {
-  width: 100%;
-  height: auto;
-}
-
 /* Style the button and place it in the middle of the container/image */
 .container .btn {
-
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   color: white;
-  opacity: 0.0;
+  opacity: 0;
   font-size: 16px;
   padding: 12px 24px;
   width: 100%;
   height: 100%;
   border: none;
   cursor: pointer;
-
-}
-/*
-.container .btn:hover {
   animation: blink-loop 0.6s infinite alternate;
 }
 
-
 @keyframes blink-loop {
   0% {
-    opacity: 0.7;
+    opacity: 0.3;
   }
   100% {
-    opacity: 0.1; 
+    opacity: 0.1;
   }
 }
-*/
-
-
