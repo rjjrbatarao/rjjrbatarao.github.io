@@ -1,66 +1,8 @@
 const tara = new ObraJS();
 
-
-var swiper = new Swiper(".x-slider", {
-  effect: "coverflow",
-  grabCursor: true,
-  centeredSlides: true,
-  //slidesPerView: "auto",
-  slidesPerView: 3,
-  spaceBetween: 0,
-  loop: true,
-  coverflowEffect: {
-    rotate: 0,
-    stretch: 0,
-    depth: 50,
-    modifier: 2.0,
-    slideShadows: true,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    dynamicBullets: true,
-  },
-  keyboard: true,
-  autoplay: {
-    delay: 3000,
-    disableOnInteraction: true,
-    pauseOnMouseEnter: true,
-  },
-});
-
-swiper.on("keyPress", (swiper, keyCode) => {
-  console.log(keyCode);
-  switch (keyCode) {
-    case 38:
-      swiper.slidePrev();
-      break;
-    case 40:
-      swiper.slideNext();
-      break;
-  }
-});
-
 const ps4_select = new Audio("ps4-select-button.mp3");
 
-swiper.on("slideChange", function () {
-  //console.log(this.realIndex);
-  const index_currentSlide = this.realIndex;
-  const index_activeSlide = this.activeIndex;
-  const currentSlide = this.slides[index_activeSlide];
-  const totalSlides = this.slides.length;
-  this.slides.forEach((element, idx) => {
-    element.classList.remove("contrast");
-    element.classList.add("blur");
-    ps4_select.play();
-    //element.classList.remove("scale-up-center");
-    //element.classList.add("scale-down-center");
-  });
-  console.log(index_activeSlide);
-  currentSlide.classList.remove("blur");
-  currentSlide.classList.add("contrast");
-  //currentSlide.classList.remove("scale-down-center");
-  //currentSlide.classList.add("scale-up-center");
-});
+
 
 function clickButton() {
   // swiper.autoplay.stop();
@@ -149,4 +91,66 @@ const allApps = () => {
 };
 
 
-tara.oHtml("app", "./templates/app_layout.html", {});
+tara.oHtml("app", "./templates/app_layout.html", {
+  swiper: () => {
+    var swiper = new Swiper(".x-slider", {
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      //slidesPerView: "auto",
+      slidesPerView: 3,
+      spaceBetween: 0,
+      loop: true,
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 50,
+        modifier: 2.0,
+        slideShadows: true,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        dynamicBullets: true,
+      },
+      keyboard: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: true,
+        pauseOnMouseEnter: true,
+      },
+    });
+
+    swiper.on("keyPress", (swiper, keyCode) => {
+      console.log(keyCode);
+      switch (keyCode) {
+        case 38:
+          swiper.slidePrev();
+          break;
+        case 40:
+          swiper.slideNext();
+          break;
+      }
+    });
+
+    swiper.on("slideChange", function () {
+      //console.log(this.realIndex);
+      const index_currentSlide = this.realIndex;
+      const index_activeSlide = this.activeIndex;
+      const currentSlide = this.slides[index_activeSlide];
+      const totalSlides = this.slides.length;
+      this.slides.forEach((element, idx) => {
+        element.classList.remove("contrast");
+        element.classList.add("blur");
+        ps4_select.play();
+        //element.classList.remove("scale-up-center");
+        //element.classList.add("scale-down-center");
+      });
+      console.log(index_activeSlide);
+      currentSlide.classList.remove("blur");
+      currentSlide.classList.add("contrast");
+      //currentSlide.classList.remove("scale-down-center");
+      //currentSlide.classList.add("scale-up-center");
+    });
+
+  }
+});
