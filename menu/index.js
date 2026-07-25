@@ -86,6 +86,7 @@ const allApps = () => {
       app_id: app.packageName,
       app_icon: app.icon,
       app_button: (event) => {
+        console.log(event.currentTarget);
         openChrome(app.packageName);
       }
     });
