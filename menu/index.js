@@ -120,11 +120,11 @@ tara.oHtml("app", "./templates/app_layout.html", {
 
 tara.oHtml("header", "./templates/header_layout.html", {
   battery_value: window.TaraBridge.getBatteryLevel() + "%",
-  refresh_rate: window.TaraBridge.getScreenRefreshRate() + "HZ",
+  refresh_rate: window.TaraBridge.getScreenRefreshRate() + "hz",
   initialize: () => {
     setInterval(() => {
-      //const batteryLevel = window.TaraBridge.getBatteryLevel();
-      //const displayRefreshRate = window.TaraBridge.getScreenRefreshRate();
+      const batteryLevel = window.TaraBridge.getBatteryLevel();
+      const displayRefreshRate = window.TaraBridge.getScreenRefreshRate();
       //document.getElementById("battery_id").innerHTML = batteryLevel + "%";
       //document.getElementById("refresh_id").innerHTML = displayRefreshRate + "hz";
     }, 2000);
