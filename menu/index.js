@@ -1,3 +1,13 @@
+// Register the service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW Registered', reg.scope))
+      .catch(err => console.error('SW Registration failed', err));
+  });
+}
+
+
 const tara = new ObraJS();
 
 const ps4_select = new Audio("ps4-select-button.mp3");
