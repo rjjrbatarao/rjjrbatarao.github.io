@@ -20,8 +20,8 @@ function triggerToast() {
 }
 
 // 3. Launch an app programmatically from JS
-function openChrome() {
-  const success = window.TaraBridge.launchApp("com.android.chrome");
+function openChrome(packageName) {
+  const success = window.TaraBridge.launchApp(packageName);
   if (!success) {
     alert("App could not be launched!");
   }
@@ -85,6 +85,9 @@ const allApps = () => {
       app_name: app.appName,
       app_id: app.packageName,
       app_icon: app.icon,
+      app_button: (event) => {
+        openChrome(app.packageName);
+      }
     });
   });
   return app_map;
