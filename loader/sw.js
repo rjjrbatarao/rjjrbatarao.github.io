@@ -1,0 +1,27 @@
+const CACHE_NAME = 'app-assets-v1';
+// Assets to cache immediately
+const PRECACHE_ASSETS = ['/', '/index.html', '/style.css', '/script.js', '/obrajs.js', 'sst.ttf'];
+
+// Install: Cache core files
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(PRECACHE_ASSETS)));
+});
+
+// Activate: Clear old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE_NAME ? caches.delete(k) : null))));
+});
+
+// Fetch: Intercept requests, store dynamically
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request).then(networkResponse => {
+        return caches.open(CACHE_NAME).then(cache => {
+          if (event.request.method === 'GET') cache.put(event.request, networkResponse.clone());
+          return networkResponse;
+        });
+      });
+    })
+  );
+});
