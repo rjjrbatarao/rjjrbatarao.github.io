@@ -13,7 +13,6 @@ const tara = new ObraJS();
 const ps4_select = new Audio("ps4-select-button.mp3");
 
 
-
 function clickButton() {
   // swiper.autoplay.stop();
 }
@@ -86,6 +85,9 @@ function getDeviceInfo() {
     const runningBackgroundDetails = JSON.parse(window.TaraBridge.getRunningBackgroundApps());
     console.log("Running Apps in background:", runningBackgroundDetails);
 
+    // 5. Get recent apps opened
+    const recentOpenedAppsDetails = JSON.parse(window.TaraBridge.getPreviouslyOpenedApp());
+    console.log("Running Apps in background:", recentOpenedAppsDetails);
 
     return info;
   } else {
