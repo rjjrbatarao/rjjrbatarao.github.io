@@ -87,7 +87,7 @@ function getDeviceInfo() {
 
     // 5. Get recent apps opened
     const recentOpenedAppsDetails = JSON.parse(window.TaraBridge.getPreviouslyOpenedApp());
-    console.log("Running Apps in background:", recentOpenedAppsDetails);
+    console.log("Recent Apps Opened:", recentOpenedAppsDetails);
 
     return info;
   } else {
