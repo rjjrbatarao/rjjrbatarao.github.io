@@ -30,12 +30,21 @@ function triggerToast() {
 }
 
 // 3. Launch an app programmatically from JS
-function openChrome(packageName) {
+function openApp(packageName) {
   const success = window.TaraBridge.launchApp(packageName);
   if (!success) {
     alert("App could not be launched!");
   }
 }
+
+// 4. Launch an app programmatically from JS
+function closeApp(packageName) {
+  const success = window.TaraBridge.stopApp(packageName);
+  if (!success) {
+    alert("App could not be stopped!");
+  }
+}
+
 
 function getDeviceInfo() {
   triggerToast();
@@ -69,9 +78,14 @@ function getDeviceInfo() {
     const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
     console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
 
-    // 3. Get detailed list with Online and offline catagory App Names
+    // 4. Get detailed list with Online and offline catagory App Names
     const whitelistedConnectivityDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByConnectivity());
     console.log("Whitelisted App Connectivity Details:", whitelistedConnectivityDetails);
+
+    // 4. Get detailed list with Online and offline catagory App Names
+    const runningBackgroundDetails = JSON.parse(window.TaraBridge.getRunningBackgroundApps());
+    console.log("Running Apps in background:", runningBackgroundDetails);
+
 
     return info;
   } else {
@@ -95,7 +109,7 @@ const allApps = () => {
       app_icon: app.icon,
       app_button: (event) => {
         console.log(event.currentTarget.id);
-        openChrome(event.currentTarget.id);
+        openApp(event.currentTarget.id);
       }
     });
   });
