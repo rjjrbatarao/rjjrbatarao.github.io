@@ -1,11 +1,4 @@
-// Register the service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/menu/sw.js')
-      .then(reg => console.log('SW Registered', reg.scope))
-      .catch(err => console.error('SW Registration failed', err));
-  });
-}
+
 
 
 const tara = new ObraJS();
@@ -38,15 +31,74 @@ function openApp(packageName) {
 
 // 4. Launch an app programmatically from JS
 function closeApp(packageName) {
+
   const success = window.TaraBridge.stopApp(packageName);
   if (!success) {
     alert("App could not be stopped!");
   }
 }
 
+// 5. Remove Google Accounts
+function removeAccounts() {
+  if (window.TaraBridge && window.TaraBridge.removeGoogleAccount) {
+    const isSuccess = window.TaraBridge.removeGoogleAccount();
+    if (isSuccess) {
+      window.TaraBridge.showToast("All accouns cleared!");
+    } else {
+      window.TaraBridge.showToast("No account exist");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
+
+// 6. Clear Standard Media Folders (Downloads, DCIM, Pictures, Videos)
+function clearAllMedia() {
+  if (window.TaraBridge && window.TaraBridge.clearDefaultMediaFolders) {
+    const isSuccess = window.TaraBridge.clearDefaultMediaFolders();
+    if (isSuccess) {
+      window.TaraBridge.showToast("All default media folders cleared!");
+    } else {
+      window.TaraBridge.showToast("Some files could not be deleted.");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
+
+// 7. Clear Specific Custom Folders
+function clearSpecificFolders() {
+  if (window.TaraBridge && window.TaraBridge.clearCustomFolders) {
+    const foldersToDelete = [
+      "/sdcard/Download/TempPDFs",
+      "/sdcard/DCIM/Screenshots"
+    ];
+
+    const jsonString = JSON.stringify(foldersToDelete);
+    const isSuccess = window.TaraBridge.clearCustomFolders(jsonString);
+
+    console.log("Custom folders clear status:", isSuccess);
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
+
+//8. Get network latency
+function getNetworkLatency() {
+  if (window.TaraBridge && window.TaraBridge.getNetworkLatency) {
+    const pingMs = window.TaraBridge.getNetworkLatency("8.8.8.8");
+    if (pingMs !== -1) {
+      console.log(`Current network latency: ${pingMs} ms`);
+    } else {
+      console.warn("Network unreachable or ping failed.");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
 
 function getDeviceInfo() {
-  triggerToast();
+
   if (window.TaraBridge) {
     // 1. Get tablet info
     const info = {
@@ -61,8 +113,15 @@ function getDeviceInfo() {
       ethIp: window.TaraBridge.getEthernetIpAddress(),
       deviceSerial: window.TaraBridge.getDeviceSerial(),
       displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
+      isBleConnected: window.TaraBridge.isBluetoothConnected()
     };
     console.log("Device System Info:", info);
+
+
+    tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
+    tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
+    tara.oId("appversion_id").innerHTML = `App Version: ${info.appVersion}`;
+
 
     // 1. Get simple list of package strings
     const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
@@ -147,12 +206,39 @@ tara.oHtml("app", "./templates/app_layout.html", {
 tara.oHtml("header", "./templates/header_layout.html", {
   battery_value: window.TaraBridge.getBatteryLevel() + "%",
   refresh_rate: window.TaraBridge.getScreenRefreshRate() + "hz",
+  time_id: "time_id",
+  ping_id: "ping_id",
+  blestatus_id: "blestatus_id",
   initialize: () => {
     setInterval(() => {
       const batteryLevel = window.TaraBridge.getBatteryLevel();
       const displayRefreshRate = window.TaraBridge.getScreenRefreshRate();
+      const pingMs = window.TaraBridge.getNetworkLatency("8.8.8.8");
+      tara.oId("ping_id").innerHTML = pingMs + "ms"
+
+      const bleStatus = window.TaraBridge.isBluetoothConnected() == true ? "UP" : "X";
+      tara.oId("blestatus_id").innerHTML = `${bleStatus}`;
+
       //document.getElementById("battery_id").innerHTML = batteryLevel + "%";
       //document.getElementById("refresh_id").innerHTML = displayRefreshRate + "hz";
     }, 2000);
+    setInterval(() => {
+      const now = new Date();
+      const year = now.getFullYear();
+      // 1. Get short month (e.g., "Jan")
+      const month = now.toLocaleString('en-US', { month: 'short' });
+      const day = String(now.getDate()).padStart(2, '0');
+      // 2. Format time to AM/PM using native options
+      let hours = now.getHours();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Convert '0' hours to '12'
+      const formattedHours = String(hours).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      // Will output like: "2026-Jul-31 04:47:00 PM"
+      const formattedDateTime = `${year}-${month}-${day} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
+      tara.oId("time_id").innerHTML = formattedDateTime;
+    }, 1000);
   }
 })
