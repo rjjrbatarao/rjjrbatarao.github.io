@@ -1,8 +1,64 @@
-// Register the service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/loader/sw.js')
-      .then(reg => console.log('SW Registered', reg.scope))
-      .catch(err => console.error('SW Registration failed', err));
-  });
+
+
+
+//  Remove Google Accounts
+function removeAccounts() {
+  if (window.TaraBridge && window.TaraBridge.removeGoogleAccount) {
+    const isSuccess = window.TaraBridge.removeGoogleAccount();
+    if (isSuccess) {
+      window.TaraBridge.showToast("All accouns cleared!");
+    } else {
+      window.TaraBridge.showToast("No account exist");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
 }
+
+//  Clear Standard Media Folders (Downloads, DCIM, Pictures, Videos)
+function clearAllMedia() {
+  if (window.TaraBridge && window.TaraBridge.clearDefaultMediaFolders) {
+    const isSuccess = window.TaraBridge.clearDefaultMediaFolders();
+    if (isSuccess) {
+      window.TaraBridge.showToast("All default media folders cleared!");
+    } else {
+      window.TaraBridge.showToast("Some files could not be deleted.");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
+
+
+//  Clear all app cache
+function clearAllAppCache() {
+  if (window.TaraBridge && window.TaraBridge.clearAllWhitelistedAppsCache) {
+    const isSuccess = window.TaraBridge.clearAllWhitelistedAppsCache();
+    if (isSuccess) {
+      window.TaraBridge.showToast("All package cache cleared!");
+    } else {
+      window.TaraBridge.showToast("No packages exist");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
+
+//  Clear Specific app cache
+//  window.TaraBridge.clearAppCacheByPackage("com.google.android.youtube")
+function clearAppCache(package_name) {
+  if (window.TaraBridge && window.TaraBridge.clearAppCacheByPackage) {
+    const isSuccess = window.TaraBridge.package_name();
+    if (isSuccess) {
+      window.TaraBridge.showToast("Package cache cleared!");
+    } else {
+      window.TaraBridge.showToast("No package exist");
+    }
+  } else {
+    console.warn("TaraBridge interface not available.");
+  }
+}
+
+
+// test to clear the packages
+clearAllAppCache();

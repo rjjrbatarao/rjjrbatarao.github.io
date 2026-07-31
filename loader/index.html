@@ -50,5 +50,14 @@
       </div>
     </div>
     <script src="script.js"></script>
+	<script>
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker.register('/loader/sw.js')
+			.then(reg => console.log('SW Registered', reg.scope))
+			.catch(err => console.error('SW Registration failed', err));
+		});
+	}
+	</script>
   </body>
 </html>
