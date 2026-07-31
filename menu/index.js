@@ -166,20 +166,38 @@ const allApps = () => {
   apps.map((app) => {
     app_map += tara.oString("./templates/app_item.html", {
       app_name: app.appName,
-      app_id: app.packageName,
+      app_id: app.packageName + "_app",
       app_icon: app.icon,
       app_button: (event) => {
         console.log(event.currentTarget.id);
-        openApp(event.currentTarget.id);
+        openApp(event.currentTarget.id.replaceAll("_app", ""));
       }
     });
   });
   return app_map;
 };
 
-tara.oHtml("app", "./templates/app_layout.html", {
-  swiper: () => {
-    var swiper1 = new Swiper(".slider1", {
+
+const marqueueApps = () => {
+  const apps = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+  let app_map = "";
+  apps.map((app) => {
+    app_map += tara.oString("./templates/app_icon.html", {
+      app_icon: app.icon,
+      app_id: app.packageName + "_icon",
+      app_button: (event) => {
+        console.log(event.currentTarget.id);
+        openApp(event.currentTarget.id.replaceAll("_icon", ""));
+      }
+    });
+  });
+  return app_map;
+}
+
+
+tara.oHtml("app_id", "./templates/app_layout.html", {
+  swiper1: () => {
+    var swiper1 = new Swiper(".large-swiper", {
       effect: 'coverflow',
       grabCursor: true,
       slidesPerView: 3,
@@ -201,7 +219,21 @@ tara.oHtml("app", "./templates/app_layout.html", {
   }
 });
 
+tara.oHtml("marqueue_id", "./templates/marqueue_layout.html", {
+  swiper2: () => {
+    var swiper2 = new Swiper('.small-swiper', {
+      slidesPerView: 4,
+      spaceBetween: 10,
+      loop: true,
+      autoplay: {
+        delay: 3000, // Time between transitions in ms (3 seconds)
+        disableOnInteraction: false, // Keeps autoplay running after user swipes
+        pauseOnMouseEnter: true, // Pauses scrolling when hovered
+      },
 
+    });
+  }
+});
 
 tara.oHtml("header", "./templates/header_layout.html", {
   battery_value: window.TaraBridge.getBatteryLevel() + "%",
