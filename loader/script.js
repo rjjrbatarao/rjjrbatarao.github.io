@@ -1,5 +1,25 @@
 
-
+function onLoadEvent(){
+	  if (window.TaraBridge) {
+		// 1. Get tablet info
+		const info = {
+		  osVersion: window.TaraBridge.getOsVersion(),
+		  sdkVersion: window.TaraBridge.getSdkInt(),
+		  deviceModel: window.TaraBridge.getDeviceModel(),
+		  manufacturer: window.TaraBridge.getManufacturer(),
+		  appVersion: window.TaraBridge.getAppVersion(),
+		  batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
+		  isCharging: window.TaraBridge.isCharging(),
+		  wifiIp: window.TaraBridge.getWifiIpAddress(),
+		  ethIp: window.TaraBridge.getEthernetIpAddress(),
+		  deviceSerial: window.TaraBridge.getDeviceSerial(),
+		  displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
+		};
+		console.log("Device System Info:", info);
+		// test to clear the packages
+		clearAllAppCache();
+	}
+}
 
 //  Remove Google Accounts
 function removeAccounts() {
@@ -60,5 +80,3 @@ function clearAppCache(package_name) {
 }
 
 
-// test to clear the packages
-clearAllAppCache();
