@@ -4,7 +4,7 @@
 const tara = new ObraJS();
 
 const ps4_select = new Audio("ps4-select-button.mp3");
-
+const slide_select = new Audio("slide.mp3");
 
 function clickButton() {
   // swiper.autoplay.stop();
@@ -412,6 +412,7 @@ var swiper3 = new Swiper('.xsmall-swiper', {
   on: {
     transitionEnd: function () {
       console.log('ABCD changed to index: ', this.realIndex);
+	  slide_select.play();
     }
   }
 });

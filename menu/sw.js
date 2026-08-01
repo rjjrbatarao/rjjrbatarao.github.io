@@ -1,6 +1,6 @@
 const CACHE_NAME = 'app-assets-v1';
 // Assets to cache immediately
-const PRECACHE_ASSETS = ['/menu', '/menu/index.html', '/menu/style.css', '/menu/index.js', '/menu/obrajs.js', '/menu/sst.ttf', '/menu/templates/app_item.html', '/menu/templates/app_layout.html', '/menu/templates/header_layout.html', '/menu/templates/app_icon.html', '/menu/templates/marqueue_layout.html', '/menu/ps4-select-button.mp3'];
+const PRECACHE_ASSETS = ['/menu', '/menu/index.html', '/menu/style.css', '/menu/index.js', '/menu/obrajs.js', '/menu/sst.ttf', '/menu/templates/app_item.html', '/menu/templates/app_layout.html', '/menu/templates/header_layout.html', '/menu/templates/app_icon.html', '/menu/templates/marqueue_layout.html', '/menu/ps4-select-button.mp3', '/menu/slide.mp3'];
 
 // Install: Cache core files
 self.addEventListener('install', event => {
