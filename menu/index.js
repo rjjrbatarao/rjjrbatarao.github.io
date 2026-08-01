@@ -10,8 +10,6 @@ function clickButton() {
   // swiper.autoplay.stop();
 }
 
-
-
 function triggerToast() {
   // Check if running inside our Android WebView container
   if (window.TaraBridge) {
@@ -118,35 +116,35 @@ function getDeviceInfo() {
     console.log("Device System Info:", info);
 
 
-    tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
-    tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
-    tara.oId("appversion_id").innerHTML = `App Version: ${info.appVersion}`;
+    //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
+    //tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
+    //tara.oId("appversion_id").innerHTML = `App Version: ${info.appVersion}`;
 
 
-    // 1. Get simple list of package strings
-    const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
-    console.log("Whitelisted Packages:", whitelistedPackageNames);
-    // Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
+    // // 1. Get simple list of package strings
+    // const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
+    // console.log("Whitelisted Packages:", whitelistedPackageNames);
+    // // Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
 
-    // 2. Get detailed list with App Names
-    const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
-    console.log("Whitelisted App Details:", whitelistedDetails);
+    // // 2. Get detailed list with App Names
+    // const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+    // console.log("Whitelisted App Details:", whitelistedDetails);
 
-    // 3. Get detailed list with Categorized App Names
-    const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
-    console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
+    // // 3. Get detailed list with Categorized App Names
+    // const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
+    // console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
 
-    // 4. Get detailed list with Online and offline catagory App Names
-    const whitelistedConnectivityDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByConnectivity());
-    console.log("Whitelisted App Connectivity Details:", whitelistedConnectivityDetails);
+    // // 4. Get detailed list with Online and offline catagory App Names
+    // const whitelistedConnectivityDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByConnectivity());
+    // console.log("Whitelisted App Connectivity Details:", whitelistedConnectivityDetails);
 
-    // 4. Get detailed list with Online and offline catagory App Names
-    const runningBackgroundDetails = JSON.parse(window.TaraBridge.getRunningBackgroundApps());
-    console.log("Running Apps in background:", runningBackgroundDetails);
+    // // 4. Get detailed list with Online and offline catagory App Names
+    // const runningBackgroundDetails = JSON.parse(window.TaraBridge.getRunningBackgroundApps());
+    // console.log("Running Apps in background:", runningBackgroundDetails);
 
-    // 5. Get recent apps opened
-    const recentOpenedAppsDetails = JSON.parse(window.TaraBridge.getPreviouslyOpenedApp());
-    console.log("Recent Apps Opened:", recentOpenedAppsDetails);
+    // // 5. Get recent apps opened
+    // const recentOpenedAppsDetails = JSON.parse(window.TaraBridge.getPreviouslyOpenedApp());
+    // console.log("Recent Apps Opened:", recentOpenedAppsDetails);
 
     return info;
   } else {
@@ -159,27 +157,32 @@ function getDeviceInfo() {
 
 getDeviceInfo();
 
+let icon_index = 0;
+let white_listed_apps = window.TaraBridge.getWhitelistedAppsDetails();
+
 
 const allApps = () => {
-  const apps = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+  const apps = JSON.parse(white_listed_apps);
   let app_map = "";
   apps.map((app) => {
     app_map += tara.oString("./templates/app_item.html", {
       app_name: app.appName,
       app_id: app.packageName + "_app",
       app_icon: app.icon,
+      app_icon_id: "icon_id_" + icon_index,
       app_button: (event) => {
         console.log(event.currentTarget.id);
         openApp(event.currentTarget.id.replaceAll("_app", ""));
       }
     });
+    icon_index++;
   });
   return app_map;
 };
 
 
 const marqueueApps = () => {
-  const apps = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
+  const apps = JSON.parse(white_listed_apps);
   let app_map = "";
   apps.map((app) => {
     app_map += tara.oString("./templates/app_icon.html", {
@@ -202,6 +205,7 @@ tara.oHtml("app_id", "./templates/app_layout.html", {
       grabCursor: true,
       slidesPerView: 3,
       spaceBetween: 10,
+      loop: true,
       coverflowEffect: {
         rotate: 50,
         stretch: 0,
@@ -214,7 +218,28 @@ tara.oHtml("app_id", "./templates/app_layout.html", {
         clickable: true,
         dynamicBullets: true,
       },
-      loop: true,
+      on: {
+        transitionEnd: function () {
+          let icon_image = "";
+          if (this.realIndex + 1 != icon_index) {
+            icon_image = tara.oId("icon_id_" + (this.realIndex + 1)).src;
+          } else {
+            icon_image = tara.oId("icon_id_0").src;
+          }
+          console.log('Slide changed to index: ', this.realIndex + 1, icon_index);
+
+          getHexPalette(icon_image).then(color => {
+            console.log("pallete changed: ", color);
+            const pallete = getShades(color[0]);
+            document.documentElement.style.setProperty("--pallete-body", pallete.original);
+            document.documentElement.style.setProperty("--pallete-light", pallete.light);
+            document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
+            document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
+          })
+          ps4_select.play();
+        },
+      },
+
     });
   }
 });
@@ -274,3 +299,119 @@ tara.oHtml("header", "./templates/header_layout.html", {
     }, 1000);
   }
 })
+
+
+function getShades(hex, lightPercent = 95, darkPercent = 5, darkerPercent = 95) {
+  // Clean the hex string
+  const cleanHex = hex.replace('#', '');
+  const num = parseInt(cleanHex, 16);
+
+  // Extract RGB components
+  const r = (num >> 16);
+  const g = ((num >> 8) & 0x00FF);
+  const b = (num & 0x0000FF);
+
+  // Helper to calculate new channel value mixed with white or black
+  function mix(channel, percent, target) {
+    const amount = Math.round(target * (percent / 100));
+    const newVal = channel + (amount - channel) * (percent / 100) + (target === 255 ? (255 - channel) * (percent / 100) : -(channel * (percent / 100)));
+    // Simpler direct blend
+    let res = target === 255 ? Math.round(channel + (255 - channel) * (percent / 100)) : Math.round(channel * (1 - percent / 100));
+    return Math.min(255, Math.max(0, res));
+  }
+
+  // Cleaner adjustment method
+  function adjust(pR, pG, pB, percent, widen) {
+    const f = (x) => {
+      const val = widen ? x + Math.round((x) * percent) : x - Math.round(x * percent);
+      return Math.min(255, Math.max(0, val));
+    };
+    return "#" + ((1 << 24) + (f(pR) << 16) + (f(pG) << 8) + f(pB)).toString(16).slice(1);
+  }
+
+  function adjustOrig(pR, pG, pB, percent, widen) {
+    const f = (x) => {
+      const val = widen ? x + Math.round((127 - x) * percent) : x - Math.round(x * percent);
+      return Math.min(255, Math.max(0, val));
+    };
+    return "#" + ((1 << 24) + (f(pR) << 16) + (f(pG) << 8) + f(pB)).toString(16).slice(1);
+  }
+
+  return {
+    original: adjustOrig(r, g, b, 10 / 100, true),
+    light: adjust(r, g, b, lightPercent / 100, true),
+    dark: adjust(r, g, b, darkPercent / 100, false),
+    darker: adjust(r, g, b, darkerPercent / 100, false)
+  };
+}
+
+
+function getHexPalette(base64Str, colorCount = 1) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      const colorCounts = new Map();
+
+      // Define how far from pure white a color must be (higher = stricter filter)
+      const whiteTolerance = 15;
+
+      for (let i = 0; i < data.length; i += 16) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        // 1. Skip fully transparent pixels
+        if (a < 128) continue;
+
+        // 2. Skip white and shades of white
+        // Checks if all channels are close to 255
+        if (r > (255 - whiteTolerance) && g > (255 - whiteTolerance) && b > (255 - whiteTolerance)) {
+          continue;
+        }
+
+        // Convert RGB to Hex string
+        const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+
+        colorCounts.set(hex, (colorCounts.get(hex) || 0) + 1);
+      }
+
+      const sortedColors = Array.from(colorCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .map(entry => entry[0]);
+
+      resolve(sortedColors.slice(0, colorCount));
+    };
+    img.onerror = reject;
+    img.src = base64Str;
+  });
+}
+
+
+
+var swiper3 = new Swiper('.xsmall-swiper', {
+  effect: 'coverflow',
+  grabCursor: true,
+  centeredSlides: true,
+  spaceBetween: 10,
+  slidesPerView: 10,
+  coverflowEffect: {
+    rotate: 0,
+    stretch: 30,
+    depth: 120,
+    modifier: 1,
+  },
+  loop: true,
+  on: {
+    transitionEnd: function () {
+      console.log('ABCD changed to index: ', this.realIndex);
+    }
+  }
+});
