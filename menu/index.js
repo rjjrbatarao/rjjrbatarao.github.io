@@ -236,6 +236,8 @@ tara.oHtml("app_id", "./templates/app_layout.html", {
             document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
             document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
           })
+          ps4_select.pause();
+          ps4_select.currentTime = 0;
           ps4_select.play();
         },
       },
@@ -412,7 +414,9 @@ var swiper3 = new Swiper('.xsmall-swiper', {
   on: {
     transitionEnd: function () {
       console.log('ABCD changed to index: ', this.realIndex);
-	  slide_select.play();
+      slide_select.pause();
+      slide_select.currentTime = 0;
+      slide_select.play();
     }
   }
 });
