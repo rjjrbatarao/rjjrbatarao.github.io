@@ -3,6 +3,21 @@
   src: url('sst.ttf') format("truetype");
 }
 
+* {
+  /* Disables the default callout popup (iOS/Safari) */
+  -webkit-touch-callout: none; 
+  
+  /* Disables text and element selection magnifying glasses */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none;  /* Konqueror HTML */
+  -moz-user-select: none;     /* Firefox */
+  -ms-user-select: none;      /* Internet Explorer/Edge */
+  user-select: none;          /* Standard */
+  
+  /* Prevents the default touch behaviors like double-tap zoom */
+  touch-action: none;
+}
+
 body {
   margin: 0;
   padding: 0;
