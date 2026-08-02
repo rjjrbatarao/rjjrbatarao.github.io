@@ -4,7 +4,18 @@
 }
 
 * {
-  -webkit-user-select: none;
+  /* Disables the default callout popup (iOS/Safari) */
+  -webkit-touch-callout: none;
+
+  /* Disables text and element selection magnifying glasses */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard */
+
+  /* Prevents the default touch behaviors like double-tap zoom */
+  touch-action: none;
 }
 
 :root {
@@ -48,8 +59,8 @@ textarea {
 }
 
 .img-medium {
-  width: 120px; /* Or a fixed width like 300px */
-  height: 120px; /* Or a fixed height */
+  width: 150px; /* Or a fixed width like 300px */
+  height: 150px; /* Or a fixed height */
   object-fit: cover; /* Keeps aspect ratio by cropping to fill the box */
 }
 
@@ -148,6 +159,14 @@ textarea {
 }
 */
 
+.x-filter {
+  width: 100%;
+  margin: 0;
+  position: absolute;
+  top: 15%;
+  transform: translateY(-50%);
+}
+
 .x-content {
   width: 100%;
   height: 60px;
@@ -202,7 +221,7 @@ textarea {
   display: grid;
 
   place-items: center; /* Centers horizontally and vertically at once */
-  height: 50vh;
+  height: 60vh;
   z-index: 999;
 }
 
@@ -342,6 +361,25 @@ textarea {
   border: none;
   cursor: pointer;
   animation: blink-loop 0.6s infinite alternate;
+}
+
+.filter {
+  position: relative;
+  font-size: 24px;
+}
+
+.filter .btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
 }
 
 @keyframes blink-loop {
