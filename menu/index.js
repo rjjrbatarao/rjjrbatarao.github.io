@@ -159,10 +159,36 @@ getDeviceInfo();
 
 let icon_index = 0;
 let white_listed_apps = window.TaraBridge.getWhitelistedAppsDetails();
+let filtered_apps = JSON.parse(white_listed_apps);
+console.log("all apps:", filtered_apps);
 
+
+const taraFilter = (alphabet) => {
+  icon_index = 0;
+  filtered_apps = filterByStartingLetter(JSON.parse(white_listed_apps), 'appName', alphabet);
+  renderAllApps();
+}
+
+const taraAllApps = () => {
+  icon_index = 0;
+  filtered_apps = JSON.parse(white_listed_apps);
+  renderAllApps();
+}
+
+
+function filterByStartingLetter(arr, propertyKey, letter) {
+  // Guard against empty search letters
+  if (!letter) return arr;
+  const searchLetter = letter.toLowerCase();
+  return arr.filter(item => {
+    // Safely retrieve the property value, convert to string, and handle null/undefined
+    const value = item[propertyKey]?.toString() || '';
+    return value.toLowerCase().startsWith(searchLetter);
+  });
+}
 
 const allApps = () => {
-  const apps = JSON.parse(white_listed_apps);
+  const apps = filtered_apps;
   let app_map = "";
   apps.map((app) => {
     app_map += tara.oString("./templates/app_item.html", {
@@ -198,53 +224,63 @@ const marqueueApps = () => {
 }
 
 
-tara.oHtml("app_id", "./templates/app_layout.html", {
-  swiper1: () => {
-    var swiper1 = new Swiper(".large-swiper", {
-      effect: 'coverflow',
-      grabCursor: true,
-      slidesPerView: 3,
-      spaceBetween: 10,
-      loop: true,
-      coverflowEffect: {
-        rotate: 50,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: true,
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        dynamicBullets: true,
-      },
-      on: {
-        transitionEnd: function () {
-          let icon_image = "";
-          if (this.realIndex + 1 != icon_index) {
-            icon_image = tara.oId("icon_id_" + (this.realIndex + 1)).src;
-          } else {
-            icon_image = tara.oId("icon_id_0").src;
-          }
-          console.log('Slide changed to index: ', this.realIndex + 1, icon_index);
 
-          getHexPalette(icon_image).then(color => {
-            console.log("pallete changed: ", color);
-            const pallete = getShades(color[0]);
-            document.documentElement.style.setProperty("--pallete-body", pallete.original);
-            document.documentElement.style.setProperty("--pallete-light", pallete.light);
-            document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
-            document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
-          })
-          ps4_select.pause();
-          ps4_select.currentTime = 0;
-          ps4_select.play();
+const renderAllApps = () => {
+  let lastIndex2 = null;
+  tara.oHtml("app_id", "./templates/app_layout.html", {
+    swiper1: () => {
+      var swiper1 = new Swiper(".large-swiper", {
+        effect: 'coverflow',
+        grabCursor: true,
+        slidesPerView: 3,
+        spaceBetween: 10,
+        loop: true,
+        coverflowEffect: {
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
         },
-      },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          dynamicBullets: true,
+        },
+        on: {
+          slideChangeTransitionEnd: function () {
 
-    });
-  }
-});
+            if (this.realIndex === lastIndex2) return;
+            lastIndex2 = this.realIndex;
+
+            let icon_image = "";
+            if (this.realIndex + 1 != icon_index) {
+              icon_image = tara.oId("icon_id_" + (this.realIndex + 1)).src;
+            } else {
+              icon_image = tara.oId("icon_id_0").src;
+            }
+            console.log('Slide changed to index: ', this.realIndex + 1, icon_index);
+
+            getHexPalette(icon_image).then(color => {
+              console.log("pallete changed: ", color);
+              const pallete = getShades(color[0]);
+              document.documentElement.style.setProperty("--pallete-body", pallete.original);
+              document.documentElement.style.setProperty("--pallete-light", pallete.light);
+              document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
+              document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
+            })
+            ps4_select.pause();
+            ps4_select.currentTime = 0;
+            ps4_select.play();
+          },
+        },
+
+      });
+    }
+  });
+}
+
+renderAllApps();
 
 tara.oHtml("marqueue_id", "./templates/marqueue_layout.html", {
   swiper2: () => {
@@ -267,7 +303,9 @@ tara.oHtml("header", "./templates/header_layout.html", {
   refresh_rate: window.TaraBridge.getScreenRefreshRate() + "hz",
   time_id: "time_id",
   ping_id: "ping_id",
+  battery_id: "battery_id",
   blestatus_id: "blestatus_id",
+  refresh_id: "refresh_id",
   initialize: () => {
     setInterval(() => {
       const batteryLevel = window.TaraBridge.getBatteryLevel();
@@ -278,8 +316,8 @@ tara.oHtml("header", "./templates/header_layout.html", {
       const bleStatus = window.TaraBridge.isBluetoothConnected() == true ? "UP" : "X";
       tara.oId("blestatus_id").innerHTML = `${bleStatus}`;
 
-      //document.getElementById("battery_id").innerHTML = batteryLevel + "%";
-      //document.getElementById("refresh_id").innerHTML = displayRefreshRate + "hz";
+      tara.oId("battery_id").innerHTML = batteryLevel + "%";
+      tara.oId("refresh_id").innerHTML = displayRefreshRate + "hz";
     }, 2000);
     setInterval(() => {
       const now = new Date();
@@ -397,6 +435,7 @@ function getHexPalette(base64Str, colorCount = 1) {
 }
 
 
+let lastIndex3 = null;
 
 var swiper3 = new Swiper('.xsmall-swiper', {
   effect: 'coverflow',
@@ -406,13 +445,16 @@ var swiper3 = new Swiper('.xsmall-swiper', {
   slidesPerView: 10,
   coverflowEffect: {
     rotate: 0,
-    stretch: 30,
-    depth: 120,
+    stretch: 10,
+    depth: 0,
     modifier: 1,
+    slideShadows: true,
   },
   loop: true,
   on: {
-    transitionEnd: function () {
+    slideChangeTransitionEnd: function () {
+      if (this.realIndex === lastIndex3) return;
+      lastIndex3 = this.realIndex;
       console.log('ABCD changed to index: ', this.realIndex);
       slide_select.pause();
       slide_select.currentTime = 0;
