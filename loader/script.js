@@ -17,7 +17,10 @@ function onLoadEvent(){
 		};
 		console.log("Device System Info:", info);
 		// test to clear the packages
-		clearAllAppCache();
+		setTimeout(() => {
+			clearAllAppCache();
+		},10000);
+		
 	}
 }
 
@@ -26,7 +29,7 @@ function removeAccounts() {
   if (window.TaraBridge && window.TaraBridge.removeGoogleAccount) {
     const isSuccess = window.TaraBridge.removeGoogleAccount();
     if (isSuccess) {
-      window.TaraBridge.showToast("All accouns cleared!");
+      window.TaraBridge.showToast("All accounts cleared!");
     } else {
       window.TaraBridge.showToast("No account exist");
     }
