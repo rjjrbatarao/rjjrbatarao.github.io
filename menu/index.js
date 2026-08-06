@@ -184,6 +184,7 @@ const taraAllApps = () => {
   icon_index = 0;
   filtered_apps = JSON.parse(white_listed_apps);
   renderAllApps();
+
 }
 
 
@@ -288,9 +289,11 @@ const renderAllApps = () => {
         },
 
       });
+      setTimeout(() => {
+        hideLoading();
+      }, 300);
     }
   });
-  hideLoading();
 }
 
 renderAllApps();
