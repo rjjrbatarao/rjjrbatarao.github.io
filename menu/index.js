@@ -5,6 +5,17 @@ const tara = new ObraJS();
 
 const ps4_select = new Audio("ps4-select-button.mp3");
 const slide_select = new Audio("slide.mp3");
+const overlay = document.querySelector('.loading-overlay');
+
+// Function to hide the loading screen
+function hideLoading() {
+  overlay.classList.add('hide');
+}
+
+// Function to show the loading screen again
+function showLoading() {
+  overlay.classList.remove('hide');
+}
 
 function clickButton() {
   // swiper.autoplay.stop();
@@ -227,6 +238,7 @@ const marqueueApps = () => {
 
 const renderAllApps = () => {
   let lastIndex2 = null;
+  showLoading();
   tara.oHtml("app_id", "./templates/app_layout.html", {
     swiper1: () => {
       var swiper1 = new Swiper(".large-swiper", {
@@ -278,6 +290,7 @@ const renderAllApps = () => {
       });
     }
   });
+  hideLoading();
 }
 
 renderAllApps();
