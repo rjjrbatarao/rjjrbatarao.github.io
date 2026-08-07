@@ -14,7 +14,7 @@
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Standard */
 
-  /* Prevents the default touch behaviors like double-tap zoom */
+  /* Prevents the default touch behaviors like double-tap zoom test */
   touch-action: none;
 }
 
