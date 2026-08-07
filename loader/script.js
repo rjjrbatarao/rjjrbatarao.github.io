@@ -1,4 +1,16 @@
 
+
+window.onKioskLockscreenShown = function () {
+  // Called function when webview is shown
+	if(window.TaraBridge.isLockscreen() == true){
+		setTimeout(() => {
+			clearAllAppCache();
+		},10000);
+	} else {
+		window.TaraBridge.showToast("Cancelled Cache Clearing");
+	}
+}
+
 function onLoadEvent(){
 	  if (window.TaraBridge) {
 		// 1. Get tablet info
