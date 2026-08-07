@@ -2,6 +2,7 @@
 
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
+  if (window.TaraBridge) {
 	if(window.TaraBridge.isLockscreen() == true){
 		setTimeout(() => {
 			clearAllAppCache();
@@ -9,6 +10,7 @@ window.onKioskLockscreenShown = function () {
 	} else {
 		window.TaraBridge.showToast("Cancelled Cache Clearing");
 	}
+  }
 }
 
 function onLoadEvent(){
@@ -29,10 +31,6 @@ function onLoadEvent(){
 		};
 		console.log("Device System Info:", info);
 		// test to clear the packages
-		setTimeout(() => {
-			clearAllAppCache();
-		},10000);
-		
 	}
 }
 
