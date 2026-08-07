@@ -7,6 +7,12 @@ const ps4_select = new Audio("ps4-select-button.mp3");
 const slide_select = new Audio("slide.mp3");
 const overlay = document.querySelector('.loading-overlay');
 
+
+window.onKioskMenuShown = function () {
+  // Called function when webview is shown
+
+}
+
 // Function to hide the loading screen
 function hideLoading() {
   overlay.classList.add('hide');
