@@ -279,12 +279,12 @@ const renderAllApps = () => {
           clickable: true,
           dynamicBullets: true,
         },
-        on: {
-          slideChangeTransitionEnd: function () {
-
-            if (this.realIndex === lastIndex2) return;
+      });
+	  
+	  swiper1.on("slideChange", function () {
+		    if (this.realIndex === lastIndex2) return;
             lastIndex2 = this.realIndex;
-
+			
             let icon_image = "";
             if (this.realIndex + 1 != icon_index) {
               icon_image = tara.oId("icon_id_" + (this.realIndex + 1)).src;
@@ -300,14 +300,16 @@ const renderAllApps = () => {
               document.documentElement.style.setProperty("--pallete-light", pallete.light);
               document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
               document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
-            })
-            ps4_select.pause();
-            ps4_select.currentTime = 0;
-            ps4_select.play();
-          },
-        },
-
-      });
+            })		  
+		  
+			  console.log('ABCD changed to index: ', this.realIndex);
+			  if (ps4_select && !ps4_select.paused) {
+				ps4_select.pause();
+				ps4_select.currentTime = 0;
+				ps4_select.play();
+			  }
+	  });
+	  
       setTimeout(() => {
         hideLoading();
         loader.classList.add('hidden');
@@ -487,14 +489,13 @@ var swiper3 = new Swiper('.xsmall-swiper', {
     slideShadows: true,
   },
   loop: true,
-  on: {
-    slideChangeTransitionEnd: function () {
-      if (this.realIndex === lastIndex3) return;
-      lastIndex3 = this.realIndex;
-      console.log('ABCD changed to index: ', this.realIndex);
-      slide_select.pause();
-      slide_select.currentTime = 0;
-      slide_select.play();
-    }
-  }
+});
+
+swiper3.on("slideChange", function () {
+	  console.log('ABCD changed to index: ', this.realIndex);
+	  if (slide_select && !slide_select.paused) {
+		slide_select.pause();
+		slide_select.currentTime = 0;
+		slide_select.play();
+	  }
 });
