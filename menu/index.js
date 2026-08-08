@@ -10,7 +10,15 @@ const overlay = document.querySelector('.loading-overlay');
 
 window.onKioskMenuShown = function () {
   // Called function when webview is shown
+  if (window.TaraBridge) {
+    setTimeout(() => {
+      if (window.TaraBridge.isMenu() == true) {
 
+      } else {
+
+      }
+    }, 100)
+  }
 }
 
 // Function to hide the loading screen
@@ -127,6 +135,9 @@ function getDeviceInfo() {
       wifiIp: window.TaraBridge.getWifiIpAddress(),
       ethIp: window.TaraBridge.getEthernetIpAddress(),
       deviceSerial: window.TaraBridge.getDeviceSerial(),
+      cpuHz: window.TaraBridge.getCpuHz(),
+      ramMb: window.TaraBridge.getRamMb(),
+      cpuTemp: window.TaraBridge.getCpuTemp(),
       displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
       isBleConnected: window.TaraBridge.isBluetoothConnected()
     };
@@ -242,10 +253,12 @@ const marqueueApps = () => {
 }
 
 
+showLoading();
 
 const renderAllApps = () => {
   let lastIndex2 = null;
-  showLoading();
+  const loader = document.getElementById('loader');
+  loader.classList.remove('hidden');
   tara.oHtml("app_id", "./templates/app_layout.html", {
     swiper1: () => {
       var swiper1 = new Swiper(".large-swiper", {
@@ -297,6 +310,7 @@ const renderAllApps = () => {
       });
       setTimeout(() => {
         hideLoading();
+        loader.classList.add('hidden');
       }, 300);
     }
   });
@@ -307,7 +321,7 @@ renderAllApps();
 tara.oHtml("marqueue_id", "./templates/marqueue_layout.html", {
   swiper2: () => {
     var swiper2 = new Swiper('.small-swiper', {
-      slidesPerView: 4,
+      slidesPerView: 5,
       spaceBetween: 10,
       loop: true,
       autoplay: {

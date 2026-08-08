@@ -2,12 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Swiper demo</title>
+	<link rel="icon" href="data:,">
+    <title>PisoTab demo</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
     />
-    <!-- Link Swiper's CSS SS-->
+    <!-- Link Swiper's CSS -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css"
@@ -21,24 +22,23 @@
 
   <body>
 
-<div class="loading-overlay">
-  <div class="glass-card">
-    <div class="spinner"></div>
-    <h2>LOADING GAME MENU...</h2>
-    <p>Preparing assets, please wait.</p>
-  </div>
-</div>
-
-    <!-- Swiper JS -->
-<div class="wave">
-  <div class="wave--one"></div>
-  <div class="wave--two"></div>
-  <div class="wave--three"></div>
-</div>  
-    <div id="header"></div>
-    <div  class="x-hero">
+    <div class="loading-overlay">
+      <div class="glass-card">
+        <div class="spinner"></div>
+        <h2>LOADING GAME MENU...</h2>
+        <p>Preparing assets, please wait.</p>
+      </div>
     </div>
-    <div class="x-filter">
+
+      <!-- Swiper  -->
+    <div class="wave">
+      <div class="wave--one"></div>
+      <div class="wave--two"></div>
+      <div class="wave--three"></div>
+    </div>  
+    <div id="header"></div>
+   <div id="loader" class="shimmer-line"></div>
+    <div  class="x-filter">
       <div class="swiper xsmall-swiper">
         <div class="swiper-wrapper"> 
           <div class="swiper-slide filter">A-Z<button class="btn" onclick="taraAllApps()"></button></div>
@@ -70,7 +70,9 @@
           <div class="swiper-slide filter">Z<button class="btn" onclick="taraFilter('Z')"></button></div>
         </div>
       </div>
+
     </div>
+
     <div id="app_id" class="x-center"></div>
     <div id="marqueue_id"></div>
 
