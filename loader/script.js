@@ -1,16 +1,16 @@
 
 
 window.onKioskLockscreenShown = function () {
-  // Called function when webview is shown
-  if (window.TaraBridge) {
-	if(window.TaraBridge.isLockscreen() == true){
-		setTimeout(() => {
-			clearAllAppCache();
-		},10000);
-	} else {
-		window.TaraBridge.showToast("Cancelled Cache Clearing");
-	}
-  }
+        // Called function when webview is shown
+	    if (window.TaraBridge) {
+				setTimeout(() => {
+					if(window.TaraBridge.isLockscreen() == true){
+						clearAllAppCache();
+					} else {
+						window.TaraBridge.showToast("Resuming Session");
+					}
+				},10000);
+		}
 }
 
 function onLoadEvent(){
@@ -24,6 +24,8 @@ function onLoadEvent(){
 		  appVersion: window.TaraBridge.getAppVersion(),
 		  batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
 		  isCharging: window.TaraBridge.isCharging(),
+		  isMenu: window.TaraBridge.isMenu(),
+		  isLockscreen: window.TaraBridge.isLockscreen(),
 		  wifiIp: window.TaraBridge.getWifiIpAddress(),
 		  ethIp: window.TaraBridge.getEthernetIpAddress(),
 		  deviceSerial: window.TaraBridge.getDeviceSerial(),

@@ -19,12 +19,19 @@
 }
 
 body {
+  user-select: none !important;
+  overflow-x: hidden !important;
   margin: 0;
   padding: 0;
   background: #008189;
   font-size: 17px;
   font-family: 'ps4', sans-serif;
   color: #FFFFFF;
+}
+
+input,
+textarea {
+  -webkit-user-select: initial;
 }
 
 #wrapper {
