@@ -41,10 +41,11 @@ function onLoadEvent(){
 function removeAccounts() {
   if (window.TaraBridge && window.TaraBridge.removeGoogleAccount) {
     const isSuccess = window.TaraBridge.removeGoogleAccount();
+	// has issue showing no accounts exist
     if (isSuccess) {
       window.TaraBridge.showToast("All accounts cleared!");
     } else {
-      window.TaraBridge.showToast("No account exist");
+      //window.TaraBridge.showToast("No account exist");
     }
   } else {
     console.warn("TaraBridge interface not available.");
