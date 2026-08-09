@@ -6,6 +6,7 @@ window.onKioskLockscreenShown = function () {
 				setTimeout(() => {
 					if(window.TaraBridge.isLockscreen() == true){
 						clearAllAppCache();
+						removeAccounts();
 					} else {
 						window.TaraBridge.showToast("Resuming Session");
 					}
