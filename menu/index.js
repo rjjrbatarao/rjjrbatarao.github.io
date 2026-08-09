@@ -13,7 +13,8 @@ window.onKioskMenuShown = function () {
   if (window.TaraBridge) {
     setTimeout(() => {
       if (window.TaraBridge.isMenu() == true) {
-
+        console.log("test esp32 data:", window.TaraBridge.getEspData());
+        window.TaraBridge.showToast(window.TaraBridge.getEspData());
       } else {
 
       }
@@ -120,6 +121,11 @@ function getNetworkLatency() {
   }
 }
 
+//9. set App performance
+function setGameMode(appName, gameMode) {
+  window.TaraBridge.setGameMode(appName, gameMode);
+}
+
 function getDeviceInfo() {
 
   if (window.TaraBridge) {
@@ -142,7 +148,7 @@ function getDeviceInfo() {
       isBleConnected: window.TaraBridge.isBluetoothConnected()
     };
     console.log("Device System Info:", info);
-
+    window.TaraBridge.setKeepScreenAwake(true);
 
     //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
     //tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
@@ -222,13 +228,24 @@ const allApps = () => {
   apps.map((app) => {
     app_map += tara.oString("./templates/app_item.html", {
       app_name: app.appName,
-      app_id: app.packageName + "_app",
+      app_performance_id: app.packageName + "_app_performance",
+      app_battery_id: app.packageName + "_app_battery",
       app_icon: app.icon,
+      app_category: "Category: " + app.category,
       app_icon_id: "icon_id_" + icon_index,
-      app_button: (event) => {
-        console.log(event.currentTarget.id);
-        openApp(event.currentTarget.id.replaceAll("_app", ""));
-      }
+      app_is_system: app.isSystemApp == true ? "System App" : "User Apps",
+      app_is_online: app.isOnline == true ? "Online: ✅" : "Online: ❌",
+      app_is_offline: app.isOffline == true ? "Offline: ✅" : "Offline: ❌",
+      app_button_performance: (event) => {
+        //console.log(event.currentTarget.id);
+        setGameMode(event.currentTarget.id.replaceAll("_app_performance", ""), "performance");
+        openApp(event.currentTarget.id.replaceAll("_app_performance", ""));
+      },
+      app_button_battery: (event) => {
+        //console.log(event.currentTarget.id);
+        setGameMode(event.currentTarget.id.replaceAll("_app_battery", ""), "battery");
+        openApp(event.currentTarget.id.replaceAll("_app_battery", ""));
+      },
     });
     icon_index++;
   });
@@ -255,6 +272,16 @@ const marqueueApps = () => {
 
 showLoading();
 
+const triggerSlideAnimation = (activeSlide) => {
+  if (!activeSlide) return;
+  const animatedElements = activeSlide.querySelectorAll('[data-anim]');
+  animatedElements.forEach((el) => {
+    el.style.animation = 'none';
+    el.offsetHeight; /* trigger reflow */
+    el.style.animation = '';
+  });
+}
+
 const renderAllApps = () => {
   let lastIndex2 = null;
   const loader = document.getElementById('loader');
@@ -262,6 +289,8 @@ const renderAllApps = () => {
   tara.oHtml("app_id", "./templates/app_layout.html", {
     swiper1: () => {
       var swiper1 = new Swiper(".large-swiper", {
+        centeredSlides: true,
+        initialSlide: 1,
         effect: 'coverflow',
         grabCursor: true,
         slidesPerView: 3,
@@ -279,37 +308,46 @@ const renderAllApps = () => {
           clickable: true,
           dynamicBullets: true,
         },
-      });
-	  
-	  swiper1.on("slideChange", function () {
-		    if (this.realIndex === lastIndex2) return;
+        on: {
+          init: function () {
+            // Trigger animation on load for the initial active slide (Index 1)
+            triggerSlideAnimation(this.slides[this.activeIndex]);
+          },
+          slideChange: function () {
+            if (this.realIndex === lastIndex2) return;
             lastIndex2 = this.realIndex;
-			
-            let icon_image = "";
-            if (this.realIndex + 1 != icon_index) {
-              icon_image = tara.oId("icon_id_" + (this.realIndex + 1)).src;
-            } else {
-              icon_image = tara.oId("icon_id_0").src;
-            }
-            console.log('Slide changed to index: ', this.realIndex + 1, icon_index);
 
-            getHexPalette(icon_image).then(color => {
-              console.log("pallete changed: ", color);
-              const pallete = getShades(color[0]);
-              document.documentElement.style.setProperty("--pallete-body", pallete.original);
-              document.documentElement.style.setProperty("--pallete-light", pallete.light);
-              document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
-              document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
-            })		  
-		  
-			  console.log('ABCD changed to index: ', this.realIndex);
-			  if (ps4_select && !ps4_select.paused) {
-				ps4_select.pause();
-				ps4_select.currentTime = 0;
-				ps4_select.play();
-			  }
-	  });
-	  
+            let icon_image = "";
+            console.log('Slide changed to index: ', this.realIndex, icon_index);
+            try {
+              icon_image = tara.oId("icon_id_" + this.realIndex).src;
+              getHexPalette(icon_image).then(color => {
+                console.log("pallete changed: ", color);
+                const pallete = getShades(color[0]);
+                document.documentElement.style.setProperty("--pallete-body", pallete.original);
+                document.documentElement.style.setProperty("--pallete-light", pallete.light);
+                document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
+                document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
+              })
+              if (ps4_select && !ps4_select.paused) {
+                ps4_select.pause();
+                ps4_select.currentTime = 0;
+                ps4_select.play();
+              }
+            } catch (error) {
+              console.log("Error", error);
+              window.TaraBridge.showToast("No Apps Installed");
+            }
+          },
+          // Reset and trigger animation on slide transition
+          slideChangeTransitionStart: function () {
+            // Re-trigger animation on slide change
+            triggerSlideAnimation(this.slides[this.activeIndex]);
+          }
+        }
+      });
+
+
       setTimeout(() => {
         hideLoading();
         loader.classList.add('hidden');
@@ -344,18 +382,19 @@ tara.oHtml("header", "./templates/header_layout.html", {
   battery_id: "battery_id",
   blestatus_id: "blestatus_id",
   refresh_id: "refresh_id",
+  temp_id: "temp_id",
   initialize: () => {
     setInterval(() => {
       const batteryLevel = window.TaraBridge.getBatteryLevel();
       const displayRefreshRate = window.TaraBridge.getScreenRefreshRate();
       const pingMs = window.TaraBridge.getNetworkLatency("8.8.8.8");
-      tara.oId("ping_id").innerHTML = pingMs + "ms"
-
       const bleStatus = window.TaraBridge.isBluetoothConnected() == true ? "UP" : "X";
+      const temperatureStatus = window.TaraBridge.getCpuTemp();
+      tara.oId("ping_id").innerHTML = pingMs + "ms";
       tara.oId("blestatus_id").innerHTML = `${bleStatus}`;
-
       tara.oId("battery_id").innerHTML = batteryLevel + "%";
       tara.oId("refresh_id").innerHTML = displayRefreshRate + "hz";
+      tara.oId("temp_id").innerHTML = ~~temperatureStatus + "°C";
     }, 2000);
     setInterval(() => {
       const now = new Date();
@@ -489,13 +528,15 @@ var swiper3 = new Swiper('.xsmall-swiper', {
     slideShadows: true,
   },
   loop: true,
+  on: {
+    slideChange: function () {
+      console.log('ABCD changed to index: ', this.realIndex);
+      if (slide_select && !slide_select.paused) {
+        slide_select.pause();
+        slide_select.currentTime = 0;
+        slide_select.play();
+      }
+    }
+  }
 });
 
-swiper3.on("slideChange", function () {
-	  console.log('ABCD changed to index: ', this.realIndex);
-	  if (slide_select && !slide_select.paused) {
-		slide_select.pause();
-		slide_select.currentTime = 0;
-		slide_select.play();
-	  }
-});

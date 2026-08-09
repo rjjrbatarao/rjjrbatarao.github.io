@@ -59,8 +59,8 @@ textarea {
 }
 
 .img-medium {
-  width: 150px; /* Or a fixed width like 300px */
-  height: 150px; /* Or a fixed height */
+  width: 120px; /* Or a fixed width like 300px */
+  height: 120px; /* Or a fixed height */
   object-fit: cover; /* Keeps aspect ratio by cropping to fill the box */
 }
 
@@ -85,8 +85,8 @@ textarea {
 }
 
 .large-swiper {
-  width: 100%;
-  height: 270px;
+  width: 95%;
+  height: 350px;
   margin: 20px 0;
   padding: 50px;
 }
@@ -195,7 +195,7 @@ textarea {
   padding-bottom: 5px;
   padding-left: 10px;
   border-radius: 10px;
-  width: 350px;
+  width: 300px;
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -204,7 +204,7 @@ textarea {
 }
 
 .x-font-smaller {
-  font-size: smaller;
+  font-size: x-small;
 }
 
 .x-time {
@@ -219,7 +219,6 @@ textarea {
 
 .x-center {
   display: grid;
-
   place-items: center; /* Centers horizontally and vertically at once */
   height: 60vh;
   z-index: 999;
@@ -445,14 +444,20 @@ textarea {
 .line-loader {
   width: 100%;
   height: 4px;
-  background: linear-gradient(#2563eb 0 0) left/0% 100% no-repeat #e2e8f0;
+  background: linear-gradient(var(--pallete-body) 0 0) left/0% 100% no-repeat
+    #e2e8f0;
   animation: load 2s infinite ease-in-out;
 }
 
 .shimmer-line {
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, #e2e8f0 25%, #2563eb 50%, #e2e8f0 75%);
+  background: linear-gradient(
+    90deg,
+    #e2e8f0 25%,
+    var(--pallete-body) 50%,
+    #e2e8f0 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
@@ -485,5 +490,126 @@ textarea {
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+.button-column {
+  display: flex; /* Activates Flexbox layout */
+  flex-direction: row; /* Stacks items vertically */
+  gap: 12px; /* Sets exact spacing between the buttons */
+  width: max-content; /* Keeps column only as wide as the buttons */
+}
+
+/* Base Slide Styles */
+
+.menu-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
+.anim-tag {
+  color: #ffffff;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+}
+
+.anim-title {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+
+.anim-desc {
+  font-family: sans-serif;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.anim-btn {
+  background: #ffffff;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  clip-path: polygon(
+    10px 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%,
+    0 10px
+  );
+}
+
+.anim-btn::before {
+  content: "";
+  position: absolute;
+  inset: 2px; /* Set border thickness here (e.g., 2px) */
+  background: var(--pallete-dark);
+  z-index: -1;
+  clip-path: polygon(
+    8px 0,
+    /* 10px minus 2px inset */ 100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+}
+
+/* =========================================
+   ENTRANCE ANIMATION LOGIC
+   ========================================= */
+
+/* Default / Inactive State (Hidden & Offset) */
+[data-anim] {
+  opacity: 0;
+  transform: translateX(-60px) skewX(-10deg) scale(0.95);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* Active State (Triggered when Swiper slide becomes active) */
+.swiper-slide-active [data-anim] {
+  animation: gameMenuEnter 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    forwards;
+}
+
+/* Staggered Delays for Game Menu Feel */
+.swiper-slide-active .anim-tag {
+  animation-delay: 0.05s;
+}
+.swiper-slide-active .anim-title {
+  animation-delay: 0.15s;
+}
+.swiper-slide-active .anim-desc {
+  animation-delay: 0.25s;
+}
+.swiper-slide-active .anim-btn {
+  animation-delay: 0.35s;
+}
+
+/* Entrance Keyframes with Punchy Snap */
+@keyframes gameMenuEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(-80px) skewX(-15deg) scale(0.9);
+    filter: blur(4px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(10px) skewX(2deg) scale(1.02);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg) scale(1);
   }
 }
