@@ -215,15 +215,17 @@ console.log("all apps:", filtered_apps);
 
 const taraFilter = (alphabet) => {
   icon_index = 0;
-  filter_character = alphabet;
+
   filtered_apps = filterByStartingLetter(JSON.parse(white_listed_apps), 'appName', alphabet);
+  filter_character = alphabet + ":" + filtered_apps.length;
   renderAllApps();
 }
 
 const taraAllApps = () => {
   icon_index = 0;
-  filter_character = "A-Z";
+
   filtered_apps = JSON.parse(white_listed_apps);
+  filter_character = "A-Z:" + filtered_apps.length;
   renderAllApps();
 
 }
