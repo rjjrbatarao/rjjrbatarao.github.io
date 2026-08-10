@@ -209,7 +209,7 @@ getDeviceInfo();
 let icon_index = 0;
 let white_listed_apps = window.TaraBridge.getWhitelistedAppsDetails();
 let filtered_apps = JSON.parse(white_listed_apps);
-let filter_character = "A-Z";
+let filter_character = "A-Z : " + filtered_apps.length;
 console.log("all apps:", filtered_apps);
 
 
@@ -217,7 +217,7 @@ const taraFilter = (alphabet) => {
   icon_index = 0;
 
   filtered_apps = filterByStartingLetter(JSON.parse(white_listed_apps), 'appName', alphabet);
-  filter_character = alphabet + ":" + filtered_apps.length;
+  filter_character = alphabet + " : " + filtered_apps.length;
   renderAllApps();
 }
 
@@ -225,7 +225,7 @@ const taraAllApps = () => {
   icon_index = 0;
 
   filtered_apps = JSON.parse(white_listed_apps);
-  filter_character = "A-Z:" + filtered_apps.length;
+  filter_character = "A-Z : " + filtered_apps.length;
   renderAllApps();
 
 }
