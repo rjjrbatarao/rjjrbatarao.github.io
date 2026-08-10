@@ -57,8 +57,8 @@ textarea {
 }
 
 .img-medium {
-  width: 120px; /* Or a fixed width like 300px */
-  height: 120px; /* Or a fixed height */
+  width: 100px; /* Or a fixed width like 300px */
+  height: 100px; /* Or a fixed height */
   object-fit: cover; /* Keeps aspect ratio by cropping to fill the box */
 }
 
@@ -84,14 +84,9 @@ textarea {
 
 .large-swiper {
   width: 100%;
-  height: 350px;
+  height: 300px;
   margin: 0px 0;
   padding: 50px;
-}
-
-.swiper {
-  align-items: center;
-  justify-content: center;
 }
 
 .swiper-pagination {
@@ -196,6 +191,14 @@ textarea {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.x-mini-card {
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  padding: 0.3em;
+  justify-content: center;
+}
+
 .x-font-small {
   font-size: small;
 }
@@ -218,11 +221,26 @@ textarea {
   display: grid;
   place-items: center; /* Centers horizontally and vertically at once */
   height: 60vh;
-  z-index: 999;
 }
 
 .x-center-items {
   justify-content: center;
+}
+
+.x-center-flex {
+  position: absolute;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 20px; /* Requires a height to see vertical centering */
+}
+
+.x-left-flex {
+  top: 0px;
+  font-size: 20px;
+  margin-left: 3em;
+  position: absolute;
+  height: 20px; /* Requires a height to see vertical centering */
 }
 
 .x-flex {
@@ -516,18 +534,18 @@ textarea {
 }
 
 .anim-title {
-  font-size: 2rem;
-  margin: 0.5rem 0;
+  font-size: 1.5rem;
+  margin: 0.1rem 0;
 }
 
 .anim-desc {
   font-family: sans-serif;
   color: #ffffff;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .anim-btn {
-  background: #ffffff;
+  background: var(--pallete-dark);
   color: #ffffff;
   border: none;
   padding: 0.8rem 2rem;
@@ -543,23 +561,23 @@ textarea {
     0 10px
   );
 }
-
+/*
 .anim-btn::before {
   content: "";
   position: absolute;
-  inset: 2px; /* Set border thickness here (e.g., 2px) */
+  inset: 2px; 
   background: var(--pallete-dark);
   z-index: -1;
   clip-path: polygon(
     8px 0,
-    /* 10px minus 2px inset */ 100% 0,
+     100% 0,
     100% calc(100% - 8px),
     calc(100% - 8px) 100%,
     0 100%,
     0 8px
   );
 }
-
+*/
 /* =========================================
    ENTRANCE ANIMATION LOGIC
    ========================================= */
@@ -624,9 +642,23 @@ textarea {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
+  border-radius: 5px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+}
+
+.unbuttonize {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  appearance: none; /* Removes native OS platform styling */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  box-shadow: none;
 }
 
 .dock-item {
@@ -653,4 +685,299 @@ textarea {
 .dock-item:hover + .dock-item,
 .dock-item:has(+ .dock-item:hover) {
   transform: scale(1.2);
+}
+
+/* The Modal Container */
+.glass-modal {
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  border-radius: 5px;
+  color: #ffffff;
+
+  /* 1. Semi-transparent background */
+  background: rgba(255, 255, 255, 0.07);
+
+  /* 2. Frosted glass blur filter */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
+
+  /* 3. Subtle outer border to simulate glass refraction */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* 4. Drop shadow to separate the card from background layers */
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* The Backdrop Overlay (dim and blur everything behind the modal) */
+.glass-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Optional: Smooth fade-in animation */
+.glass-modal[open] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative; /* Acts as the coordinate anchor for the absolute button */
+  padding-top: 1rem; /* Gives breathing room below the top edge */
+}
+
+/* Absolute Positioning for the X Button */
+.close-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  position: absolute;
+  top: -1.5rem; /* Shifts button toward top padding area */
+  right: -1.5rem; /* Shifts button toward right padding area */
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem; /* Generates a prominent, crisp X symbol */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover and Focus States for accessibility and micro-interactions */
+.close-btn:hover,
+.close-btn:focus {
+  color: #ffffff;
+  transform: scale(1.15);
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Layout Positioning inside Modal */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Minimalist Inline Icons */
+.slider-icon {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.slider-value {
+  font-family: sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Base Slider Track styling resetting standard layout browser defaults */
+.glass-slider {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.glass-slider:focus {
+  outline: none;
+}
+
+.glass-slider:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Slider Thumb Knob styling for Chrome, Safari, Edge, and Opera */
+.glass-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.1s ease,
+    background-color 0.1s ease;
+}
+
+.glass-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  background: #ffffff;
+}
+
+/* Slider Thumb Knob styling for Firefox */
+.glass-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.1s ease,
+    background-color 0.1s ease;
+  cursor: pointer;
+}
+
+.glass-slider::-moz-range-thumb:hover {
+  transform: scale(1.25);
+  background: #ffffff;
+}
+
+/* 1. The button now acts as the relative container */
+.badge-button {
+  position: relative;
+  display: inline-flex;
+}
+
+/* 2. Position the span inside the top-right of the button */
+.badge-number {
+  position: absolute;
+  top: -6px; /* Pushes it slightly past the top edge */
+  right: -6px; /* Pushes it slightly past the right edge */
+  background-color: #ff3b30;
+  color: #ffffff;
+  font-size: 15px;
+  font-family: sans-serif;
+  font-weight: bold;
+
+  /* Flex centering ensures text stays perfectly in the middle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Circular structure */
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px; /* Gives extra horizontal breathing room for double digits */
+  border-radius: 10px;
+}
+
+/* Container spacing */
+.app-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+/* Individual list item container */
+.app-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Row Hover effect */
+.app-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* App Icon style */
+.app-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Middle Text Column layout */
+.app-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Pushes the close button to the far right */
+  min-width: 0; /* Prevents text overflow breaks */
+}
+
+.app-title {
+  font-family: sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.app-desc {
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Gracefully shortens long sentences */
+}
+
+/* Inline Right Hand Close Button */
+.item-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 6px;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+/* Micro-interaction updates */
+.item-close-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-close-btn:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
 }

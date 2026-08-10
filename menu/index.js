@@ -14,7 +14,8 @@ window.onKioskMenuShown = function () {
     setTimeout(() => {
       if (window.TaraBridge.isMenu() == true) {
         console.log("test esp32 data:", window.TaraBridge.getEspData());
-        window.TaraBridge.showToast(window.TaraBridge.getEspData());
+        //window.TaraBridge.showToast(window.TaraBridge.getEspData());
+        console.log(JSON.parse(window.TaraBridge.getPreviouslyOpenedApp()));
       } else {
 
       }
@@ -150,6 +151,20 @@ function getDeviceInfo() {
     console.log("Device System Info:", info);
     window.TaraBridge.setKeepScreenAwake(true);
 
+    tara.oHtml("info_id", "./templates/app_info.html", {
+      app_version: window.TaraBridge.getAppVersion(),
+      device_model: window.TaraBridge.getDeviceModel(),
+      device_serial: window.TaraBridge.getDeviceSerial(),
+      device_manufacturer: window.TaraBridge.getManufacturer(),
+      os_version: window.TaraBridge.getOsVersion(),
+      sdk_version: window.TaraBridge.getSdkInt(),
+      cpu_brand: window.TaraBridge.getCpuBrand(),
+      cpu_cores: window.TaraBridge.getCpuCount(),
+      cpu_model: window.TaraBridge.getCpuModel(),
+      ip_address: window.TaraBridge.getWifiIpAddress(),
+    })
+
+
     //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
     //tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
     //tara.oId("appversion_id").innerHTML = `App Version: ${info.appVersion}`;
@@ -194,17 +209,20 @@ getDeviceInfo();
 let icon_index = 0;
 let white_listed_apps = window.TaraBridge.getWhitelistedAppsDetails();
 let filtered_apps = JSON.parse(white_listed_apps);
+let filter_character = "A-Z";
 console.log("all apps:", filtered_apps);
 
 
 const taraFilter = (alphabet) => {
   icon_index = 0;
+  filter_character = alphabet;
   filtered_apps = filterByStartingLetter(JSON.parse(white_listed_apps), 'appName', alphabet);
   renderAllApps();
 }
 
 const taraAllApps = () => {
   icon_index = 0;
+  filter_character = "A-Z";
   filtered_apps = JSON.parse(white_listed_apps);
   renderAllApps();
 
@@ -234,8 +252,8 @@ const allApps = () => {
       app_category: "Category: " + app.category,
       app_icon_id: "icon_id_" + icon_index,
       app_is_system: app.isSystemApp == true ? "System App" : "User Apps",
-      app_is_online: app.isOnline == true ? "Online: ✅" : "Online: ❌",
-      app_is_offline: app.isOffline == true ? "Offline: ✅" : "Offline: ❌",
+      app_is_online: "",//app.isOnline == true ? "Online: ✅" : "Online: ❌",
+      app_is_offline: "", //app.isOffline == true ? "Offline: ✅" : "Offline: ❌",
       app_button_performance: (event) => {
         //console.log(event.currentTarget.id);
         setGameMode(event.currentTarget.id.replaceAll("_app_performance", ""), "performance");
@@ -252,6 +270,48 @@ const allApps = () => {
   return app_map;
 };
 
+const recentApps = () => {
+  const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+  let app_map = "";
+  apps.map((app) => {
+    app_map += tara.oString("./templates/app_recents_item.html", {
+      app_title: app.appName,
+      app_icon: app.icon,
+      app_id: app.packageName + "_icon_recents",
+      app_category: app.category,
+      app_button: (event) => {
+        console.log(event.currentTarget.id.replaceAll("_icon_recents", ""));
+        window.TaraBridge.stopBackgroundApp(event.currentTarget.id.replaceAll("_icon_recents", ""));
+        window.TaraBridge.clearAppCacheByPackage(event.currentTarget.id.replaceAll("_icon_recents", ""));
+        renderRecentApps();
+      }
+    });
+  });
+  return app_map;
+}
+
+const renderRecentApps = () => {
+  tara.oHtml("recent_apps", "./templates/app_recents_layout.html", {
+    init: () => {
+      setInterval(() => {
+        let recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
+        if (recentAppCount) {
+          tara.oId("recent_app_count").innerHTML = recentAppCount;
+          tara.oId("recent_app_count").style.display = "block";
+        } else {
+          tara.oId("recent_app_count").style.display = "none";
+        }
+      }, 5000);
+    }
+  });
+}
+
+renderRecentApps();
+
+const openRecentAppModal = () => {
+  renderRecentApps();
+  document.getElementById('recentModal').showModal()
+}
 
 const marqueueApps = () => {
   const apps = JSON.parse(white_listed_apps);
@@ -287,6 +347,7 @@ const renderAllApps = () => {
   const loader = document.getElementById('loader');
   loader.classList.remove('hidden');
   tara.oHtml("app_id", "./templates/app_layout.html", {
+    filter_text: filter_character,
     swiper1: () => {
       var swiper1 = new Swiper(".large-swiper", {
         centeredSlides: true,
@@ -329,7 +390,7 @@ const renderAllApps = () => {
                 document.documentElement.style.setProperty("--pallete-dark", pallete.dark);
                 document.documentElement.style.setProperty("--pallete-darker", pallete.darker);
               })
-              if (ps4_select && !ps4_select.paused) {
+              if (ps4_select) {
                 ps4_select.pause();
                 ps4_select.currentTime = 0;
                 ps4_select.play();
@@ -531,7 +592,7 @@ var swiper3 = new Swiper('.xsmall-swiper', {
   on: {
     slideChange: function () {
       console.log('ABCD changed to index: ', this.realIndex);
-      if (slide_select && !slide_select.paused) {
+      if (slide_select) {
         slide_select.pause();
         slide_select.currentTime = 0;
         slide_select.play();
@@ -540,3 +601,59 @@ var swiper3 = new Swiper('.xsmall-swiper', {
   }
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Reference elements
+  const brightnessInput = document.getElementById("brightnessSlider");
+  const brightnessText = document.getElementById("brightnessValue");
+
+  const audioInput = document.getElementById("audioSlider");
+  const audioText = document.getElementById("audioValue");
+
+  // 2. Define custom logic callbacks
+  function onBrightnessChange(value) {
+    // UI Update
+    brightnessText.textContent = `${value}%`;
+
+    window.TaraBridge.setScreenBrightness(parseInt(value, 10));
+    // Custom logic placeholder (e.g., updating a CSS filter or saving settings)
+    console.log(`System Brightness updated to: ${value}%`);
+    if (slide_select) {
+      slide_select.pause();
+      slide_select.currentTime = 0;
+      slide_select.play();
+    }
+  }
+
+  function onAudioChange(value) {
+    // UI Update
+    audioText.textContent = `${value}%`;
+    window.TaraBridge.setAudioLevel(parseInt(value, 10));
+    // Custom logic placeholder (e.g., mapping to a media player audio gain node)
+    console.log(`System Audio volume updated to: ${value}%`);
+    if (slide_select) {
+      slide_select.pause();
+      slide_select.currentTime = 0;
+      slide_select.play();
+    }
+  }
+
+
+  // 3. Inject initial values programmatically 
+  // (This overrides any 'value="..."' attribute hardcoded in your HTML)
+  brightnessInput.value = window.TaraBridge.getScreenBrightness();
+  audioInput.value = window.TaraBridge.getAudioLevel();
+
+  // 4. Fire callbacks immediately on mount to sync text readouts
+  onBrightnessChange(brightnessInput.value);
+  onAudioChange(audioInput.value);
+
+  // 3. Attach real-time event listeners ('input' registers instant drag states)
+  brightnessInput.addEventListener("input", (event) => {
+    onBrightnessChange(event.target.value);
+  });
+
+  audioInput.addEventListener("input", (event) => {
+    onAudioChange(event.target.value);
+  });
+});
