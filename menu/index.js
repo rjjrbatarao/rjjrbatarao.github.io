@@ -16,6 +16,8 @@ window.onKioskMenuShown = function () {
         console.log("test esp32 data:", window.TaraBridge.getEspData());
         //window.TaraBridge.showToast(window.TaraBridge.getEspData());
         console.log(JSON.parse(window.TaraBridge.getPreviouslyOpenedApp()));
+        window.TaraBridge.setGameDoNotDisturb(false);
+        window.TaraBridge.playNotificationSound("notification");
       } else {
 
       }
@@ -148,7 +150,7 @@ function getDeviceInfo() {
       displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
       isBleConnected: window.TaraBridge.isBluetoothConnected()
     };
-    console.log("Device System Info:", info);
+    //console.log("Device System Info:", info);
     window.TaraBridge.setKeepScreenAwake(true);
 
     tara.oHtml("info_id", "./templates/app_info.html", {
@@ -210,7 +212,7 @@ let icon_index = 0;
 let white_listed_apps = window.TaraBridge.getWhitelistedAppsDetails();
 let filtered_apps = JSON.parse(white_listed_apps);
 let filter_character = "A-Z : " + filtered_apps.length;
-console.log("all apps:", filtered_apps);
+//console.log("all apps:", filtered_apps);
 
 
 const taraFilter = (alphabet) => {
