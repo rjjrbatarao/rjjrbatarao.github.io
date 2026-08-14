@@ -18,6 +18,7 @@ window.onKioskMenuShown = function () {
         console.log(JSON.parse(window.TaraBridge.getPreviouslyOpenedApp()));
         window.TaraBridge.setGameDoNotDisturb(false);
         window.TaraBridge.playNotificationSound("notification");
+
       } else {
 
       }
@@ -150,8 +151,7 @@ function getDeviceInfo() {
       displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
       isBleConnected: window.TaraBridge.isBluetoothConnected()
     };
-    //console.log("Device System Info:", info);
-    window.TaraBridge.setKeepScreenAwake(true);
+
 
     tara.oHtml("info_id", "./templates/app_info.html", {
       app_version: window.TaraBridge.getAppVersion(),
@@ -165,6 +165,9 @@ function getDeviceInfo() {
       cpu_model: window.TaraBridge.getCpuModel(),
       ip_address: window.TaraBridge.getWifiIpAddress(),
     })
+
+    //console.log("Device System Info:", info);
+    window.TaraBridge.setKeepScreenAwake(true);
 
 
     //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
@@ -260,13 +263,17 @@ const allApps = () => {
       app_is_offline: "", //app.isOffline == true ? "Offline: ✅" : "Offline: ❌",
       app_button_performance: (event) => {
         //console.log(event.currentTarget.id);
+        let appName = event.currentTarget.dataset.name;
+        console.log("app name", appName);
         setGameMode(event.currentTarget.id.replaceAll("_app_performance", ""), "performance");
-        openApp(event.currentTarget.id.replaceAll("_app_performance", ""));
+        renderTurboModal(event.currentTarget.id.replaceAll("_app_performance", ""), appName);
       },
       app_button_battery: (event) => {
         //console.log(event.currentTarget.id);
+        let appName = event.currentTarget.dataset.name;
+        console.log("app name", appName);
         setGameMode(event.currentTarget.id.replaceAll("_app_battery", ""), "battery");
-        openApp(event.currentTarget.id.replaceAll("_app_battery", ""));
+        renderBatteryModal(event.currentTarget.id.replaceAll("_app_battery", ""), appName);
       },
     });
     icon_index++;
@@ -281,13 +288,18 @@ const recentApps = () => {
     app_map += tara.oString("./templates/app_recents_item.html", {
       app_title: app.appName,
       app_icon: app.icon,
-      app_id: app.packageName + "_icon_recents",
+      app_clear_id: app.packageName + "_icon_clear_recents",
+      app_play_id: app.packageName + "_icon_play_recents",
       app_category: app.category,
-      app_button: (event) => {
-        console.log(event.currentTarget.id.replaceAll("_icon_recents", ""));
-        window.TaraBridge.stopBackgroundApp(event.currentTarget.id.replaceAll("_icon_recents", ""));
-        window.TaraBridge.clearAppCacheByPackage(event.currentTarget.id.replaceAll("_icon_recents", ""));
+      app_clear_button: (event) => {
+        console.log(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
+        window.TaraBridge.stopRunningBackgroundApp(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
+        window.TaraBridge.clearAppCacheByPackage(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
         renderRecentApps();
+      },
+      app_play_button: (event) => {
+        console.log(event.currentTarget.id.replaceAll("_icon_play_recents", ""));
+        openApp(event.currentTarget.id.replaceAll("_icon_play_recents", ""));
       }
     });
   });
@@ -295,10 +307,26 @@ const recentApps = () => {
 }
 
 const renderRecentApps = () => {
+
   tara.oHtml("recent_apps", "./templates/app_recents_layout.html", {
+    recent_button_clear_all: "recent_button_clear_all",
+    clear_all_button: (event) => {
+      let recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
+      window.TaraBridge.showToast("Stopping " + recentAppCount + " background apps");
+      const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+      let app_map = "";
+      apps.map((app) => {
+        window.TaraBridge.stopRunningBackgroundApp(app.packageName);
+      })
+      window.TaraBridge.clearAllAppCache();
+      setTimeout(() => {
+        renderRecentApps();
+        window.TaraBridge.playNotificationSound("notification");
+      }, 2000);
+    },
     init: () => {
       setInterval(() => {
-        let recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
+        recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
         if (recentAppCount) {
           tara.oId("recent_app_count").innerHTML = recentAppCount;
           tara.oId("recent_app_count").style.display = "block";
@@ -310,10 +338,50 @@ const renderRecentApps = () => {
   });
 }
 
+const renderTurboModal = (appPackage, appName) => {
+  let info = "App running " + appName + " in Turbo Mode"
+  tara.oHtml("turbo_mode_id", "./templates/modal_turbo.html", {
+    turbo_info: info,
+    init: () => {
+      document.getElementById('turboModal').showModal();
+    }
+  })
+  window.TaraBridge.clearAllAppCache();
+  const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+  let app_map = "";
+  apps.map((app) => {
+    window.TaraBridge.stopRunningBackgroundApp(app.packageName);
+  })
+  setTimeout(() => {
+    openApp(appPackage);
+  }, 2000)
+}
+
+const renderBatteryModal = (appPackage, appName) => {
+  let info = "App running " + appName + " in Battery Mode"
+  tara.oHtml("battery_mode_id", "./templates/modal_battery.html", {
+    battery_info: info,
+    init: () => {
+      document.getElementById('batteryModal').showModal();
+    }
+  })
+
+  setTimeout(() => {
+    openApp(appPackage);
+  }, 2000)
+}
+
+
 renderRecentApps();
 
 const openRecentAppModal = () => {
   renderRecentApps();
+  let recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
+  if (recentAppCount) {
+    tara.oId("recent_button_clear_all").style.display = "block";
+  } else {
+    tara.oId("recent_button_clear_all").style.display = "none";
+  }
   document.getElementById('recentModal').showModal()
 }
 

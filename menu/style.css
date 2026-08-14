@@ -904,7 +904,7 @@ textarea {
 .app-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.75rem;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
@@ -980,4 +980,53 @@ textarea {
 .item-close-btn:focus {
   outline: none;
   background-color: rgba(255, 255, 255, 0.15);
+}
+
+.item-play-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  margin-right: 1.5rem;
+  border-radius: 6px;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+/* Micro-interaction updates */
+.item-play-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-play-btn:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-minimal-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-minimal-outline:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-clear {
+  margin-top: 2rem;
+  position: relative;
 }
