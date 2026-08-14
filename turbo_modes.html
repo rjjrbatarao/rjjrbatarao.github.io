@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turbo Mode / Battery Mode</title>
+<style>
+/* ============ RESET ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:system-ui,"Segoe UI",Arial,sans-serif;
+  overflow:hidden;background:#06120c;color:#fff;
+}
+
+/* ============ BACKGROUND WRAPPER ============ */
+.bg{position:fixed;inset:0;z-index:0}
+.layer{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;overflow:hidden}
+body.mode-turbo   .turbo  {opacity:1}
+body.mode-battery .battery{opacity:1}
+
+/* ==========================================================
+   TURBO MODE — flashy yellow
+   ========================================================== */
+.turbo{
+  background:linear-gradient(120deg,#ff8a00,#ffd500,#fff700,#ffb300,#ff6a00);
+  background-size:400% 400%;
+  animation:turboShift 3s ease-in-out infinite;
+}
+@keyframes turboShift{
+  0%,100%{background-position:0% 50%}
+  50%    {background-position:100% 50%}
+}
+
+/* pulsing hot core */
+.turbo-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 60%,
+    rgba(255,255,255,.9) 0%,
+    rgba(255,238,0,.45) 25%,
+    transparent 60%);
+  animation:turboPulse .9s ease-in-out infinite;
+}
+@keyframes turboPulse{
+  0%,100%{transform:scale(1);   opacity:.55}
+  50%    {transform:scale(1.25);opacity:.95}
+}
+
+/* diagonal speed lines (seamless: translate = exactly 1 pattern period) */
+.streaks{
+  position:absolute;inset:-30%;
+  background:repeating-linear-gradient(115deg,
+    transparent 0 40px,
+    rgba(255,255,255,.45) 40px 46px,
+    transparent 46px 90px);
+  mix-blend-mode:overlay;
+  animation:streakMove .5s linear infinite;
+  will-change:transform;
+}
+.streaks.slow{
+  background:repeating-linear-gradient(115deg,
+    transparent 0 90px,
+    rgba(255,80,0,.35) 90px 104px,
+    transparent 104px 190px);
+  animation-duration:1.4s;opacity:.8;
+}
+@keyframes streakMove{ to{transform:translate(81.6px,38px)} }
+
+/* strobe flash */
+.flash{
+  position:absolute;inset:0;background:#fffbe0;opacity:0;
+  animation:turboFlash 2.4s steps(1,end) infinite;
+}
+@keyframes turboFlash{
+  0%,68%,100%{opacity:0}
+  70%{opacity:.85} 72%{opacity:0}
+  76%{opacity:.5}  78%{opacity:0}
+  88%{opacity:.35} 90%{opacity:0}
+}
+
+/* JS sparks */
+.sparks{position:absolute;inset:0}
+.spark{
+  position:absolute;top:100%;width:3px;height:60px;border-radius:3px;
+  background:linear-gradient(to top,transparent,#fff,#fff6a0);
+  box-shadow:0 0 12px #fff700;
+  animation:sparkUp linear forwards;
+}
+@keyframes sparkUp{
+  0%  {transform:translateY(0) scaleY(.4);opacity:0}
+  15% {opacity:1}
+  100%{transform:translateY(-115vh) scaleY(1.6);opacity:0}
+}
+
+/* ==========================================================
+   BATTERY MODE — calm green + bubbles
+   ========================================================== */
+.battery{
+  background:linear-gradient(180deg,#0b3a24 0%,#16794a 55%,#2fd07a 100%);
+}
+.battery-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 85%,
+    rgba(120,255,180,.55) 0%,
+    rgba(20,120,70,.25) 40%,
+    transparent 70%);
+  animation:breathe 6s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{transform:scale(1);   opacity:.7}
+  50%    {transform:scale(1.15);opacity:1}
+}
+
+.bubbles{position:absolute;inset:0}
+
+/* outer div = vertical rise */
+.bubble{position:absolute;bottom:-140px;animation:rise linear forwards}
+@keyframes rise{
+  0%  {transform:translateY(0);opacity:0}
+  10% {opacity:1}
+  90% {opacity:.9}
+  100%{transform:translateY(-115vh);opacity:0}
+}
+
+/* inner div = look + horizontal sway */
+.bubble-skin{
+  width:100%;height:100%;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,
+    rgba(255,255,255,.95) 0 8%,
+    rgba(190,255,220,.35) 25%,
+    rgba(80,220,150,.12) 60%,
+    rgba(255,255,255,.05) 100%);
+  border:1px solid rgba(220,255,235,.45);
+  box-shadow:0 0 14px rgba(140,255,200,.35),
+             inset 0 0 12px rgba(255,255,255,.25);
+  animation:sway ease-in-out infinite alternate;
+}
+@keyframes sway{
+  from{transform:translateX(-18px)}
+  to  {transform:translateX(18px)}
+}
+
+/* ============ UI ============ */
+.ui{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:18px;text-align:center;padding:20px;
+}
+h1{
+  font-size:clamp(28px,7vw,64px);letter-spacing:4px;
+  text-shadow:0 4px 20px rgba(0,0,0,.5);transition:color .4s,text-shadow .4s;
+}
+.ui p{opacity:.85;letter-spacing:1px}
+.ui small{opacity:.65}
+kbd{background:rgba(0,0,0,.35);padding:2px 6px;border-radius:4px}
+body.mode-turbo h1{color:#2b1a00;text-shadow:0 0 22px #fff}
+body.mode-turbo .ui p,body.mode-turbo .ui small{color:#3a2400}
+
+.switch{
+  position:relative;width:230px;height:62px;border:0;border-radius:999px;
+  cursor:pointer;background:rgba(0,0,0,.4);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.3),0 10px 30px rgba(0,0,0,.35);
+  overflow:hidden;
+}
+.knob{
+  position:absolute;top:6px;left:6px;width:50px;height:50px;border-radius:50%;
+  background:#38e58c;box-shadow:0 0 20px #38e58c;
+  transition:left .35s cubic-bezier(.68,-.4,.3,1.4),background .35s,box-shadow .35s;
+}
+body.mode-turbo .knob{left:174px;background:#ffe600;box-shadow:0 0 26px #ffe600}
+.label{
+  position:absolute;top:0;height:100%;display:flex;align-items:center;
+  font-weight:700;letter-spacing:2px;font-size:14px;color:#fff;transition:opacity .3s;
+}
+.label.off{right:24px}
+.label.on {left:24px;color:#2b1a00;opacity:0}
+body.mode-turbo .label.off{opacity:0}
+body.mode-turbo .label.on {opacity:1}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body class="mode-battery">
+
+  <div class="bg">
+    <!-- TURBO LAYER -->
+    <div class="layer turbo">
+      <div class="turbo-glow"></div>
+      <div class="streaks"></div>
+      <div class="streaks slow"></div>
+      <div class="flash"></div>
+      <div class="sparks" id="sparks"></div>
+    </div>
+
+    <!-- BATTERY LAYER -->
+    <div class="layer battery">
+      <div class="battery-glow"></div>
+      <div class="bubbles" id="bubbles"></div>
+    </div>
+  </div>
+
+  <main class="ui">
+    <h1 id="title">BATTERY MODE</h1>
+    <p id="subtitle">Low power · calm &amp; efficient</p>
+
+    <button id="toggle" class="switch" aria-pressed="false" aria-label="Toggle mode">
+      <span class="knob"></span>
+      <span class="label off">BATTERY</span>
+      <span class="label on">TURBO</span>
+    </button>
+
+    <small>Click the switch or press <kbd>Space</kbd></small>
+  </main>
+
+<script>
+const body     = document.body;
+const btn      = document.getElementById('toggle');
+const title    = document.getElementById('title');
+const subtitle = document.getElementById('subtitle');
+const bubbles  = document.getElementById('bubbles');
+const sparks   = document.getElementById('sparks');
+
+let mode  = 'battery';
+let timer = null;
+
+const rand = (min, max) => Math.random() * (max - min) + min;
+
+/* ---------- BATTERY: bubbles ---------- */
+function spawnBubble(preFill = false){
+  const size = rand(12, 70);
+  const dur  = rand(7, 16);
+
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  b.style.left   = rand(-2, 98) + '%';
+  b.style.width  = size + 'px';
+  b.style.height = size + 'px';
+  b.style.animationDuration = dur + 's';
+  // start pre-filled bubbles mid-flight so the screen isn't empty
+  if (preFill) b.style.animationDelay = -rand(0, dur) + 's';
+
+  const skin = document.createElement('div');
+  skin.className = 'bubble-skin';
+  skin.style.animationDuration = rand(2, 5) + 's';
+  b.appendChild(skin);
+
+  bubbles.appendChild(b);
+  b.addEventListener('animationend', () => b.remove());
+}
+
+/* ---------- TURBO: sparks ---------- */
+function spawnSpark(){
+  const s = document.createElement('div');
+  s.className = 'spark';
+  s.style.left   = rand(0, 100) + '%';
+  s.style.height = rand(40, 130) + 'px';
+  s.style.animationDuration = rand(0.5, 1.1) + 's';
+  sparks.appendChild(s);
+  s.addEventListener('animationend', () => s.remove());
+}
+
+/* ---------- mode control ---------- */
+function setMode(next){
+  mode = next;
+  clearInterval(timer);
+
+  body.classList.toggle('mode-turbo',   mode === 'turbo');
+  body.classList.toggle('mode-battery', mode === 'battery');
+  btn.setAttribute('aria-pressed', mode === 'turbo');
+
+  if (mode === 'turbo'){
+    title.textContent    = 'TURBO MODE';
+    subtitle.textContent = 'Max power · full throttle';
+    bubbles.innerHTML = '';
+    timer = setInterval(spawnSpark, 90);
+  } else {
+    title.textContent    = 'BATTERY MODE';
+    subtitle.textContent = 'Low power · calm & efficient';
+    sparks.innerHTML = '';
+    for (let i = 0; i < 12; i++) spawnBubble(true);
+    timer = setInterval(spawnBubble, 450);
+  }
+}
+
+btn.addEventListener('click', () => setMode(mode === 'turbo' ? 'battery' : 'turbo'));
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space'){ e.preventDefault(); btn.click(); }
+});
+
+/* pause spawning when the tab is hidden (saves CPU/battery) */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) clearInterval(timer);
+  else setMode(mode);
+});
+
+setMode('battery');
+</script>
+</body>
+</html>
