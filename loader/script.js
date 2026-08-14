@@ -69,8 +69,8 @@ function clearAllMedia() {
 
 //  Clear all app cache
 function clearAllAppCache() {
-  if (window.TaraBridge && window.TaraBridge.clearAllWhitelistedAppsCache) {
-    const isSuccess = window.TaraBridge.clearAllWhitelistedAppsCache();
+  if (window.TaraBridge && window.TaraBridge.clearAllAppCache) {
+    const isSuccess = window.TaraBridge.clearAllAppCache();
     if (isSuccess) {
       window.TaraBridge.showToast("All package cache cleared!");
     } else {
