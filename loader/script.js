@@ -7,6 +7,8 @@ window.onKioskLockscreenShown = function () {
 					if(window.TaraBridge.isLockscreen() == true){
 						clearAllAppCache();
 						removeAccounts();
+						window.TaraBridge.prepareRAMForGaming();
+						window.TaraBridge.stopAllRunningBackgroundApp(); // investigate this if this causes the crashing of the menu
 					} else {
 						window.TaraBridge.showToast("Resuming Session");
 					}
