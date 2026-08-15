@@ -1,0 +1,23 @@
+<div class="app-item">
+  <img src="${app_icon}" alt="App Icon" class="app-icon" />
+  <div class="app-details">
+    <span class="app-title">${app_title}</span>
+    <span class="app-desc">${app_category}</span>
+  </div>
+  <button
+    class="item-play-btn"
+    aria-label="Start App"
+    id="${app_play_id}"
+    onclick="${app_play_button}"
+  >
+    &#9658;
+  </button>
+  <button
+    class="item-close-btn"
+    aria-label="Dismiss notification"
+    id="${app_clear_id}"
+    onclick="${app_clear_button}"
+  >
+    &times;
+  </button>
+</div>

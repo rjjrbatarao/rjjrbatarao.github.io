@@ -1,0 +1,31 @@
+<div class="swiper-slide container">
+  <div class="menu-card">
+    <img id="${app_icon_id}" class="img-medium" src="${app_icon}" />
+    <span class="anim-tag" data-anim>${app_is_system}</span>
+    <h2 class="anim-title" data-anim>${app_name}</h2>
+    <p class="anim-desc" data-anim>
+      ${app_category} <br />
+      ${app_is_online} ${app_is_offline}<br />
+    </p>
+    <div class="button-column">
+      <button
+        class="anim-btn"
+        onClick="${app_button_performance}"
+        id="${app_performance_id}"
+        data-name="${app_name}"
+        data-anim
+      >
+        START ⚡
+      </button>
+      <button
+        class="anim-btn"
+        onClick="${app_button_battery}"
+        id="${app_battery_id}"
+        data-name="${app_name}"
+        data-anim
+      >
+        START 🔋
+      </button>
+    </div>
+  </div>
+</div>
