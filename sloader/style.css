@@ -1,0 +1,234 @@
+@font-face {
+  font-family: "ps4";
+  src: url("sst.ttf") format("truetype");
+}
+
+* {
+  /* Disables the default callout popup (iOS/Safari) */
+  -webkit-touch-callout: none;
+
+  /* Disables text and element selection magnifying glasses */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard */
+
+  /* Prevents the default touch behaviors like double-tap zoom */
+  touch-action: none;
+}
+
+body {
+  user-select: none !important;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+  background: #008189;
+  font-size: 17px;
+  font-family: "ps4", sans-serif;
+  color: #ffffff;
+}
+
+input,
+textarea {
+  -webkit-user-select: initial;
+}
+
+#wrapper {
+  position: absolute;
+  width: calc(48px * 2);
+  margin: 50vh 50%;
+  transform: translate(-50%, -50%);
+}
+
+#wrapper div {
+  width: 48px;
+  height: 48px;
+  float: left;
+  text-align: center;
+  line-height: 4.5;
+}
+
+svg {
+  width: 70%;
+}
+
+#triangle svg {
+  animation: rotateAnimation 3s ease-in-out infinite;
+}
+
+#square svg {
+  animation: rotateAnimation 3s 1s ease-in-out infinite;
+}
+
+#circle svg {
+  animation: rotateAnimation 3s 0.5s ease-in-out infinite;
+}
+
+#cross svg {
+  animation: rotateAnimation 3s 2s ease-in-out infinite;
+}
+
+@keyframes rotateAnimation {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  50% {
+    transform: rotate(120deg) scale(0);
+  }
+  70% {
+    transform: rotate(-120deg) scale(0);
+  }
+  100% {
+    transform: rotate(0) scale(1);
+  }
+}
+
+.horizontal-dock {
+  position: fixed;
+  bottom: 12px; /* Anchors to the bottom instead of left */
+  left: 50%; /* Centers horizontally */
+  transform: translateX(-50%); /* Offsets width to achieve precise centering */
+  display: flex;
+  flex-direction: row; /* Lay out items horizontally */
+  gap: 12px;
+  z-index: 1000;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+}
+.horizontal-dock span {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px; /* Slightly higher radius looks cleaner horizontally */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+}
+
+.horizontal-dock button {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px; /* Slightly higher radius looks cleaner horizontally */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+}
+
+/* The Modal Container */
+.glass-modal {
+  top: 30vh;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  border-radius: 5px;
+  color: #ffffff;
+
+  /* 1. Semi-transparent background */
+  background: rgba(255, 255, 255, 0.07);
+
+  /* 2. Frosted glass blur filter */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
+
+  /* 3. Subtle outer border to simulate glass refraction */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* 4. Drop shadow to separate the card from background layers */
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* The Backdrop Overlay (dim and blur everything behind the modal) */
+.glass-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Optional: Smooth fade-in animation */
+.glass-modal[open] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative; /* Acts as the coordinate anchor for the absolute button */
+  padding-top: 1rem; /* Gives breathing room below the top edge */
+}
+
+/* Absolute Positioning for the X Button */
+.close-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  position: absolute;
+  top: -1.5rem; /* Shifts button toward top padding area */
+  right: -1.5rem; /* Shifts button toward right padding area */
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem; /* Generates a prominent, crisp X symbol */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover and Focus States for accessibility and micro-interactions */
+.close-btn:hover,
+.close-btn:focus {
+  color: #ffffff;
+  transform: scale(1.15);
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.btn-minimal-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-minimal-outline:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-button-start {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.center-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+}
+
+.time-large {
+  font-size: 45px;
+}
+
+.time-larger {
+  font-size: 55px;
+}
