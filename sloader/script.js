@@ -95,7 +95,7 @@ function onLoadEvent() {
       },
       button_start_time_event: (event) => {
         if (totalTime > 0) {
-          window.TaraBridge.startBackgroundTimer(totalTime, true); // setting this to true calls lockscreen natively
+          window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
           window.TaraBridge.pauseBackgroundTimer();
           window.TaraBridge.moveToMenuWebview();
           tara.oId('coinModal').close();
