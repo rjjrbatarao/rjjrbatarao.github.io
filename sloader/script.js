@@ -21,6 +21,33 @@ let totalCoin = 0;
 let totalTime = 0;
 let coinTimer = null;
 
+
+// Main Conversion Logic
+function convertTime(totalSeconds) {
+  const hoursDisplay = document.getElementById('hours');
+  const minutesDisplay = document.getElementById('minutes');
+  const secondsDisplay = document.getElementById('seconds');
+
+  // Validation: check if empty or negative
+  if (isNaN(totalSeconds) || totalSeconds < 0) {
+    hoursDisplay.textContent = "00";
+    minutesDisplay.textContent = "00";
+    secondsDisplay.textContent = "00";
+    return;
+  }
+
+  // Calculations
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  // Format to 2 digits (e.g., '05' instead of '5')
+  hoursDisplay.textContent = String(hours).padStart(2, '0');
+  minutesDisplay.textContent = String(minutes).padStart(2, '0');
+  secondsDisplay.textContent = String(seconds).padStart(2, '0');
+}
+
+
 const coinFunc = () => {
   coinTimer = setTimeout(() => {
     const user_coin = parseInt(window.TaraBridge.getEspData());
@@ -29,8 +56,9 @@ const coinFunc = () => {
       totalCoin += user_coin;
       totalTime = totalCoin * 60 * 1;
       window.TaraBridge.setEspData("0000"); // set back to zero if read successful
-      tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
-      tara.oId("coins_id").innerHTML = totalCoin;
+      //tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
+      convertTime(totalTime);
+      tara.oId("coins_id").innerHTML = "₱" + totalCoin;
       tara.oId("button_start_id").style.display = "block";
     }
     coinFunc();
@@ -72,8 +100,9 @@ function onLoadEvent() {
           tara.oId('coinModal').close();
           totalCoin = 0;
           totalTime = 0;
-          tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
-          tara.oId("coins_id").innerHTML = totalCoin;
+          //tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
+          convertTime(totalTime);
+          tara.oId("coins_id").innerHTML = "₱" + totalCoin;
           tara.oId("button_start_id").style.display = "none";
         }
       }
@@ -153,17 +182,5 @@ function clearAppCache(package_name) {
 }
 
 
-function formatSeconds(totalSeconds) {
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  // Pads single digits with a leading zero
-  const hh = String(hours).padStart(2, '0');
-  const mm = String(minutes).padStart(2, '0');
-  const ss = String(seconds).padStart(2, '0');
-
-  return `${hh}:${mm}:${ss}`;
-}
 
 
