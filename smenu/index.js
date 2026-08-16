@@ -21,8 +21,9 @@ window.onKioskMenuShown = function () {
         console.log(JSON.parse(window.TaraBridge.getPreviouslyOpenedApp()));
         window.TaraBridge.setGameDoNotDisturb(false);
         window.TaraBridge.playNotificationSound("notification");
-        renderUserTime();
         window.TaraBridge.resumeBackgroundTimer();
+        renderUserTime();
+
       } else {
 
       }
@@ -385,8 +386,8 @@ const renderUserTime = () => {
   tara.oHtml("user_time_id", "./templates/user_time.html", {
     timer_id: "timer_id",
     timer_value: "00:00:00",
+    button_insert_id: "button_insert_id",
     init: () => {
-
       let user_interval = setInterval(() => {
         let rawUserSecondsTime = window.TaraBridge.getTimerRemainingSeconds();
         console.log("remaining time", rawUserSecondsTime)
@@ -408,6 +409,15 @@ const renderUserTime = () => {
           clearInterval(user_interval);
         }
       }, 1000);
+    },
+    button_insert_show_event: (event) => {
+      console.log(event.currentTarget.id);
+      if (coinTimer != null) {
+        clearTimeout(coinTimer);
+      }
+      coinFunc();
+      tara.oId('coinModal').show();
+      window.TaraBridge.sendBleCommand("DATA:ON");
     }
   });
 }
@@ -459,7 +469,6 @@ const renderAllApps = () => {
   let lastIndex2 = null;
   const loader = tara.oId('loader');
   loader.classList.remove('hidden');
-  window.TaraBridge.pauseBackgroundTimer();
   tara.oHtml("app_id", "./templates/app_layout.html", {
     filter_text: filter_character,
     swiper1: () => {
@@ -529,7 +538,6 @@ const renderAllApps = () => {
 
       setTimeout(() => {
         hideLoading();
-        window.TaraBridge.resumeBackgroundTimer();
         loader.classList.add('hidden');
       }, 300);
     }
@@ -594,6 +602,77 @@ tara.oHtml("header", "./templates/header_layout.html", {
       const formattedDateTime = `${year}-${month}-${day} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
       tara.oId("time_id").innerHTML = formattedDateTime;
     }, 1000);
+  }
+})
+
+function convertTime(totalSeconds) {
+  const hoursDisplay = document.getElementById('hours');
+  const minutesDisplay = document.getElementById('minutes');
+  const secondsDisplay = document.getElementById('seconds');
+
+  // Validation: check if empty or negative
+  if (isNaN(totalSeconds) || totalSeconds < 0) {
+    hoursDisplay.textContent = "00";
+    minutesDisplay.textContent = "00";
+    secondsDisplay.textContent = "00";
+    return;
+  }
+
+  // Calculations
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  // Format to 2 digits (e.g., '05' instead of '5')
+  hoursDisplay.textContent = String(hours).padStart(2, '0');
+  minutesDisplay.textContent = String(minutes).padStart(2, '0');
+  secondsDisplay.textContent = String(seconds).padStart(2, '0');
+}
+
+const coinFunc = () => {
+  coinTimer = setTimeout(() => {
+    const user_coin = parseInt(window.TaraBridge.getEspData());
+    console.log("data, total:", user_coin, totalCoin);
+    if (user_coin > 0) {
+      totalCoin += user_coin;
+      totalTime = totalCoin * 60 * 1;
+      window.TaraBridge.setEspData("0000"); // set back to zero if read successful
+      //tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
+      convertTime(totalTime);
+      tara.oId("coins_id").innerHTML = "₱" + totalCoin;
+      tara.oId("button_start_id").style.display = "block";
+    }
+    coinFunc();
+  }, 1000);
+}
+
+let totalCoin = 0;
+let totalTime = 0;
+let coinTimer = null;
+
+tara.oHtml("coinModal", "./templates/coin_modal.html", {
+  button_start_id: "button_start_id",
+  button_insert_close_event: (event) => {
+    if (coinTimer != null) {
+      clearTimeout(coinTimer);
+    }
+    tara.oId('coinModal').close();
+    window.TaraBridge.sendBleCommand("DATA:OFF");
+  },
+  button_start_time_event: (event) => {
+    if (totalTime > 0) {
+      totalTime = totalTime + window.TaraBridge.getTimerRemainingSeconds();
+      window.TaraBridge.sendBleCommand("DATA:OFF");
+      window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
+      window.TaraBridge.moveToMenuWebview();
+      tara.oId('coinModal').close();
+      totalCoin = 0;
+      totalTime = 0;
+      //tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
+      convertTime(totalTime);
+      tara.oId("coins_id").innerHTML = "₱" + totalCoin;
+      tara.oId("button_start_id").style.display = "none";
+    }
   }
 })
 

@@ -17,6 +17,7 @@ const ASSETS_TO_CACHE = [
     '/smenu/templates/marqueue_layout.html',
     '/smenu/templates/modal_battery.html',
     '/smenu/templates/modal_turbo.html',
+	'/smenu/templates/coin_modal.html',
     '/smenu/templates/user_time.html',
     '/smenu/ps4-select-button.mp3',
     '/smenu/slide.mp3',

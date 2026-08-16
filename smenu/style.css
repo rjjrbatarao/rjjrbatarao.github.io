@@ -655,7 +655,7 @@ textarea {
   flex-direction: row; /* Lay out items horizontally */
   gap: 12px;
   padding: 8px; /* Swapped padding for horizontal proportion */
-  z-index: 1000;
+  z-index: 100;
   justify-content: center; /* Centers horizontally */
   align-items: center; /* Centers vertically */
 }
@@ -1009,6 +1009,119 @@ textarea {
     background-color 0.2s;
 }
 
+/* The Modal Container */
+.glass-modal {
+  top: 30vh;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  border-radius: 5px;
+  color: #ffffff;
+  z-index: 9999;
+  /* 1. Semi-transparent background */
+  background: rgba(255, 255, 255, 0.07);
+
+  /* 2. Frosted glass blur filter */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
+
+  /* 3. Subtle outer border to simulate glass refraction */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* 4. Drop shadow to separate the card from background layers */
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* The Backdrop Overlay (dim and blur everything behind the modal) */
+.glass-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Optional: Smooth fade-in animation */
+.glass-modal[open] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative; /* Acts as the coordinate anchor for the absolute button */
+  padding-top: 1rem; /* Gives breathing room below the top edge */
+}
+
+/* Absolute Positioning for the X Button */
+.close-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  position: absolute;
+  top: -1.5rem; /* Shifts button toward top padding area */
+  right: -1.5rem; /* Shifts button toward right padding area */
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem; /* Generates a prominent, crisp X symbol */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover and Focus States for accessibility and micro-interactions */
+.close-btn:hover,
+.close-btn:focus {
+  color: #ffffff;
+  transform: scale(1.15);
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.btn-minimal-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-minimal-outline:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-button-start {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.center-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+}
+
+.time-larger {
+  font-size: 55px;
+}
+
 /* Micro-interaction updates */
 .item-play-btn:hover {
   color: #ffffff;
@@ -1042,4 +1155,59 @@ textarea {
 .app-clear {
   margin-top: 2rem;
   position: relative;
+}
+
+/* Time Display (Bounding Boxes) */
+.time-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.time-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-box {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+.time-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.colon {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 24px; /* Align with center of boxes */
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
