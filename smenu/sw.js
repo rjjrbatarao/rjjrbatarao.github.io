@@ -1,6 +1,26 @@
 const CACHE_NAME = 'app-assets-v1';
 // Assets to cache immediately
-const ASSETS_TO_CACHE = ['/menu', '/menu/index.html', '/menu/style.css', '/menu/index.js', '/menu/obrajs.js', '/menu/sst.ttf', '/menu/templates/app_item.html', '/menu/templates/app_layout.html', '/menu/templates/header_layout.html', '/menu/templates/app_icon.html', '/menu/templates/marqueue_layout.html', '/menu/templates/modal_turbo.html', '/menu/templates/modal_battery.html', '/menu/ps4-select-button.mp3', '/menu/slide.mp3', '/menu/beep.mp3'];
+const ASSETS_TO_CACHE = [
+    '/smenu',
+    '/smenu/index.html',
+    '/smenu/style.css',
+    '/smenu/index.js',
+    '/smenu/obrajs.js',
+    '/smenu/sst.ttf',
+    '/smenu/templates/app_icon.html',
+    '/smenu/templates/app_info.html',
+    '/smenu/templates/app_item.html',
+    '/smenu/templates/app_layout.html',
+    '/smenu/templates/app_recents_item.html',
+    '/smenu/templates/app_recents_layout.html',
+    '/smenu/templates/header_layout.html',
+    '/smenu/templates/marqueue_layout.html',
+    '/smenu/templates/modal_battery.html',
+    '/smenu/templates/modal_turbo.html',
+    '/smenu/templates/user_time.html',
+    '/smenu/ps4-select-button.mp3',
+    '/smenu/slide.mp3',
+    '/smenu/beep.mp3'];
 
 // 1. Install & Cache
 self.addEventListener('install', (event) => {
