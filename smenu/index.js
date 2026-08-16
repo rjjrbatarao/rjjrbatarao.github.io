@@ -664,7 +664,6 @@ tara.oHtml("coinModal", "./templates/coin_modal.html", {
       totalTime = totalTime + window.TaraBridge.getTimerRemainingSeconds();
       window.TaraBridge.sendBleCommand("DATA:OFF");
       window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
-      window.TaraBridge.moveToMenuWebview();
       tara.oId('coinModal').close();
       totalCoin = 0;
       totalTime = 0;
