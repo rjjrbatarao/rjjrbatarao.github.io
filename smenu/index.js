@@ -13,6 +13,7 @@ const overlay = document.querySelector('.loading-overlay');
 window.onKioskMenuShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
+    window.TaraBridge.pauseBackgroundTimer();
     setTimeout(() => {
       if (window.TaraBridge.isMenu() == true) {
         console.log("test esp32 data:", window.TaraBridge.getEspData());
@@ -21,10 +22,11 @@ window.onKioskMenuShown = function () {
         window.TaraBridge.setGameDoNotDisturb(false);
         window.TaraBridge.playNotificationSound("notification");
         renderUserTime();
+        window.TaraBridge.resumeBackgroundTimer();
       } else {
 
       }
-    }, 100)
+    }, 1000)
   }
 }
 
@@ -457,6 +459,7 @@ const renderAllApps = () => {
   let lastIndex2 = null;
   const loader = tara.oId('loader');
   loader.classList.remove('hidden');
+  window.TaraBridge.pauseBackgroundTimer();
   tara.oHtml("app_id", "./templates/app_layout.html", {
     filter_text: filter_character,
     swiper1: () => {
@@ -526,6 +529,7 @@ const renderAllApps = () => {
 
       setTimeout(() => {
         hideLoading();
+        window.TaraBridge.resumeBackgroundTimer();
         loader.classList.add('hidden');
       }, 300);
     }
