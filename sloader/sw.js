@@ -1,12 +1,20 @@
 const CACHE_NAME = 'app-assets-v1';
 // Assets to cache immediately
-const ASSETS_TO_CACHE = ['/sloader', '/sloader/index.html', '/sloader/style.css', '/sloader/script.js', '/sloader/obrajs.js', '/sloader/sst.ttf', '/sloader/templates/coin_modal.html', '/sloader/templates/user_timer.html'];
+const ASSETS_TO_CACHE = [
+    '/sloader',
+    '/sloader/index.html',
+    '/sloader/style.css',
+    '/sloader/script.js',
+    '/sloader/obrajs.js',
+    '/sloader/sst.ttf',
+    '/sloader/templates/coin_modal.html',
+    '/sloader/templates/user_timer.html'];
 
 // 1. Install & Cache
 self.addEventListener('install', (event) => {
     // Force activating immediately without waiting for existing clients to close
     self.skipWaiting();
-    
+
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             console.log('Caching lockscreen assets');

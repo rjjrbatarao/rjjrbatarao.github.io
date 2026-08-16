@@ -91,10 +91,12 @@ function onLoadEvent() {
         if (coinTimer != null) {
           clearTimeout(coinTimer);
         }
-        tara.oId('coinModal').close()
+        tara.oId('coinModal').close();
+        window.TaraBridge.sendBleCommand("DATA:OFF");
       },
       button_start_time_event: (event) => {
         if (totalTime > 0) {
+          window.TaraBridge.sendBleCommand("DATA:OFF");
           window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
           window.TaraBridge.pauseBackgroundTimer();
           window.TaraBridge.moveToMenuWebview();
@@ -117,7 +119,8 @@ function onLoadEvent() {
           clearTimeout(coinTimer);
         }
         coinFunc();
-        tara.oId('coinModal').show()
+        tara.oId('coinModal').show();
+        window.TaraBridge.sendBleCommand("DATA:ON");
       }
     })
   }
