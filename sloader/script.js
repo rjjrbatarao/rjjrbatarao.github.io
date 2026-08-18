@@ -5,10 +5,34 @@ const beep_sound = new Audio("beep.mp3");
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
+
+    if (window.TaraBridge.isLockscreen() == true) {
+      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+      if (remainingTime > 0) {
+        window.TaraBridge.pauseBackgroundTimer();
+        tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
+        tara.oId("button_resume_id").style.display = "block";
+        tara.oId("button_insert_id").style.display = "none";
+        tara.oId("remaining_time_id").innerHTML = formatSeconds(remainingTime);
+      } else {
+        tara.oId("remaining_time_id").innerHTML = "00:00:00";
+        tara.oId("screen_status_id").innerHTML = "LOCKED 🔒";
+        tara.oId("button_resume_id").style.display = "none";
+        tara.oId("button_insert_id").style.display = "block";
+      }
+    }
+
     setTimeout(() => {
       if (window.TaraBridge.isLockscreen() == true) {
-        clearAllAppCache();
-        removeAccounts();
+        const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+        if (remainingTime > 0) {
+
+        } else {
+          clearAllAppCache();
+          removeAccounts();
+          tara.oId("button_resume_id").style.display = "none";
+          tara.oId("button_insert_id").style.display = "block";
+        }
       } else {
         window.TaraBridge.showToast("Resuming Session");
       }
@@ -112,7 +136,6 @@ function onLoadEvent() {
           }
           window.TaraBridge.sendBleCommand("DATA:OFF");
           window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
-          window.TaraBridge.pauseBackgroundTimer();
           window.TaraBridge.moveToMenuWebview();
           tara.oId('coinModal').close();
           totalCoin = 0;
@@ -127,6 +150,7 @@ function onLoadEvent() {
 
     tara.oHtml("user_time_id", "./templates/user_timer.html", {
       button_insert_id: "button_insert_id",
+      button_resume_id: "button_resume_id",
       button_insert_show_event: (event) => {
         console.log(event.currentTarget.id);
         if (coinTimer != null) {
@@ -135,6 +159,10 @@ function onLoadEvent() {
         coinFunc();
         tara.oId('coinModal').show();
         window.TaraBridge.sendBleCommand("DATA:ON");
+      },
+      button_resume_event: (event) => {
+        window.TaraBridge.resumeBackgroundTimer();
+        window.TaraBridge.moveToMenuWebview();
       }
     })
     /**
@@ -142,7 +170,12 @@ function onLoadEvent() {
      */
     const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
     if (remainingTime > 0) {
-      window.TaraBridge.moveToMenuWebview();
+      // show resume button
+      window.TaraBridge.pauseBackgroundTimer();
+      tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
+      tara.oId("button_resume_id").style.display = "block";
+      tara.oId("button_insert_id").style.display = "none";
+      tara.oId("remaining_time_id").innerHTML = formatSeconds(remainingTime);
     }
   }
 }
@@ -206,6 +239,17 @@ function clearAppCache(package_name) {
   }
 }
 
+function formatSeconds(totalSeconds) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
 
+  // Pads single digits with a leading zero
+  const hh = String(hours).padStart(2, '0');
+  const mm = String(minutes).padStart(2, '0');
+  const ss = String(seconds).padStart(2, '0');
+
+  return `${hh}:${mm}:${ss}`;
+}
 
 
