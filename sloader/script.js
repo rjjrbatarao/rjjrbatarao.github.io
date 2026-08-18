@@ -8,8 +8,6 @@ window.onKioskLockscreenShown = function () {
       if (window.TaraBridge.isLockscreen() == true) {
         clearAllAppCache();
         removeAccounts();
-        window.TaraBridge.prepareRAMForGaming();
-
       } else {
         window.TaraBridge.showToast("Resuming Session");
       }
@@ -158,8 +156,8 @@ function clearAllMedia() {
 
 //  Clear all app cache
 function clearAllAppCache() {
-  if (window.TaraBridge && window.TaraBridge.clearAllAppCache) {
-    const isSuccess = window.TaraBridge.clearAllAppCache();
+  if (window.TaraBridge && window.TaraBridge.clearAllGameCache) {
+    const isSuccess = window.TaraBridge.clearAllGameCache();
     if (isSuccess) {
       window.TaraBridge.showToast("All package cache cleared!");
     } else {
