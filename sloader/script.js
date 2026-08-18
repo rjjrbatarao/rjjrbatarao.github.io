@@ -137,6 +137,13 @@ function onLoadEvent() {
         window.TaraBridge.sendBleCommand("DATA:ON");
       }
     })
+    /**
+     * if we still have time move to game menu
+     */
+    const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+    if (remainingTime > 0) {
+      window.TaraBridge.moveToMenuWebview();
+    }
   }
 }
 
