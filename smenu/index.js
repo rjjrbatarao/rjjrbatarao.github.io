@@ -10,24 +10,21 @@ const overlay = document.querySelector('.loading-overlay');
 
 
 
+
 window.onKioskMenuShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
     window.TaraBridge.pauseBackgroundTimer();
     setTimeout(() => {
       if (window.TaraBridge.isMenu() == true) {
-        console.log("test esp32 data:", window.TaraBridge.getEspData());
-        //window.TaraBridge.showToast(window.TaraBridge.getEspData());
-        console.log(JSON.parse(window.TaraBridge.getPreviouslyOpenedApp()));
         window.TaraBridge.setGameDoNotDisturb(false);
         window.TaraBridge.playNotificationSound("notification");
         window.TaraBridge.resumeBackgroundTimer();
         renderUserTime();
-
       } else {
 
       }
-    }, 1000)
+    }, 500);
   }
 }
 
@@ -400,13 +397,19 @@ const renderBatteryModal = (appPackage, appName) => {
   }, 2000)
 }
 
+
+let userInterval = null;
+
 const renderUserTime = () => {
   tara.oHtml("user_time_id", "./templates/user_time.html", {
     timer_id: "timer_id",
     timer_value: "00:00:00",
     button_insert_id: "button_insert_id",
     init: () => {
-      let user_interval = setInterval(() => {
+      if (userInterval != null) {
+        clearInterval(userInterval);
+      }
+      userInterval = setInterval(() => {
         let rawUserSecondsTime = window.TaraBridge.getTimerRemainingSeconds();
         console.log("remaining time", rawUserSecondsTime)
         let currentUserTime = formatSeconds(rawUserSecondsTime);
@@ -424,7 +427,7 @@ const renderUserTime = () => {
           }
         }
         if (rawUserSecondsTime <= 0) {
-          clearInterval(user_interval);
+          clearInterval(userInterval);
         }
       }, 1000);
     },
