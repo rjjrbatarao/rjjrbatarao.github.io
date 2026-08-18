@@ -1,5 +1,6 @@
 
 const tara = new ObraJS();
+const beep_sound = new Audio("beep.mp3");
 
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
@@ -12,6 +13,24 @@ window.onKioskLockscreenShown = function () {
         window.TaraBridge.showToast("Resuming Session");
       }
     }, 1000 * 20); // clear after 1 minute
+  }
+}
+
+
+window.onKioskLockscreenBle = function (data) {
+  console.log("got coin: ", data);
+  const user_coin = parseInt(data.replace("DATA:", ""));
+  if (user_coin > 0) {
+    totalCoin += user_coin;
+  }
+  if (beep_sound) {
+    try {
+      beep_sound.pause();
+      beep_sound.currentTime = 0;
+      beep_sound.play();
+    } catch (e) {
+
+    }
   }
 }
 
@@ -48,17 +67,11 @@ function convertTime(totalSeconds) {
 
 const coinFunc = () => {
   coinTimer = setTimeout(() => {
-    const user_coin = parseInt(window.TaraBridge.getEspData());
-    console.log("data, total:", user_coin, totalCoin);
-    if (user_coin > 0) {
-      totalCoin += user_coin;
-      totalTime = totalCoin * 60 * 1;
-      window.TaraBridge.setEspData("0000"); // set back to zero if read successful
-      //tara.oId("time_convert_id").innerHTML = formatSeconds(totalTime);
-      convertTime(totalTime);
-      tara.oId("coins_id").innerHTML = "₱" + totalCoin;
-      tara.oId("button_start_id").style.display = "block";
-    }
+    console.log("data, total:", totalCoin);
+    totalTime = totalCoin * 60 * 1;
+    convertTime(totalTime);
+    tara.oId("coins_id").innerHTML = "₱" + totalCoin;
+    tara.oId("button_start_id").style.display = "block";
     coinFunc();
   }, 1000);
 }
@@ -94,6 +107,9 @@ function onLoadEvent() {
       },
       button_start_time_event: (event) => {
         if (totalTime > 0) {
+          if (coinTimer != null) {
+            clearTimeout(coinTimer);
+          }
           window.TaraBridge.sendBleCommand("DATA:OFF");
           window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
           window.TaraBridge.pauseBackgroundTimer();

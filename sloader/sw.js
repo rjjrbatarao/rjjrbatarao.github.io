@@ -8,7 +8,9 @@ const ASSETS_TO_CACHE = [
     '/sloader/obrajs.js',
     '/sloader/sst.ttf',
     '/sloader/templates/coin_modal.html',
-    '/sloader/templates/user_timer.html'];
+    '/sloader/templates/user_timer.html',
+    '/sloader/beep.mp3',
+];
 
 // 1. Install & Cache
 self.addEventListener('install', (event) => {
