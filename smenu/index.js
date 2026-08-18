@@ -324,7 +324,6 @@ const renderRecentApps = () => {
       apps.map((app) => {
         window.TaraBridge.stopRunningBackgroundApp(app.packageName);
       })
-      window.TaraBridge.clearAllAppCache();
       setTimeout(() => {
         renderRecentApps();
         window.TaraBridge.playNotificationSound("notification");
@@ -356,7 +355,7 @@ const renderTurboModal = (appPackage, appName) => {
       tara.oId('turboModal').showModal();
     }
   })
-  window.TaraBridge.clearAllAppCache();
+  window.TaraBridge.clearGameCacheByPackage(appPackage);
   const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
   let app_map = "";
   apps.map((app) => {
