@@ -5,22 +5,23 @@ const beep_sound = new Audio("beep.mp3");
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
-
-    if (window.TaraBridge.isLockscreen() == true) {
-      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
-      if (remainingTime > 0) {
-        window.TaraBridge.pauseBackgroundTimer();
-        tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
-        tara.oId("button_resume_id").style.display = "block";
-        tara.oId("button_insert_id").style.display = "none";
-        tara.oId("remaining_time_id").innerHTML = formatSeconds(remainingTime);
-      } else {
-        tara.oId("remaining_time_id").innerHTML = "00:00:00";
-        tara.oId("screen_status_id").innerHTML = "LOCKED 🔒";
-        tara.oId("button_resume_id").style.display = "none";
-        tara.oId("button_insert_id").style.display = "block";
+    setTimeout(() => {
+      if (window.TaraBridge.isLockscreen() == true) {
+        const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+        if (remainingTime > 0) {
+          window.TaraBridge.pauseBackgroundTimer();
+          tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
+          tara.oId("button_resume_id").style.display = "block";
+          tara.oId("button_insert_id").style.display = "none";
+          tara.oId("remaining_time_id").innerHTML = formatSeconds(remainingTime);
+        } else {
+          tara.oId("remaining_time_id").innerHTML = "00:00:00";
+          tara.oId("screen_status_id").innerHTML = "LOCKED 🔒";
+          tara.oId("button_resume_id").style.display = "none";
+          tara.oId("button_insert_id").style.display = "block";
+        }
       }
-    }
+    }, 500);
 
     setTimeout(() => {
       if (window.TaraBridge.isLockscreen() == true) {
@@ -30,6 +31,7 @@ window.onKioskLockscreenShown = function () {
         } else {
           clearAllAppCache();
           removeAccounts();
+          clearAllMedia();
           tara.oId("button_resume_id").style.display = "none";
           tara.oId("button_insert_id").style.display = "block";
         }
@@ -86,18 +88,6 @@ function convertTime(totalSeconds) {
   hoursDisplay.textContent = String(hours).padStart(2, '0');
   minutesDisplay.textContent = String(minutes).padStart(2, '0');
   secondsDisplay.textContent = String(seconds).padStart(2, '0');
-}
-
-
-const coinFunc = () => {
-  coinTimer = setTimeout(() => {
-    console.log("data, total:", totalCoin);
-    totalTime = totalCoin * 60 * 1;
-    convertTime(totalTime);
-    tara.oId("coins_id").innerHTML = "₱" + totalCoin;
-    tara.oId("button_start_id").style.display = "block";
-    coinFunc();
-  }, 1000);
 }
 
 function onLoadEvent() {
@@ -161,7 +151,6 @@ function onLoadEvent() {
         window.TaraBridge.sendBleCommand("DATA:ON");
       },
       button_resume_event: (event) => {
-        window.TaraBridge.resumeBackgroundTimer();
         window.TaraBridge.moveToMenuWebview();
       }
     })
@@ -224,19 +213,15 @@ function clearAllAppCache() {
   }
 }
 
-//  Clear Specific app cache
-//  window.TaraBridge.clearAppCacheByPackage("com.google.android.youtube")
-function clearAppCache(package_name) {
-  if (window.TaraBridge && window.TaraBridge.clearAppCacheByPackage) {
-    const isSuccess = window.TaraBridge.package_name();
-    if (isSuccess) {
-      window.TaraBridge.showToast("Package cache cleared!");
-    } else {
-      window.TaraBridge.showToast("No package exist");
-    }
-  } else {
-    console.warn("TaraBridge interface not available.");
-  }
+const coinFunc = () => {
+  coinTimer = setTimeout(() => {
+    console.log("data, total:", totalCoin);
+    totalTime = totalCoin * 60 * 1;
+    convertTime(totalTime);
+    tara.oId("coins_id").innerHTML = "₱" + totalCoin;
+    tara.oId("button_start_id").style.display = "block";
+    coinFunc();
+  }, 1000);
 }
 
 function formatSeconds(totalSeconds) {
