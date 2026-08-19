@@ -151,6 +151,7 @@ function onLoadEvent() {
         window.TaraBridge.sendBleCommand("DATA:ON");
       },
       button_resume_event: (event) => {
+        window.TaraBridge.resumeBackgroundTimer();
         window.TaraBridge.moveToMenuWebview();
       }
     })
