@@ -5,23 +5,23 @@ const beep_sound = new Audio("beep.mp3");
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
-    setTimeout(() => {
-      if (window.TaraBridge.isLockscreen() == true) {
-        const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
-        if (remainingTime > 0) {
-          window.TaraBridge.pauseBackgroundTimer();
-          tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
-          tara.oId("button_resume_id").style.display = "block";
-          tara.oId("button_insert_id").style.display = "none";
-          tara.oId("remaining_time_id").innerHTML = formatSeconds(remainingTime);
-        } else {
-          tara.oId("remaining_time_id").innerHTML = "00:00:00";
-          tara.oId("screen_status_id").innerHTML = "LOCKED 🔒";
-          tara.oId("button_resume_id").style.display = "none";
-          tara.oId("button_insert_id").style.display = "block";
-        }
+
+    if (window.TaraBridge.isLockscreen() == true) {
+      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+      if (remainingTime > 0) {
+        window.TaraBridge.pauseBackgroundTimer();
+        tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
+        tara.oId("button_resume_id").style.display = "block";
+        tara.oId("button_insert_id").style.display = "none";
+        tara.oId("remaining_time_id").innerHTML = formatSeconds(remainingTime);
+      } else {
+        tara.oId("remaining_time_id").innerHTML = "00:00:00";
+        tara.oId("screen_status_id").innerHTML = "LOCKED 🔒";
+        tara.oId("button_resume_id").style.display = "none";
+        tara.oId("button_insert_id").style.display = "block";
       }
-    }, 500);
+    }
+
 
     setTimeout(() => {
       if (window.TaraBridge.isLockscreen() == true) {
