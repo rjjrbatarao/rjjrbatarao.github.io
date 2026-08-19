@@ -280,27 +280,19 @@ const allApps = () => {
   apps.map((app) => {
     app_map += tara.oString("./templates/app_item.html", {
       app_name: app.appName,
-      app_performance_id: app.packageName + "_app_performance",
-      app_battery_id: app.packageName + "_app_battery",
+      app_button_play: app.packageName + "_app_button_play",
+      app_play_id: app.packageName + "_app_play_id",
       app_icon: app.icon,
       app_category: "Category: " + app.category,
       app_icon_id: "icon_id_" + icon_index,
       app_is_system: app.isSystemApp == true ? "System App" : "User Apps",
       app_is_online: "",//app.isOnline == true ? "Online: ✅" : "Online: ❌",
       app_is_offline: "", //app.isOffline == true ? "Offline: ✅" : "Offline: ❌",
-      app_button_performance: (event) => {
-        //console.log(event.currentTarget.id);
+      app_button_play: (event) => {
         let appName = event.currentTarget.dataset.name;
-        console.log("app name", appName);
-        setGameMode(event.currentTarget.id.replaceAll("_app_performance", ""), "performance");
-        renderTurboModal(event.currentTarget.id.replaceAll("_app_performance", ""), appName);
-      },
-      app_button_battery: (event) => {
-        //console.log(event.currentTarget.id);
-        let appName = event.currentTarget.dataset.name;
-        console.log("app name", appName);
-        setGameMode(event.currentTarget.id.replaceAll("_app_battery", ""), "battery");
-        renderBatteryModal(event.currentTarget.id.replaceAll("_app_battery", ""), appName);
+        let appPackage = event.currentTarget.id.replaceAll("_app_play_id", "");
+        console.log(appName, appPackage);
+        renderGameMode(appPackage, appName);
       },
     });
     icon_index++;
@@ -369,38 +361,41 @@ const renderRecentApps = () => {
   });
 }
 
-const renderTurboModal = (appPackage, appName) => {
+const renderGameMode = (appPackage, appName) => {
   let info = "App running " + appName + " in Turbo Mode"
-  tara.oHtml("turbo_mode_id", "./templates/modal_turbo.html", {
-    turbo_info: info,
+  tara.oHtml("game_mode_id", "./templates/modal_game_mode.html", {
+    app_game_info: "Turbo ⚡ or Battery 🔋",
+    app_name: appName,
+    app_performance_id: appPackage + "_app_performance",
+    app_battery_id: appPackage + "_app_battery",
     init: () => {
-      tara.oId('turboModal').showModal();
-    }
-  })
-  window.TaraBridge.clearGameCacheByPackage(appPackage);
-  const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
-  let app_map = "";
-  apps.map((app) => {
-    window.TaraBridge.stopRunningBackgroundApp(app.packageName);
-  })
-  setTimeout(() => {
-    openApp(appPackage);
-    tara.oId('turboModal').close();
-  }, 2000)
-}
+      tara.oId('gameModal').showModal();
+    },
+    app_button_performance: (event) => {
+      //console.log(event.currentTarget.id);
+      let appName = event.currentTarget.dataset.name;
+      let appPackage = event.currentTarget.id.replaceAll("_app_performance", "");
+      console.log("app name", appName);
+      setGameMode(appPackage, "performance");
+      window.TaraBridge.clearGameCacheByPackage(appPackage);
+      const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+      apps.map((app) => {
+        window.TaraBridge.stopRunningBackgroundApp(app.packageName);
+      })
+      openApp(appPackage);
+      tara.oId('gameModal').close();
 
-const renderBatteryModal = (appPackage, appName) => {
-  let info = "App running " + appName + " in Battery Mode"
-  tara.oHtml("battery_mode_id", "./templates/modal_battery.html", {
-    battery_info: info,
-    init: () => {
-      tara.oId('batteryModal').showModal();
-    }
+    },
+    app_button_battery: (event) => {
+      //console.log(event.currentTarget.id);
+      let appName = event.currentTarget.dataset.name;
+      let appPackage = event.currentTarget.id.replaceAll("_app_battery", "");
+      console.log("app name", appName);
+      setGameMode(appPackage, "battery");
+      openApp(appPackage);
+      tara.oId('gameModal').close();
+    },
   })
-  setTimeout(() => {
-    openApp(appPackage);
-    tara.oId('batteryModal').close();
-  }, 2000)
 }
 
 
