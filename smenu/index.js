@@ -16,12 +16,13 @@ window.onKioskMenuShown = function () {
   if (window.TaraBridge) {
 
     if (window.TaraBridge.isMenu() == true) {
-      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
-      if (remainingTime > 0) {
-        //window.TaraBridge.resumeBackgroundTimer();
-      } else {
-        window.TaraBridge.setGameDoNotDisturb(false);
-      }
+      // const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+      // if (remainingTime > 0) {
+      //   //window.TaraBridge.resumeBackgroundTimer();
+      // } else {
+      //   window.TaraBridge.setGameDoNotDisturb(false);
+      // }
+      window.TaraBridge.setGameDoNotDisturb(false);
       window.TaraBridge.setKeepScreenAwake(true);
       window.TaraBridge.playNotificationSound("notification");
       setTimeout(() => {
@@ -195,7 +196,10 @@ function getDeviceInfo() {
 
     //console.log("Device System Info:", info);
 
-
+    const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+    if (remainingTime > 0) {
+      window.TaraBridge.resumeBackgroundTimer();
+    }
 
     //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
     //tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
