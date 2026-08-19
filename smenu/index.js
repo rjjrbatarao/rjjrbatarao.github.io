@@ -18,10 +18,11 @@ window.onKioskMenuShown = function () {
     if (window.TaraBridge.isMenu() == true) {
       const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
       if (remainingTime > 0) {
-        window.TaraBridge.resumeBackgroundTimer();
+        //window.TaraBridge.resumeBackgroundTimer();
       } else {
         window.TaraBridge.setGameDoNotDisturb(false);
       }
+      window.TaraBridge.setKeepScreenAwake(true);
       window.TaraBridge.playNotificationSound("notification");
       renderUserTime();
     } else {
@@ -191,7 +192,7 @@ function getDeviceInfo() {
     })
 
     //console.log("Device System Info:", info);
-    window.TaraBridge.setKeepScreenAwake(true);
+
 
 
     //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
