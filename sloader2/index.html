@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="./three.min.js"></script>
+    <script src="./midori.umd.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <button
+      class="s-button accent-btn toggle-ui-btn"
+      id="open-ui-btn"
+      onclick="toggleSettingsUI(true)"
+    >
+      ⚙️
+    </button>
+    <div class="ui-container" id="settings_id"></div>
+    <div id="user_time_id" class="horizontal-dock"></div>
+    <div class="status-style">
+      <div class="lock-style" id="screen_status_id">LOCKED 🔒</div>
+      <div class="timer-style" id="remaining_time_id">00:00:00</div>
+    </div>
+    <dialog id="coinModal" class="glass-modal"></dialog>
+    <script src="obrajs.js"></script>
+    <script src="script.js"></script>
+    <script src="settings.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sloader2/sw.js")
+            .then((registration) => {
+              console.log("SW registered successfully:", registration.scope);
+
+              // Keep-Alive Heartbeat: Pings the Service Worker every 25 seconds
+              setInterval(() => {
+                if (registration.active) {
+                  registration.active.postMessage({ type: "PING" });
+                }
+              }, 25000);
+            })
+            .catch((error) => {
+              console.error("SW registration failed:", error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

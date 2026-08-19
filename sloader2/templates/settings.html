@@ -1,0 +1,208 @@
+<div class="ui-header">
+  <h3>Controls & Settings</h3>
+  <button
+    class="s-close-btn"
+    onclick="toggleSettingsUI(false)"
+    title="Close Panel"
+  >
+    ✕
+  </button>
+</div>
+
+<div class="control-group">
+  <label>1. Settings Persistence</label>
+  <div class="btn-row">
+    <button class="accent-btn s-button" onclick="saveSettingsToLocalStorage()">
+      Save to LocalStorage
+    </button>
+    <button class="s-button" onclick="resetSettingsToDefaults()">
+      Reset Defaults
+    </button>
+  </div>
+</div>
+
+<div class="control-group">
+  <label>2. Dynamic Image List</label>
+  <div class="input-row">
+    <input
+      type="url"
+      id="input-image-url"
+      placeholder="https://example.com/image.jpg"
+    />
+    <button
+      class="s-button"
+      class="accent-btn"
+      onclick="addImageUrlFromInput()"
+    >
+      Add
+    </button>
+  </div>
+  <div class="image-list" id="image-list-container"></div>
+</div>
+
+<div class="control-group">
+  <label>3. Camera Parameters</label>
+
+  <div class="slider-row">
+    <label for="slider-sway">Sway Amount</label>
+    <input
+      type="range"
+      id="slider-sway"
+      min="0"
+      max="0.1"
+      step="0.005"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-sway">0.020</span>
+  </div>
+
+  <div class="slider-row">
+    <label for="slider-panRange">Pan Range</label>
+    <input
+      type="range"
+      id="slider-panRange"
+      min="0"
+      max="0.3"
+      step="0.01"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-panRange">0.00</span>
+  </div>
+
+  <div class="slider-row">
+    <label for="slider-zoomRange">Zoom Range</label>
+    <input
+      type="range"
+      id="slider-zoomRange"
+      min="0"
+      max="0.8"
+      step="0.05"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-zoomRange">0.30</span>
+  </div>
+
+  <div class="slider-row">
+    <label for="slider-panDuration">Pan Speed (s)</label>
+    <input
+      type="range"
+      id="slider-panDuration"
+      min="1"
+      max="15"
+      step="0.5"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-panDuration">8.0s</span>
+  </div>
+
+  <div class="slider-row">
+    <label for="slider-rotate">Rotation Max (°)</label>
+    <input
+      type="range"
+      id="slider-rotate"
+      min="0"
+      max="15"
+      step="0.5"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-rotate">1.5°</span>
+  </div>
+
+  <div class="slider-row">
+    <label for="slider-wobble">Wobble Amount</label>
+    <input
+      type="range"
+      id="slider-wobble"
+      min="0"
+      max="0.05"
+      step="0.002"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-wobble">0.000</span>
+  </div>
+</div>
+
+<div class="control-group">
+  <label>4. Automatic Transitions</label>
+
+  <div class="btn-row">
+    <button
+      class="s-button"
+      id="btn-autoTransition"
+      onclick="toggleAutoTransition()"
+    >
+      Auto Transitions: OFF
+    </button>
+  </div>
+
+  <div class="toggle-row">
+    <input type="checkbox" id="check-random" onchange="onSettingsChanged()" />
+    <label for="check-random">Random Transition & Image Selection</label>
+  </div>
+
+  <div class="slider-row">
+    <label for="slider-interval">Interval (s)</label>
+    <input
+      type="range"
+      id="slider-interval"
+      min="2"
+      max="30"
+      step="0.5"
+      oninput="onSettingsChanged()"
+    />
+    <span id="val-interval">5.0s</span>
+  </div>
+</div>
+
+<div class="control-group">
+  <label>5. Manual Transitions</label>
+  <div class="btn-row">
+    <button class="s-button" onclick="triggerTransition('blend')">Blend</button>
+    <button class="s-button" onclick="triggerTransition('wipe')">Wipe</button>
+    <button class="s-button" onclick="triggerTransition('blur')">Blur</button>
+    <button class="s-button" onclick="triggerTransition('slide')">Slide</button>
+    <button class="s-button" onclick="triggerTransition('glitch')">
+      Glitch
+    </button>
+  </div>
+</div>
+
+<div class="control-group">
+  <label>6. Toggle Post-Processing Effects</label>
+  <div class="btn-row">
+    <button class="s-button" id="btn-bloom" onclick="toggleEffect('bloom')">
+      Bloom
+    </button>
+    <button class="s-button" id="btn-blur" onclick="toggleEffect('blur')">
+      Blur
+    </button>
+    <button
+      class="s-button"
+      id="btn-motionBlur"
+      onclick="toggleEffect('motionBlur')"
+    >
+      Motion Blur
+    </button>
+    <button
+      class="s-button"
+      id="btn-rgbShift"
+      onclick="toggleEffect('rgbShift')"
+    >
+      RGB Shift
+    </button>
+    <button
+      class="s-button"
+      id="btn-vignette"
+      onclick="toggleEffect('vignette')"
+    >
+      Vignette
+    </button>
+    <button
+      class="s-button"
+      id="btn-vignetteBlur"
+      onclick="toggleEffect('vignetteBlur')"
+    >
+      Vignette Blur
+    </button>
+  </div>
+</div>
