@@ -59,7 +59,7 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
-            .register("/loader/sw.js")
+            .register("/sloader/sw.js")
             .then((registration) => {
               console.log("SW registered successfully:", registration.scope);
 
