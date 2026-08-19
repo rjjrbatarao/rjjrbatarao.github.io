@@ -14,17 +14,20 @@ const overlay = document.querySelector('.loading-overlay');
 window.onKioskMenuShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
-    window.TaraBridge.pauseBackgroundTimer();
-    setTimeout(() => {
-      if (window.TaraBridge.isMenu() == true) {
-        window.TaraBridge.setGameDoNotDisturb(false);
-        window.TaraBridge.playNotificationSound("notification");
-        window.TaraBridge.resumeBackgroundTimer();
-        renderUserTime();
-      } else {
 
+    if (window.TaraBridge.isMenu() == true) {
+      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+      if (remainingTime > 0) {
+        window.TaraBridge.resumeBackgroundTimer();
+      } else {
+        window.TaraBridge.setGameDoNotDisturb(false);
       }
-    }, 500);
+      window.TaraBridge.playNotificationSound("notification");
+      renderUserTime();
+    } else {
+
+    }
+
   }
 }
 
