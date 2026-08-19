@@ -24,7 +24,9 @@ window.onKioskMenuShown = function () {
       }
       window.TaraBridge.setKeepScreenAwake(true);
       window.TaraBridge.playNotificationSound("notification");
-      renderUserTime();
+      setTimeout(() => {
+        renderUserTime();
+      }, 500);
     } else {
 
     }
