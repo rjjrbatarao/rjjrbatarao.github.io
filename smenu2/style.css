@@ -1,0 +1,1422 @@
+@font-face {
+  font-family: "ps4";
+  src: url("sst.ttf") format("truetype");
+}
+
+* {
+  /* Disables the default callout popup (iOS/Safari) */
+  -webkit-touch-callout: none;
+
+  /* Disables text and element selection magnifying glasses */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard */
+
+  /* Prevents the default touch behaviors like double-tap zoom test */
+  touch-action: none;
+}
+
+:root {
+  --pallete-light: #00ffee;
+  --pallete-dark: #008980;
+  --pallete-darker: black;
+  --pallete-body: #008189;
+}
+
+html,
+body {
+  user-select: none !important;
+  overflow-x: hidden !important;
+  width: 100%;
+  height: 100%;
+  background-color: var(--pallete-body);
+  font-size: 17px;
+  font-family: "ps4", sans-serif;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+input,
+textarea {
+  -webkit-user-select: initial;
+}
+
+.swiper-slide {
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  border-radius: 5px;
+}
+
+.img-medium {
+  width: 100px; /* Or a fixed width like 300px */
+  height: 100px; /* Or a fixed height */
+  object-fit: cover; /* Keeps aspect ratio by cropping to fill the box */
+}
+
+.img-small {
+  width: 70px; /* Or a fixed width like 300px */
+  height: 70px; /* Or a fixed height */
+  object-fit: cover; /* Keeps aspect ratio by cropping to fill the box */
+}
+
+.xsmall-swiper {
+  width: 100%;
+  height: 64px;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.small-swiper {
+  width: 100%;
+  height: 100px;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.large-swiper {
+  width: 100%;
+  height: 300px;
+  margin: 0px 0;
+  padding: 50px;
+}
+
+.swiper-pagination {
+  bottom: -50px !important; /* Adjust pixels as needed */
+}
+
+.swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  margin: 50px 15px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.swiper-pagination-bullet {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/*
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+}
+
+
+.swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  margin: 50px 15px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.swiper-pagination-bullet {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.x-slider {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.x-slider .swiper-button-next {
+  color: #01ef64;
+}
+
+.x-slider .swiper-button-prev {
+  color: #01ef64;
+}
+.x-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+*/
+
+.x-filter {
+  width: 100%;
+  margin: 0;
+  position: relative;
+  top: 27px;
+  transform: translateY(-50%);
+}
+
+.x-content {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.x-item-left {
+  width: 100%;
+  height: 50px;
+  padding: 20px;
+}
+
+.x-item-right {
+  width: 100%;
+  height: 50px;
+  padding: 20px;
+}
+
+.x-card {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  border-radius: 10px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.x-mini-card {
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  padding: 0.3em;
+  justify-content: center;
+}
+
+.x-font-small {
+  font-size: small;
+}
+
+.x-font-smaller {
+  font-size: x-small;
+}
+
+.x-time {
+  font-size: 90px;
+}
+
+.x-hero {
+  margin-top: 10%;
+  place-items: center;
+  z-index: 999;
+}
+
+.x-center {
+  display: grid;
+  place-items: center; /* Centers horizontally and vertically at once */
+  height: 50vh;
+}
+
+.x-center-items {
+  justify-content: center;
+}
+
+.x-center-flex {
+  position: absolute;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 20px; /* Requires a height to see vertical centering */
+}
+
+.x-left-flex {
+  top: 0px;
+  font-size: 20px;
+  margin-left: 3em;
+  position: absolute;
+  height: 20px; /* Requires a height to see vertical centering */
+}
+
+.x-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.contrast {
+  filter: contrast(150%);
+}
+
+.blur {
+  filter: blur(5px);
+}
+
+.wave {
+  position: fixed;
+  top: 0;
+  transform: rotate(80deg);
+  left: 0;
+}
+
+.wave > div {
+  width: 1500px;
+  height: 1300px;
+  margin-left: -150px;
+  margin-top: -250px;
+  transform-origin: 50% 48%;
+  border-radius: 43%;
+  opacity: 0.4;
+  position: fixed;
+  top: 3%;
+  left: 10%;
+}
+
+.wave--one {
+  background: var(--pallete-light);
+  animation: drift 7000ms infinite linear;
+}
+
+.wave--two {
+  animation: drift 3000ms infinite linear;
+  opacity: 0.1;
+  background: var(--pallete-darker);
+}
+
+.wave--three {
+  animation: drift 7500ms infinite linear;
+  background-color: var(--pallete-dark);
+}
+
+@keyframes drift {
+  from {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
+  }
+}
+
+.scale-up-center {
+  -webkit-animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
+    both;
+  animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+@-webkit-keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.scale-down-center {
+  -webkit-animation: scale-down-center 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: scale-down-center 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes scale-down-center {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+  }
+}
+@keyframes scale-down-center {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+  }
+}
+
+.container {
+  position: relative;
+}
+/* Style the button and place it in the middle of the container/image */
+.container .btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  opacity: 0;
+  font-size: 16px;
+  padding: 12px 24px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+  animation: blink-loop 0.6s infinite alternate;
+}
+
+.filter {
+  position: relative;
+  font-size: 24px;
+}
+
+.filter .btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes blink-loop {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+/* Fullscreen fixed overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10, 10, 15, 0.4); /* Dark translucent tint */
+  backdrop-filter: blur(12px); /* The core glass blur effect */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  z-index: 9999;
+}
+
+/* Hidden state class */
+.loading-overlay.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; /* Prevents clicking hidden overlay */
+}
+
+/* Central gaming glass card */
+.glass-card {
+  padding: 40px 60px;
+  text-align: center;
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Simple loading spinner styling */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #00ffcc; /* Gamer cyan accent */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.line-loader {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(var(--pallete-body) 0 0) left/0% 100% no-repeat
+    #e2e8f0;
+  animation: load 2s infinite ease-in-out;
+}
+
+.shimmer-line {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #e2e8f0 25%,
+    var(--pallete-body) 50%,
+    #e2e8f0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes load {
+  0% {
+    background-size: 0% 100%;
+    background-position: left;
+  }
+  50% {
+    background-size: 100% 100%;
+    background-position: left;
+  }
+  51% {
+    background-position: right;
+  }
+  100% {
+    background-size: 0% 100%;
+    background-position: right;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.button-column {
+  display: flex; /* Activates Flexbox layout */
+  flex-direction: row; /* Stacks items vertically */
+  gap: 12px; /* Sets exact spacing between the buttons */
+  width: max-content; /* Keeps column only as wide as the buttons */
+}
+
+/* Base Slide Styles */
+
+.menu-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
+.anim-tag {
+  color: #ffffff;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+}
+
+.anim-title {
+  font-size: 1.5rem;
+  margin: 0.1rem 0;
+}
+
+.anim-desc {
+  font-family: sans-serif;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.anim-btn {
+  background: var(--pallete-dark);
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  clip-path: polygon(
+    10px 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%,
+    0 10px
+  );
+}
+/*
+.anim-btn::before {
+  content: "";
+  position: absolute;
+  inset: 2px; 
+  background: var(--pallete-dark);
+  z-index: -1;
+  clip-path: polygon(
+    8px 0,
+     100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+}
+*/
+/* =========================================
+   ENTRANCE ANIMATION LOGIC
+   ========================================= */
+
+/* Default / Inactive State (Hidden & Offset) */
+[data-anim] {
+  opacity: 0;
+  transform: translateX(-60px) skewX(-10deg) scale(0.95);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* Active State (Triggered when Swiper slide becomes active) */
+.swiper-slide-active [data-anim] {
+  animation: gameMenuEnter 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    forwards;
+}
+
+/* Staggered Delays for Game Menu Feel */
+.swiper-slide-active .anim-tag {
+  animation-delay: 0.05s;
+}
+.swiper-slide-active .anim-title {
+  animation-delay: 0.15s;
+}
+.swiper-slide-active .anim-desc {
+  animation-delay: 0.25s;
+}
+.swiper-slide-active .anim-btn {
+  animation-delay: 0.35s;
+}
+
+/* Entrance Keyframes with Punchy Snap */
+@keyframes gameMenuEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(-80px) skewX(-15deg) scale(0.9);
+    filter: blur(4px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(10px) skewX(2deg) scale(1.02);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg) scale(1);
+  }
+}
+
+.vertical-dock {
+  position: fixed;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.horizontal-dock {
+  position: relative;
+  left: 50%; /* Centers horizontally */
+  transform: translateX(-50%); /* Offsets width to achieve precise centering */
+  display: flex;
+  flex-direction: row; /* Lay out items horizontally */
+  gap: 12px;
+  padding: 8px; /* Swapped padding for horizontal proportion */
+  z-index: 100;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+}
+
+.unbuttonize {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  appearance: none; /* Removes native OS platform styling */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.dock-item {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    margin 0.2s ease;
+}
+
+/* Hover magnification effect */
+.dock-item:hover {
+  transform: scale(1.4);
+  transform-origin: left center; /* Scales outward from the edge */
+}
+
+/* Optional adjacent sibling scaling for a subtle wave effect */
+.dock-item:hover + .dock-item,
+.dock-item:has(+ .dock-item:hover) {
+  transform: scale(1.2);
+}
+
+/* The Modal Container */
+.glass-modal {
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  border-radius: 5px;
+  color: #ffffff;
+
+  /* 1. Semi-transparent background */
+  background: rgba(255, 255, 255, 0.07);
+
+  /* 2. Frosted glass blur filter */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
+
+  /* 3. Subtle outer border to simulate glass refraction */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* 4. Drop shadow to separate the card from background layers */
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* The Backdrop Overlay (dim and blur everything behind the modal) */
+.glass-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Optional: Smooth fade-in animation */
+.glass-modal[open] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative; /* Acts as the coordinate anchor for the absolute button */
+  padding-top: 1rem; /* Gives breathing room below the top edge */
+}
+
+/* Absolute Positioning for the X Button */
+.close-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  position: absolute;
+  top: -1.5rem; /* Shifts button toward top padding area */
+  right: -1.5rem; /* Shifts button toward right padding area */
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem; /* Generates a prominent, crisp X symbol */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover and Focus States for accessibility and micro-interactions */
+.close-btn:hover,
+.close-btn:focus {
+  color: #ffffff;
+  transform: scale(1.15);
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Layout Positioning inside Modal */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Minimalist Inline Icons */
+.slider-icon {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.slider-value {
+  font-family: sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Base Slider Track styling resetting standard layout browser defaults */
+.glass-slider {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.glass-slider:focus {
+  outline: none;
+}
+
+.glass-slider:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Slider Thumb Knob styling for Chrome, Safari, Edge, and Opera */
+.glass-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.1s ease,
+    background-color 0.1s ease;
+}
+
+.glass-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  background: #ffffff;
+}
+
+/* Slider Thumb Knob styling for Firefox */
+.glass-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.1s ease,
+    background-color 0.1s ease;
+  cursor: pointer;
+}
+
+.glass-slider::-moz-range-thumb:hover {
+  transform: scale(1.25);
+  background: #ffffff;
+}
+
+/* 1. The button now acts as the relative container */
+.badge-button {
+  position: relative;
+  display: inline-flex;
+}
+
+/* 2. Position the span inside the top-right of the button */
+.badge-number {
+  position: absolute;
+  top: -6px; /* Pushes it slightly past the top edge */
+  right: -6px; /* Pushes it slightly past the right edge */
+  background-color: #ff3b30;
+  color: #ffffff;
+  font-size: 15px;
+  font-family: sans-serif;
+  font-weight: bold;
+
+  /* Flex centering ensures text stays perfectly in the middle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Circular structure */
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px; /* Gives extra horizontal breathing room for double digits */
+  border-radius: 10px;
+}
+
+/* Container spacing */
+.app-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+/* Individual list item container */
+.app-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Row Hover effect */
+.app-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* App Icon style */
+.app-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Middle Text Column layout */
+.app-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Pushes the close button to the far right */
+  min-width: 0; /* Prevents text overflow breaks */
+}
+
+.app-title {
+  font-family: sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.app-desc {
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Gracefully shortens long sentences */
+}
+
+/* Inline Right Hand Close Button */
+.item-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 6px;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+/* Micro-interaction updates */
+.item-close-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-close-btn:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.item-play-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  margin-right: 1.5rem;
+  border-radius: 6px;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+/* The Modal Container */
+.glass-modal {
+  top: 30vh;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  border-radius: 5px;
+  color: #ffffff;
+  z-index: 9999;
+  /* 1. Semi-transparent background */
+  background: rgba(255, 255, 255, 0.07);
+
+  /* 2. Frosted glass blur filter */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
+
+  /* 3. Subtle outer border to simulate glass refraction */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* 4. Drop shadow to separate the card from background layers */
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* The Backdrop Overlay (dim and blur everything behind the modal) */
+.glass-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Optional: Smooth fade-in animation */
+.glass-modal[open] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative; /* Acts as the coordinate anchor for the absolute button */
+  padding-top: 1rem; /* Gives breathing room below the top edge */
+}
+
+/* Absolute Positioning for the X Button */
+.close-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  position: absolute;
+  top: -1.5rem; /* Shifts button toward top padding area */
+  right: -1.5rem; /* Shifts button toward right padding area */
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem; /* Generates a prominent, crisp X symbol */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover and Focus States for accessibility and micro-interactions */
+.close-btn:hover,
+.close-btn:focus {
+  color: #ffffff;
+  transform: scale(1.15);
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.btn-minimal-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-minimal-outline:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-button-start {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.center-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+}
+
+.time-larger {
+  font-size: 55px;
+}
+
+/* Micro-interaction updates */
+.item-play-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-play-btn:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-minimal-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-minimal-outline:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-clear {
+  margin-top: 2rem;
+  position: relative;
+}
+
+/* Time Display (Bounding Boxes) */
+.time-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.time-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-box {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+.time-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.colon {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 24px; /* Align with center of boxes */
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+#canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  position: absolute;
+}
+.ui-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 16px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  max-height: 95vh;
+  overflow-y: auto;
+  width: 360px;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.ui-container.hidden {
+  display: none;
+}
+/* Fixed Header & Pinned Close Button Style */
+.ui-header {
+  position: sticky;
+  top: -16px; /* Offsets container's top padding so it stays pinned on scroll */
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 16px;
+  margin: -16px -16px 4px -16px; /* Spans full width of panel */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.ui-header h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+.s-close-btn {
+  position: inherit;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.s-close-btn:hover {
+  color: #fff;
+  background: rgba(255, 59, 48, 0.8);
+  border-color: rgba(255, 59, 48, 1);
+}
+.toggle-ui-btn {
+  position: absolute;
+  top: 150px;
+  left: 20px;
+  z-index: 1100;
+  display: none;
+}
+.toggle-ui-btn.visible {
+  display: block;
+}
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+}
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.slider-row label {
+  width: 110px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.slider-row input[type="range"] {
+  flex: 1;
+  cursor: pointer;
+}
+.slider-row span {
+  width: 35px;
+  text-align: right;
+  font-family: monospace;
+  font-size: 11px;
+  color: #007aff;
+}
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.toggle-row input[type="checkbox"] {
+  cursor: pointer;
+}
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.input-row {
+  display: flex;
+  gap: 6px;
+}
+.input-row input[type="url"] {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: white;
+  font-size: 12px;
+  outline: none;
+}
+.input-row input[type="url"]:focus {
+  border-color: #007aff;
+}
+.image-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+.image-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+.image-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.image-item button.remove-btn {
+  background: rgba(255, 59, 48, 0.3);
+  border-color: rgba(255, 59, 48, 0.6);
+  padding: 2px 6px;
+  font-size: 10px;
+}
+.image-item button.remove-btn:hover {
+  background: rgba(255, 59, 48, 0.7);
+}
+.s-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.s-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.s-button.active {
+  background: #007aff;
+  border-color: #007aff;
+}
+.s-button.accent-btn {
+  background: rgba(0, 122, 255, 0.3);
+  border-color: rgba(0, 122, 255, 0.6);
+}
+.s-button.accent-btn:hover {
+  background: rgba(0, 122, 255, 0.6);
+}

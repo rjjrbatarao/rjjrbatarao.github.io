@@ -1,0 +1,43 @@
+<div class="modal-content center-items">
+  <button
+    class="close-btn"
+    onclick="${button_insert_close_event}"
+    aria-label="Close modal"
+  >
+    &times;
+  </button>
+  <div class="time-container">
+    <!-- Hours -->
+    <div class="time-box-wrapper">
+      <div class="time-box" id="hours">00</div>
+      <div class="time-label">Hours</div>
+    </div>
+
+    <div class="colon">:</div>
+
+    <!-- Minutes -->
+    <div class="time-box-wrapper">
+      <div class="time-box" id="minutes">00</div>
+      <div class="time-label">Mins</div>
+    </div>
+
+    <div class="colon">:</div>
+
+    <!-- Seconds -->
+    <div class="time-box-wrapper">
+      <div class="time-box" id="seconds">00</div>
+      <div class="time-label">Secs</div>
+    </div>
+  </div>
+
+  <div id="coins_id" class="time-larger">₱0</div>
+  <div class="app-button-start">
+    <button
+      id="${button_start_id}"
+      class="btn-minimal-outline"
+      onclick="${button_start_time_event}"
+    >
+      TOP UP
+    </button>
+  </div>
+</div>
