@@ -16,12 +16,10 @@ window.onKioskMenuShown = function () {
   if (window.TaraBridge) {
 
     if (window.TaraBridge.isMenu() == true) {
-      // const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
-      // if (remainingTime > 0) {
-      //   //window.TaraBridge.resumeBackgroundTimer();
-      // } else {
-      //   window.TaraBridge.setGameDoNotDisturb(false);
-      // }
+      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+      if (remainingTime > 0) {
+        window.TaraBridge.resumeBackgroundTimer();
+      }
       window.TaraBridge.setGameDoNotDisturb(false);
       window.TaraBridge.setKeepScreenAwake(true);
       window.TaraBridge.playNotificationSound("notification");
