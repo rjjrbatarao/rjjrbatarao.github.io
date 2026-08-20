@@ -5,7 +5,6 @@ const beep_sound = new Audio("beep.mp3");
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
   if (window.TaraBridge) {
-
     if (window.TaraBridge.isLockscreen() == true) {
       const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
       if (remainingTime > 0) {
@@ -20,9 +19,9 @@ window.onKioskLockscreenShown = function () {
         tara.oId("button_resume_id").style.display = "none";
         tara.oId("button_insert_id").style.display = "block";
       }
+      window.TaraBridge.setGameDoNotDisturb(false);
+      window.TaraBridge.setKeepScreenAwake(true);
     }
-
-
     setTimeout(() => {
       if (window.TaraBridge.isLockscreen() == true) {
         const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
