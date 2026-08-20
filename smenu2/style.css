@@ -23,6 +23,9 @@
   --pallete-dark: #008980;
   --pallete-darker: black;
   --pallete-body: #008189;
+
+  --hud-blue: var(--pallete-light);
+  --hud-glow: var(--pallete-dark);
 }
 
 html,
@@ -54,6 +57,12 @@ textarea {
     0px 4px 6px -2px rgba(0, 0, 0, 0.05);
 
   border-radius: 5px;
+}
+
+.swiper-card {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .img-medium {
@@ -1419,4 +1428,173 @@ label {
 }
 .s-button.accent-btn:hover {
   background: rgba(0, 122, 255, 0.6);
+}
+
+/* Main Card Outer Frame */
+.hud-card {
+  position: relative;
+  width: 500px;
+  height: 300px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Neon Top Corners */
+.corner {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  border: 3px solid var(--hud-blue);
+  filter: drop-shadow(0 0 5px var(--hud-blue));
+}
+
+.corner.top-left {
+  top: 12px;
+  left: 12px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner.top-right {
+  top: 12px;
+  right: 12px;
+  border-left: none;
+  border-bottom: none;
+}
+
+/* Bottom Corner Arrows */
+.corner.bottom-left,
+.corner.bottom-right {
+  border: none;
+  bottom: 15px;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 217, 255, 0.15);
+}
+.corner.bottom-left {
+  left: 18px;
+}
+.corner.bottom-right {
+  right: 18px;
+}
+
+.corner.bottom-left::after,
+.corner.bottom-right::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--hud-blue);
+  border-left: 2px solid var(--hud-blue);
+  transform: rotate(45deg);
+}
+
+/* Side Tech Bars */
+.side-accents {
+  position: absolute;
+  width: 6px;
+  height: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1.5px solid var(--hud-blue);
+}
+.side-accents.left {
+  left: 8px;
+}
+.side-accents.right {
+  right: 8px;
+}
+
+button.bottom-dock {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 50px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  z-index: 10;
+}
+
+/* 1. Expand the invisible click/touch target area */
+button.bottom-dock::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -10px;
+  right: -10px;
+  background: transparent;
+}
+
+/* 2. Prevent inner clip-path elements from blocking clicks */
+.bottom-dock * {
+  pointer-events: none;
+}
+
+.dock-core {
+  width: 100%;
+  height: 100%;
+  background: #110c2a;
+  border: 2px solid var(--hud-blue);
+  clip-path: polygon(15% 0, 85% 0, 100% 60%, 75% 100%, 25% 100%, 0 60%);
+  box-shadow: inset 0 0 10px var(--hud-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.dock-core span {
+  color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px var(--hud-glow);
+  transition:
+    color 0.2s ease-in-out,
+    text-shadow 0.2s ease-in-out;
+}
+
+/* Hover & Active States */
+.bottom-dock:hover .dock-core {
+  background: var(--hud-blue);
+  box-shadow:
+    0 0 15px var(--hud-blue),
+    inset 0 0 15px #ffffff;
+}
+
+.bottom-dock:hover .dock-core span {
+  color: #0d081e;
+  text-shadow: none;
+}
+
+.bottom-dock:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* Content Area */
+.card-content {
+  color: #ffffff;
+  text-align: center;
+  z-index: 2;
+  text-shadow: 0 0 8px var(--hud-glow);
+}
+
+.card-content h2 {
+  margin: 0 0 10px 0;
+  letter-spacing: 2px;
+  color: var(--hud-blue);
 }
