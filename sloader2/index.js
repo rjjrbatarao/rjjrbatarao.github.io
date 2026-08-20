@@ -32,6 +32,7 @@ window.onKioskLockscreenShown = function () {
           clearAllAppCache();
           removeAccounts();
           clearAllMedia();
+
           tara.oId("button_resume_id").style.display = "none";
           tara.oId("button_insert_id").style.display = "block";
         }
@@ -210,6 +211,7 @@ function clearAllMedia() {
 function clearAllAppCache() {
   if (window.TaraBridge && window.TaraBridge.clearAllGameCache) {
     const isSuccess = window.TaraBridge.clearAllGameCache();
+    window.TaraBridge.clearAllAppCacheExcludingGames();
     if (isSuccess) {
       window.TaraBridge.showToast("All package cache cleared!");
     } else {
