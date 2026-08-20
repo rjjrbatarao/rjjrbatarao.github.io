@@ -4,7 +4,7 @@ const ASSETS_TO_CACHE = [
     '/sloader2',
     '/sloader2/index.html',
     '/sloader2/style.css',
-    '/sloader2/script.js',
+    '/sloader2/index.js',
     '/sloader2/obrajs.js',
     '/sloader2/midori.umd.js',
     '/sloader2/three.min.js',
