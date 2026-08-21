@@ -1511,7 +1511,8 @@ label {
 
 button.bottom-dock {
   position: absolute;
-  bottom: -2px;
+  /* Change from bottom: -2px to sit fully inside */
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   width: 260px;
@@ -1522,6 +1523,10 @@ button.bottom-dock {
   cursor: pointer;
   outline: none;
   z-index: 10;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* 1. Expand the invisible click/touch target area */
@@ -1554,7 +1559,7 @@ button.bottom-dock::before {
 }
 
 .dock-core span {
-  color: var(--hud-blue);
+  color: #ffffff;
   font-family: "Segoe UI", sans-serif;
   font-weight: 800;
   font-size: 14px;
