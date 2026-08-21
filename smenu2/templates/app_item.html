@@ -10,21 +10,6 @@
     <div class="side-accents left"></div>
     <div class="side-accents right"></div>
 
-    <!-- Bottom Console Dock (Play Button) -->
-    <button
-      class="bottom-dock"
-      aria-label="Play"
-      onClick="${app_button_play}"
-      id="${app_play_id}"
-      data-name="${app_name}"
-    >
-      <div class="dock-core">
-        <span>PLAY</span>
-      </div>
-      <div class="dock-wing left"></div>
-      <div class="dock-wing right"></div>
-    </button>
-
     <img id="${app_icon_id}" class="img-medium" src="${app_icon}" />
     <span class="anim-tag" data-anim>${app_is_system}</span>
     <h2 class="anim-title" data-anim>${app_number}. ${app_name}</h2>
@@ -33,4 +18,18 @@
       ${app_is_online} ${app_is_offline}<br />
     </p>
   </div>
+  <!-- Bottom Console Dock (Play Button) -->
+  <button
+    class="bottom-dock"
+    aria-label="Play"
+    onClick="${app_button_play}"
+    id="${app_play_id}"
+    data-name="${app_name}"
+  >
+    <div class="dock-core">
+      <span>PLAY</span>
+    </div>
+    <div class="dock-wing left"></div>
+    <div class="dock-wing right"></div>
+  </button>
 </div>
