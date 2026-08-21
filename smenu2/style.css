@@ -1510,15 +1510,12 @@ label {
 }
 
 button.bottom-dock {
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
   position: absolute;
   bottom: -2px;
   left: 50%;
   transform: translateX(-50%);
   width: 260px;
-  height: 50px;
+  height: 55px;
   background: transparent;
   border: none;
   padding: 0;
@@ -1557,7 +1554,7 @@ button.bottom-dock::before {
 }
 
 .dock-core span {
-  color: #ffffff;
+  color: var(--hud-blue);
   font-family: "Segoe UI", sans-serif;
   font-weight: 800;
   font-size: 14px;
