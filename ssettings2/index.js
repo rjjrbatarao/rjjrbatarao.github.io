@@ -21,7 +21,7 @@ function onLoadEvent() {
       displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
     };
     console.log("Device System Info:", info);
-
+  }
 }
 
 
