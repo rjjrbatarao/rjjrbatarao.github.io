@@ -7,7 +7,7 @@ const ASSETS_TO_CACHE = [
     '/ssettings2/index.js',
     '/ssettings2/obrajs.js',
     '/ssettings2/sst.ttf',
-
+    ]
 // 1. Install & Cache
 self.addEventListener('install', (event) => {
     // Force activating immediately without waiting for existing clients to close
