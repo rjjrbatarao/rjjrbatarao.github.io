@@ -18,7 +18,8 @@
     <script src="./obrajs.js"></script>
     <link rel="shortcut icon" href="data:," />
     <!-- X styles -->
-    <link rel="stylesheet" href="style.css"></link>
+	<link rel="stylesheet" href="./game.css" />
+    <link rel="stylesheet" href="./style.css"></link>
   </head>
 
   <body>
@@ -31,7 +32,7 @@
       ⚙️
     </button>
     <div class="ui-container" id="settings_id"></div>
-    <dialog id="settingsModal" class="glass-modal">
+    <dialog id="settingsModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both">
       <div class="modal-content">
         <button class="close-btn" onclick="document.getElementById('settingsModal').close()" aria-label="Close modal">&times;</button>
         <h2>
@@ -62,11 +63,10 @@
             <span id="audioValue" class="slider-value">50%</span>
           </div>
         </div>
-
       </div>
     </dialog>
 
-    <dialog id="recentModal" class="glass-modal">
+    <dialog id="recentModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both">
       <div class="modal-content">
         <button class="close-btn" onclick="document.getElementById('recentModal').close()" aria-label="Close modal">&times;</button>
         <h2>
@@ -76,7 +76,7 @@
       </div>
     </dialog>
 
-    <dialog id="infoModal" class="glass-modal">
+    <dialog id="infoModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both">
       <div class="modal-content">
         <button class="close-btn" onclick="document.getElementById('infoModal').close()" aria-label="Close modal">&times;</button>
         <h2>
@@ -87,7 +87,7 @@
     </dialog>
 
 
-    <dialog id="gameModal" class="glass-modal">
+    <dialog id="gameModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both">
       <div class="modal-content">
         <button class="close-btn" onclick="document.getElementById('gameModal').close()" aria-label="Close modal">&times;</button>
         <h2>
@@ -99,9 +99,9 @@
       </div>
     </dialog>
 
-    <dialog id="coinModal" class="glass-modal "></dialog>
+    <dialog id="coinModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both"></dialog>
 
-    <div class="loading-overlay">
+    <div class="loading-overlay hidden">
       <div class="glass-card">
         <div class="spinner"></div>
         <h2>LOADING GAME MENU...</h2>

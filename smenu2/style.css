@@ -710,12 +710,16 @@ textarea {
 }
 
 /* The Modal Container */
-.glass-modal {
+.game-modal {
+  top: 20vh;
+  position: absolute;
   padding: 2.5rem;
   max-width: 450px;
   width: 90%;
+  max-height: 350px;
+  overflow: auto;
   border-radius: 5px;
-  color: #ffffff;
+  color: rgb(40, 254, 12);
 
   /* 1. Semi-transparent background */
   background: rgba(255, 255, 255, 0.07);
@@ -724,22 +728,32 @@ textarea {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px); /* Safari support */
 
-  /* 3. Subtle outer border to simulate glass refraction */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-
-  /* 4. Drop shadow to separate the card from background layers */
-  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+  
+  	--aug-clip-t1: initial;
+    --aug-clip-t2: initial;
+    --aug-clip-r1: initial;
+    --aug-clip-r2: initial;
+    --aug-clip-l1: initial;
+    --aug-clip-l2: initial;
+	--aug-clip-b1: initial;
+    --aug-clip-b2: initial;
+	--aug-t-extend1: 50%;
+    --aug-r-extend1: 50%;
+    --aug-l-extend1: 50%;
+	--aug-b-extend1: 50%;
+   --aug-border-all: 10px;
+  --aug-border-bg: linear-gradient(rgb(89, 71, 255), rgb(60, 179, 113));
 }
 
 /* The Backdrop Overlay (dim and blur everything behind the modal) */
-.glass-modal::backdrop {
+.game-modal::backdrop {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
 /* Optional: Smooth fade-in animation */
-.glass-modal[open] {
+.game-modal[open] {
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -757,7 +771,7 @@ textarea {
   right: -1.5rem; /* Shifts button toward right padding area */
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(241, 3, 3, 0.6);
   font-size: 2rem; /* Generates a prominent, crisp X symbol */
   line-height: 1;
   cursor: pointer;
@@ -770,7 +784,7 @@ textarea {
 /* Hover and Focus States for accessibility and micro-interactions */
 .close-btn:hover,
 .close-btn:focus {
-  color: #ffffff;
+  color: #fb0505;
   transform: scale(1.15);
   outline: none;
 }
@@ -1019,13 +1033,11 @@ textarea {
 }
 
 /* The Modal Container */
-.glass-modal {
-  top: 30vh;
+.game-modal {
   padding: 2.5rem;
   max-width: 450px;
   width: 90%;
-  border-radius: 5px;
-  color: #ffffff;
+  color: rgb(36, 12, 254);
   z-index: 9999;
   /* 1. Semi-transparent background */
   background: rgba(255, 255, 255, 0.07);
@@ -1039,17 +1051,32 @@ textarea {
 
   /* 4. Drop shadow to separate the card from background layers */
   box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
+	--aug-clip-t1: initial;
+    --aug-clip-t2: initial;
+    --aug-clip-r1: initial;
+    --aug-clip-r2: initial;
+    --aug-clip-l1: initial;
+    --aug-clip-l2: initial;
+	--aug-clip-b1: initial;
+    --aug-clip-b2: initial;
+	--aug-t-extend1: 50%;
+    --aug-r-extend1: 50%;
+    --aug-l-extend1: 50%;
+	--aug-b-extend1: 50%;
+   --aug-border-all: 10px;
+  --aug-border-bg: linear-gradient(rgb(89, 71, 255), rgb(60, 179, 113));
+
 }
 
 /* The Backdrop Overlay (dim and blur everything behind the modal) */
-.glass-modal::backdrop {
+.game-modal::backdrop {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
 /* Optional: Smooth fade-in animation */
-.glass-modal[open] {
+.game-modal[open] {
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -1067,7 +1094,7 @@ textarea {
   right: -1.5rem; /* Shifts button toward right padding area */
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: #fb0505;
   font-size: 2rem; /* Generates a prominent, crisp X symbol */
   line-height: 1;
   cursor: pointer;
