@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
     <title>My Web Page</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./game.css" />
+    <link rel="stylesheet" href="./style.css" />
     <script src="./three.min.js"></script>
     <script src="./midori.umd.js"></script>
   </head>
@@ -24,7 +25,7 @@
       <div class="lock-style" id="screen_status_id">LOCKED 🔒</div>
       <div class="timer-style" id="remaining_time_id">00:00:00</div>
     </div>
-    <dialog id="coinModal" class="glass-modal"></dialog>
+    <dialog id="coinModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both"></dialog>
     <script src="obrajs.js"></script>
     <script src="index.js"></script>
     <script src="settings.js"></script>

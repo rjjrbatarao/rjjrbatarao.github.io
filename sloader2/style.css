@@ -118,13 +118,12 @@ svg {
 }
 
 /* The Modal Container */
-.glass-modal {
-  top: 30vh;
+.game-modal {
+  top: 20vh;
   padding: 2.5rem;
   max-width: 450px;
   width: 90%;
-  border-radius: 5px;
-  color: #ffffff;
+  color: rgb(40, 254, 12);
   z-index: 9999;
   /* 1. Semi-transparent background */
   background: rgba(255, 255, 255, 0.07);
@@ -133,22 +132,32 @@ svg {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px); /* Safari support */
 
-  /* 3. Subtle outer border to simulate glass refraction */
-  border: 1px solid rgba(255, 255, 255, 0.15);
+	--aug-clip-t1: initial;
+    --aug-clip-t2: initial;
+    --aug-clip-r1: initial;
+    --aug-clip-r2: initial;
+    --aug-clip-l1: initial;
+    --aug-clip-l2: initial;
+	--aug-clip-b1: initial;
+    --aug-clip-b2: initial;
+	--aug-t-extend1: 50%;
+    --aug-r-extend1: 50%;
+    --aug-l-extend1: 50%;
+	--aug-b-extend1: 50%;
+   --aug-border-all: 10px;
+  --aug-border-bg: linear-gradient(rgb(89, 71, 255), rgb(60, 179, 113));
 
-  /* 4. Drop shadow to separate the card from background layers */
-  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* The Backdrop Overlay (dim and blur everything behind the modal) */
-.glass-modal::backdrop {
+.game-modal::backdrop {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
 /* Optional: Smooth fade-in animation */
-.glass-modal[open] {
+.game-modal[open] {
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -166,7 +175,7 @@ svg {
   right: -1.5rem; /* Shifts button toward right padding area */
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
   font-size: 2rem; /* Generates a prominent, crisp X symbol */
   line-height: 1;
   cursor: pointer;
@@ -264,7 +273,7 @@ svg {
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-top: 8px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(118, 246, 54, 0.6);
 }
 
 .colon {
@@ -514,4 +523,22 @@ label {
 }
 .s-button.accent-btn:hover {
   background: rgba(0, 122, 255, 0.6);
+}
+
+.anim-btn {
+  background: #6a00ff;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  clip-path: polygon(
+    10px 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%,
+    0 10px
+  );
 }
