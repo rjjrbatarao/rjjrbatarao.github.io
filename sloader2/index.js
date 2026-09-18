@@ -146,9 +146,14 @@ function onLoadEvent() {
         if (coinTimer != null) {
           clearTimeout(coinTimer);
         }
-        coinFunc();
-        tara.oId('coinModal').show();
-        window.TaraBridge.sendBleCommand("DATA:ON");
+		const bluetoothState = window.TaraBridge.isBluetoothConnected();
+		if (bluetoothState) {
+			coinFunc();
+			tara.oId('coinModal').show();
+			window.TaraBridge.sendBleCommand("DATA:ON");
+		} else {
+			window.TaraBridge.showToast("Credit Terminal not connected!");
+		}
       },
       button_resume_event: (event) => {
         window.TaraBridge.moveToMenuWebview();
