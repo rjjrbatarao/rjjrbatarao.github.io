@@ -1,11 +1,7 @@
 <div class="modal-content center-items">
-  <button
-    class="close-btn"
-    onclick="${button_insert_close_event}"
-    aria-label="Close modal"
-  >
-    &times;
-  </button>
+  <div class="credit-wrapper">
+    <div id="coins_id" class="time-larger">₱0</div>
+  </div>
   <div class="time-container">
     <!-- Hours -->
     <div class="time-box-wrapper">
@@ -29,15 +25,21 @@
       <div class="time-label">Secs</div>
     </div>
   </div>
-
-  <div id="coins_id" class="time-larger">₱0</div>
-  <div class="app-button-start">
+  <div class="button-column app-button-start">
     <button
       id="${button_start_id}"
       class="anim-btn"
+      style="width: 150px"
       onclick="${button_start_time_event}"
     >
       DONE
+    </button>
+    <button
+      class="anim-btn"
+      style="width: 150px"
+      onclick="${button_insert_close_event}"
+    >
+      CANCEL
     </button>
   </div>
 </div>
