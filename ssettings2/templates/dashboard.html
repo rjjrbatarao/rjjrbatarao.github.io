@@ -1,0 +1,141 @@
+<main>
+  <section class="heading">
+    <div>
+      <div class="eyebrow">YOUR BUSINESS, AT A GLANCE</div>
+      <h1>Overview</h1>
+      <p class="subtitle">Welcome back! Here’s how things are looking.</p>
+    </div>
+    <div class="actions">
+      <select id="period" aria-label="Date range">
+        <option value="30">Sep 1 – Sep 30, 2026</option>
+        <option value="7">Sep 24 – Sep 30, 2026</option>
+        <option value="90">Jul 1 – Sep 30, 2026</option>
+      </select>
+    </div>
+  </section>
+  <section class="metrics" id="metrics"></section>
+  <section class="charts">
+    <div class="card panel">
+      <div class="panel-header">
+        <h2>Revenue overview</h2>
+        <div class="tabs" aria-label="Chart interval">
+          <button data-interval="daily">Daily</button
+          ><button class="selected" data-interval="weekly">Weekly</button
+          ><button data-interval="monthly">Monthly</button>
+        </div>
+      </div>
+      <div class="desc">A closer look at your business performance</div>
+      <div class="legend">
+        <span><i class="dot"></i>Current period</span
+        ><span><i class="dot previous"></i>Previous period</span
+        ><span style="margin-left: auto; color: #a9a5cf">USD</span>
+      </div>
+      <div class="chart-area">
+        <canvas
+          id="revenue"
+          aria-label="Revenue comparison line chart"
+          role="img"
+        ></canvas>
+      </div>
+    </div>
+    <div class="card panel">
+      <div class="panel-header">
+        <h2>Traffic sources</h2>
+        <span style="color: #a9a5cf">•••</span>
+      </div>
+      <div class="desc">Where your audience finds you</div>
+      <div class="donut">
+        <canvas
+          id="traffic"
+          role="img"
+          aria-label="Traffic sources: direct 42%, organic 28%, referral 18%, social 12%"
+        ></canvas>
+        <div class="donut-center">
+          <strong id="visitors">24,892</strong><span>Total visitors</span>
+        </div>
+      </div>
+      <div class="sources">
+        <div class="source">
+          <span><i class="dot"></i>Direct</span><strong>42%</strong>
+        </div>
+        <div class="source">
+          <span
+            ><i class="dot" style="background: #6a66ed"></i>Organic search</span
+          ><strong>28%</strong>
+        </div>
+        <div class="source">
+          <span><i class="dot" style="background: #d8d5ff"></i>Referral</span
+          ><strong>18%</strong>
+        </div>
+        <div class="source">
+          <span><i class="dot" style="background: #5a5596"></i>Social</span
+          ><strong>12%</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bottom">
+    <div class="card" id="transactions">
+      <div class="table-header">
+        <div>
+          <h2>Recent transactions</h2>
+          <div class="desc">The latest activity across your workspace</div>
+        </div>
+        <button class="text-link" id="view-all">View all ↗</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>CUSTOMER</th>
+              <th>STATUS</th>
+              <th>DATE</th>
+              <th>AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card panel" id="goals">
+      <div class="panel-header">
+        <h2>Monthly goals</h2>
+        <span class="badge">September</span>
+      </div>
+      <div class="desc">Small steps. Meaningful progress.</div>
+      <div class="goal">
+        <div class="goal-row">
+          <span>Revenue target</span><span>$48,295 / $60,000</span>
+        </div>
+        <div class="track"><div style="width: 80%"></div></div>
+      </div>
+      <div class="goal">
+        <div class="goal-row">
+          <span>New customers</span><span>1,248 / 1,500</span>
+        </div>
+        <div class="track">
+          <div style="width: 83%; background: #6c68c3"></div>
+        </div>
+      </div>
+      <div class="goal">
+        <div class="goal-row">
+          <span>Completed orders</span><span>1,842 / 2,500</span>
+        </div>
+        <div class="track">
+          <div style="width: 74%; background: #b4b0ef"></div>
+        </div>
+      </div>
+      <div class="insight">
+        ✧ &nbsp;<strong>You’re making great progress!</strong><br /><span
+          style="padding-left: 18px"
+          >You’ve reached 80% of your revenue goal.</span
+        >
+      </div>
+    </div>
+  </section>
+  <footer>
+    <span>© 2026 Orbit Analytics · Demo workspace</span
+    ><span class="live">Sample data · Updated just now</span>
+  </footer>
+</main>
+<div id="toast" role="status"></div>

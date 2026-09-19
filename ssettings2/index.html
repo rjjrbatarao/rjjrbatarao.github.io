@@ -1,19 +1,102 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
     <link rel="icon" href="data:," />
-    <title>My Web Page</title>
-    <link rel="stylesheet" href="style.css" />
-
+    <title>PisoTab Settings</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
+    />
+    <link rel="shortcut icon" href="data:," />
+    <link rel="stylesheet" href="./swiper.min.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
+
   <body>
-	<h2>TEST SETTINGS</h2>
-    <script src="obrajs.js"></script>
-    <script src="index.js"></script>
+    <svg style="display: none" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="grid" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </symbol>
+      <symbol id="chart" viewBox="0 0 24 24">
+        <path d="M4 4v16h17M8 15v-4m5 4V7m5 8V4" />
+      </symbol>
+      <symbol id="users" viewBox="0 0 24 24">
+        <circle cx="9" cy="8" r="3" />
+        <path
+          d="M3 20v-2a6 6 0 0 1 12 0v2m1-15a3 3 0 0 1 0 6m2 3c3 1 3 3 3 6"
+        />
+      </symbol>
+      <symbol id="bag" viewBox="0 0 24 24">
+        <path d="M4 8h16l1 13H3L4 8Zm4 0V6a4 4 0 0 1 8 0v2" />
+      </symbol>
+      <symbol id="arrow" viewBox="0 0 24 24">
+        <path d="m4 16 6-6 4 4 6-9m-6 0h6v6" />
+      </symbol>
+      <symbol id="bell" viewBox="0 0 24 24">
+        <path d="M5 17h14l-2-3V9A5 5 0 0 0 7 9v5l-2 3Zm5 3h4" />
+      </symbol>
+      <symbol id="settings" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4" />
+        <path d="m9 3 6 0 1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1Z" />
+      </symbol>
+      <symbol id="download" viewBox="0 0 24 24">
+        <path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5" />
+      </symbol>
+    </svg>
+
+    <!-- Swiper  -->
+    <div class="header">
+      <div class="swiper xsmall-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide filter">
+            <svg class="icon"><use href="#grid" /></svg>&nbsp;Dashboard<button
+              class="btn"
+              onclick="taraFilter('dashboard')"
+            ></button>
+          </div>
+          <div class="swiper-slide filter">
+            <svg class="icon"><use href="#grid" /></svg>&nbsp;Game Menu<button
+              class="btn"
+              onclick="taraFilter('game')"
+            ></button>
+          </div>
+          <div class="swiper-slide filter">
+            <svg class="icon"><use href="#bag" /></svg>&nbsp;Lockscreen<button
+              class="btn"
+              onclick="taraFilter('lockscreen')"
+            ></button>
+          </div>
+          <div class="swiper-slide filter">
+            <svg class="icon"><use href="#chart" /></svg>&nbsp;Rates<button
+              class="btn"
+              onclick="taraFilter('rates')"
+            ></button>
+          </div>
+          <div class="swiper-slide filter">
+            <svg class="icon"><use href="#settings" /></svg>&nbsp;Others<button
+              class="btn"
+              onclick="taraFilter('others')"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="app-root"></div>
+    <div id="toast" role="status"></div>
+
+    <script src="./obrajs.js"></script>
+    <script src="./chart.umd.min.js"></script>
+    <script src="./ui.js"></script>
+    <script src="./swiper.min.js"></script>
+    <script src="./index.js"></script>
 
     <script>
+      // Register the service worker
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker

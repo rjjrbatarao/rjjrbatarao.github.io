@@ -1,0 +1,46 @@
+<div class="settings-grid">
+  <div class="card panel">
+    <div class="panel-header">
+      <h2>Image library <span class="badge">${value0}</span></h2>
+      <button class="btn danger" id="clear-images">Clear cache</button>
+    </div>
+    <p class="desc">PNG, JPEG, GIF or WebP · Up to 2 MB each · Saved locally</p>
+    <div class="upload-action">
+      <label class="btn primary upload-label mdc-contained" for="image-upload"
+        ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M19 18H5a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2ZM12 4a1 1 0 0 1 1 1v7h2a1 1 0 0 1 .77 1.63l-3 3.5a1 1 0 0 1-1.54 0l-3-3.5A1 1 0 0 1 9 12h2V5a1 1 0 0 1 1-1Z"
+          /></svg
+        >Add images</label
+      >
+      <input
+        id="image-upload"
+        class="visually-hidden"
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/gif"
+        multiple
+        tabindex="-1"
+      />
+      <span class="desc upload-hint">Choose files to upload</span>
+    </div>
+    <div class="image-list">${value1}</div>
+  </div>
+  <div class="card panel">
+    <h2>Playback preferences</h2>
+    ${value2}${value3}<label class="field" for="interval"
+      >Time interval <output id="interval-value">${value4} seconds</output
+      ><input
+        id="interval"
+        type="range"
+        min="1"
+        max="120"
+        step="1"
+        value="${value5}"
+      /><span class="desc">1 second – 120 seconds</span></label
+    ><button class="btn primary" id="save-images">Save preferences</button>
+    <p class="save-note">
+      Image changes save automatically. Playback settings are stored for this
+      frontend; no device is connected.
+    </p>
+  </div>
+</div>

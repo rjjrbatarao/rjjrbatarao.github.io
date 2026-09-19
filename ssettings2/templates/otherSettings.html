@@ -1,0 +1,63 @@
+<form id="others-form">
+  <div class="settings-grid">
+    <div>
+      <div class="card panel">
+        <h2>Time curfew</h2>
+        <p class="desc">
+          Set the time window when access should be restricted. Overnight
+          windows are supported.
+        </p>
+        <div class="form-grid">
+          <label class="field"
+            >From<input
+              type="time"
+              id="curfew-from"
+              required
+              value="${value0}" /></label
+          ><label class="field"
+            >To<input type="time" id="curfew-to" required value="${value1}"
+          /></label>
+        </div>
+      </div>
+      <div class="card panel">
+        <h2>Scheduled restart</h2>
+        <p class="desc">
+          Choose a daily restart time in the device’s local timezone.
+        </p>
+        <label class="field"
+          >Restart at<input
+            type="time"
+            id="restart-time"
+            required
+            value="${value2}"
+        /></label>
+      </div>
+    </div>
+    <div class="card panel">
+      <h2>Messaging</h2>
+      ${value3}<label class="field"
+        >Email address<input
+          type="email"
+          id="message-email"
+          placeholder="admin@example.com"
+          value="${value4}" /></label
+      ><label class="field"
+        >Messaging token<input
+          type="password"
+          id="message-token"
+          autocomplete="off"
+          placeholder="Enter your token"
+          value="${value5}"
+      /></label>
+      <p class="save-note">
+        For safety, the token stays in memory only and is cleared when you
+        reload. No messages are sent from this frontend.
+      </p>
+    </div>
+  </div>
+  <button class="btn primary" type="submit">Save settings</button>
+  <p class="save-note">
+    These settings are local only. Enforcing curfew, restarting a device and
+    sending messages require a backend integration.
+  </p>
+</form>

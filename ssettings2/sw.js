@@ -5,9 +5,25 @@ const ASSETS_TO_CACHE = [
     '/ssettings2/index.html',
     '/ssettings2/style.css',
     '/ssettings2/index.js',
+    '/ssettings2/ui.js',
+    '/ssettings2/swiper.min.js',
+    '/ssettings2/swiper.min.css',
+    '/ssettings2/chart.umd.min.js',
+    '/ssettings2/templates/dashboard.html',
+    '/ssettings2/templates/imageCard.html',
+    '/ssettings2/templates/imageSettings.html',
+    '/ssettings2/templates/metricCard.html',
+    '/ssettings2/templates/otherSettings.html',
+    '/ssettings2/templates/pageShell.html',
+    '/ssettings2/templates/rateRow.html',
+    '/ssettings2/templates/ratesPage.html',
+    '/ssettings2/templates/toggleSwitch.html',
+    '/ssettings2/templates/transactionRow.html',
+    '/ssettings2/ui.js',
     '/ssettings2/obrajs.js',
     '/ssettings2/sst.ttf',
-    ]
+]
+
 // 1. Install & Cache
 self.addEventListener('install', (event) => {
     // Force activating immediately without waiting for existing clients to close

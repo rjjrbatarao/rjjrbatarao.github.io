@@ -1,0 +1,61 @@
+<div class="settings-grid">
+  <div class="card">
+    <div class="table-header">
+      <div>
+        <h2>Rate plans</h2>
+        <div class="desc">${rateCount} saved plans · PHP pricing</div>
+      </div>
+      <button class="btn" id="new-rate">＋ New rate</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>NAME</th>
+            <th>MINUTES</th>
+            <th>PRICE</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rateRows}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <form class="card panel" id="rate-form">
+    <h2>${formTitle}</h2>
+    <label class="field"
+      >Rate name<input
+        id="rate-name"
+        required
+        maxlength="60"
+        placeholder="e.g. Standard hour"
+        value="${rateName}"
+    /></label>
+    <div class="form-grid">
+      <label class="field"
+        >Duration (minutes)<input
+          id="rate-minutes"
+          required
+          type="number"
+          min="1"
+          max="100800"
+          step="1"
+          value="${durationMinutes}" /></label
+      ><label class="field"
+        >Price (PHP)<input
+          id="rate-price"
+          required
+          type="number"
+          min="0"
+          max="1000000"
+          step="0.01"
+          placeholder="0.00"
+          value="${price}"
+      /></label>
+    </div>
+    <button class="btn primary" type="submit">Save rate</button>${cancelButton}
+    <p class="save-note">Saved plans are retained in this browser.</p>
+  </form>
+</div>
