@@ -8,22 +8,20 @@ const slide_select = new Audio("slide.mp3");
 const beep_sound = new Audio("beep.mp3");
 const overlay = document.querySelector('.loading-overlay');
 
-
-
-
 window.onKioskMenuShown = function () {
   // Called function when webview is shown
-  if (window.TaraBridge) {
+  if (taraBridge) {
 
-    if (window.TaraBridge.isMenu() == true) {
-      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+    if (taraBridge.isMenu() == true) {
+      const remainingTime = taraBridge.getTimerRemainingSeconds();
       if (remainingTime > 0) {
-        window.TaraBridge.resumeBackgroundTimer();
+        taraBridge.resumeBackgroundTimer();
       }
-      window.TaraBridge.setGameDoNotDisturb(false);
-      window.TaraBridge.setKeepScreenAwake(true);
-      window.TaraBridge.playNotificationSound("notification");
+      taraBridge.setGameDoNotDisturb(false);
+      taraBridge.setKeepScreenAwake(true);
+      taraBridge.playNotificationSound("notification");
       setTimeout(() => {
+        console.log("resuming...");
         renderUserTime();
       }, 500);
     } else {
@@ -35,9 +33,14 @@ window.onKioskMenuShown = function () {
 
 window.onKioskMenuBle = function (data) {
   //console.log("got coin: ", data);
-  const user_coin = parseInt(data.replace("DATA:", ""));
-  if (user_coin > 0) {
-    totalCoin += user_coin;
+  const creditAmount = parseInt(data.replace("DATA:", ""));
+  const paymentType = "COIN"; // e.g., "COIN", "BILL", "GCASH", "MAYA"
+  if (creditAmount > 0) {
+    totalCoin += creditAmount;
+    const isSuccess = taraBridge.addSale("", creditAmount, paymentType);
+    // if (isSuccess) {
+    //   console.log("Sale recorded successfully with auto-generated UUIDv7!");
+    // }
   }
   if (beep_sound) {
     try {
@@ -68,8 +71,8 @@ function clickButton() {
 
 function triggerToast() {
   // Check if running inside our Android WebView container
-  if (window.TaraBridge) {
-    window.TaraBridge.showToast("Hello from Webview JS!");
+  if (taraBridge) {
+    taraBridge.showToast("Hello from Webview JS!");
   } else {
     //console.log("Not running inside Android WebView container");
   }
@@ -77,7 +80,7 @@ function triggerToast() {
 
 // 3. Launch an app programmatically from JS
 function openApp(packageName) {
-  const success = window.TaraBridge.launchApp(packageName);
+  const success = taraBridge.launchApp(packageName);
   if (!success) {
     alert("App could not be launched!");
   }
@@ -86,7 +89,7 @@ function openApp(packageName) {
 // 4. Launch an app programmatically from JS
 function closeApp(packageName) {
 
-  const success = window.TaraBridge.stopApp(packageName);
+  const success = taraBridge.stopApp(packageName);
   if (!success) {
     alert("App could not be stopped!");
   }
@@ -94,12 +97,12 @@ function closeApp(packageName) {
 
 // 5. Remove Google Accounts
 function removeAccounts() {
-  if (window.TaraBridge && window.TaraBridge.removeGoogleAccount) {
-    const isSuccess = window.TaraBridge.removeGoogleAccount();
+  if (taraBridge && taraBridge.removeGoogleAccount) {
+    const isSuccess = taraBridge.removeGoogleAccount();
     if (isSuccess) {
-      window.TaraBridge.showToast("All accouns cleared!");
+      taraBridge.showToast("All accouns cleared!");
     } else {
-      window.TaraBridge.showToast("No account exist");
+      taraBridge.showToast("No account exist");
     }
   } else {
     console.warn("TaraBridge interface not available.");
@@ -108,12 +111,12 @@ function removeAccounts() {
 
 // 6. Clear Standard Media Folders (Downloads, DCIM, Pictures, Videos)
 function clearAllMedia() {
-  if (window.TaraBridge && window.TaraBridge.clearDefaultMediaFolders) {
-    const isSuccess = window.TaraBridge.clearDefaultMediaFolders();
+  if (taraBridge && taraBridge.clearDefaultMediaFolders) {
+    const isSuccess = taraBridge.clearDefaultMediaFolders();
     if (isSuccess) {
-      window.TaraBridge.showToast("All default media folders cleared!");
+      taraBridge.showToast("All default media folders cleared!");
     } else {
-      window.TaraBridge.showToast("Some files could not be deleted.");
+      taraBridge.showToast("Some files could not be deleted.");
     }
   } else {
     console.warn("TaraBridge interface not available.");
@@ -122,14 +125,14 @@ function clearAllMedia() {
 
 // 7. Clear Specific Custom Folders
 function clearSpecificFolders() {
-  if (window.TaraBridge && window.TaraBridge.clearCustomFolders) {
+  if (taraBridge && taraBridge.clearCustomFolders) {
     const foldersToDelete = [
       "/sdcard/Download/TempPDFs",
       "/sdcard/DCIM/Screenshots"
     ];
 
     const jsonString = JSON.stringify(foldersToDelete);
-    const isSuccess = window.TaraBridge.clearCustomFolders(jsonString);
+    const isSuccess = taraBridge.clearCustomFolders(jsonString);
 
     //console.log("Custom folders clear status:", isSuccess);
   } else {
@@ -139,8 +142,8 @@ function clearSpecificFolders() {
 
 //8. Get network latency
 function getNetworkLatency() {
-  if (window.TaraBridge && window.TaraBridge.getNetworkLatency) {
-    const pingMs = window.TaraBridge.getNetworkLatency("8.8.8.8");
+  if (taraBridge && taraBridge.getNetworkLatency) {
+    const pingMs = taraBridge.getNetworkLatency("8.8.8.8");
     if (pingMs !== -1) {
       //console.log(`Current network latency: ${pingMs} ms`);
     } else {
@@ -153,100 +156,47 @@ function getNetworkLatency() {
 
 //9. set App performance
 function setGameMode(appName, gameMode) {
-  window.TaraBridge.setGameMode(appName, gameMode);
+  taraBridge.setGameMode(appName, gameMode);
 }
 
-function getDeviceInfo() {
+function initializeDevice() {
 
-  if (window.TaraBridge) {
+  if (taraBridge) {
     // 1. Get tablet info
-    const info = {
-      osVersion: window.TaraBridge.getOsVersion(),
-      sdkVersion: window.TaraBridge.getSdkInt(),
-      deviceModel: window.TaraBridge.getDeviceModel(),
-      manufacturer: window.TaraBridge.getManufacturer(),
-      appVersion: window.TaraBridge.getAppVersion(),
-      batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
-      isCharging: window.TaraBridge.isCharging(),
-      wifiIp: window.TaraBridge.getWifiIpAddress(),
-      ethIp: window.TaraBridge.getEthernetIpAddress(),
-      deviceSerial: window.TaraBridge.getDeviceSerial(),
-      cpuHz: window.TaraBridge.getCpuHz(),
-      ramMb: window.TaraBridge.getRamMb(),
-      cpuTemp: window.TaraBridge.getCpuTemp(),
-      displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
-      isBleConnected: window.TaraBridge.isBluetoothConnected()
-    };
-
-
     tara.oHtml("info_id", "./templates/app_info.html", {
-      app_version: window.TaraBridge.getAppVersion(),
-      device_model: window.TaraBridge.getDeviceModel(),
-      device_serial: window.TaraBridge.getDeviceSerial(),
-      device_manufacturer: window.TaraBridge.getManufacturer(),
-      os_version: window.TaraBridge.getOsVersion(),
-      sdk_version: window.TaraBridge.getSdkInt(),
-      cpu_brand: window.TaraBridge.getCpuBrand(),
-      cpu_cores: window.TaraBridge.getCpuCount(),
-      cpu_model: window.TaraBridge.getCpuModel(),
-      ip_address: window.TaraBridge.getWifiIpAddress(),
-    })
-
-
-    tara.oHtml("settings_id", "./templates/settings.html", {
+      app_version: taraBridge.getAppVersion(),
+      device_model: taraBridge.getDeviceModel(),
+      device_serial: taraBridge.getDeviceSerial(),
+      device_manufacturer: taraBridge.getManufacturer(),
+      os_version: taraBridge.getOsVersion(),
+      sdk_version: taraBridge.getSdkInt(),
+      cpu_brand: taraBridge.getCpuBrand(),
+      cpu_cores: taraBridge.getCpuCount(),
+      cpu_model: taraBridge.getCpuModel(),
+      ip_address: taraBridge.getWifiIpAddress(),
     });
 
     //console.log("Device System Info:", info);
 
-    const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+    const remainingTime = taraBridge.getTimerRemainingSeconds();
     if (remainingTime > 0) {
-      window.TaraBridge.resumeBackgroundTimer();
+      taraBridge.resumeBackgroundTimer();
     }
 
-    //tara.oId("ipaddress_id").innerHTML = `IP Address: ${info.wifiIp}`;
-    //tara.oId("devicemodel_id").innerHTML = `Device Model: ${info.deviceModel}`;
-    //tara.oId("appversion_id").innerHTML = `App Version: ${info.appVersion}`;
 
-
-    // // 1. Get simple list of package strings
-    // const whitelistedPackageNames = JSON.parse(window.TaraBridge.getWhitelistedApps());
-    // console.log("Whitelisted Packages:", whitelistedPackageNames);
-    // // Output: ["pl.snowdog.kiosk", "com.android.chrome", "com.sec.android.app.popupcalculator"]
-
-    // // 2. Get detailed list with App Names
-    // const whitelistedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsDetails());
-    // console.log("Whitelisted App Details:", whitelistedDetails);
-
-    // // 3. Get detailed list with Categorized App Names
-    // const whitelistedCategorizedDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByCategory());
-    // console.log("Whitelisted App Categorized Details:", whitelistedCategorizedDetails);
-
-    // // 4. Get detailed list with Online and offline catagory App Names
-    // const whitelistedConnectivityDetails = JSON.parse(window.TaraBridge.getWhitelistedAppsGroupedByConnectivity());
-    // console.log("Whitelisted App Connectivity Details:", whitelistedConnectivityDetails);
-
-    // // 4. Get detailed list with Online and offline catagory App Names
-    // const runningBackgroundDetails = JSON.parse(window.TaraBridge.getRunningBackgroundApps());
-    // console.log("Running Apps in background:", runningBackgroundDetails);
-
-    // // 5. Get recent apps opened
-    // const recentOpenedAppsDetails = JSON.parse(window.TaraBridge.getPreviouslyOpenedApp());
-    // console.log("Recent Apps Opened:", recentOpenedAppsDetails);
-
-    return info;
   } else {
     console.warn("TaraBridge interface not found");
-    return null;
+
   }
 
 }
 
 
-getDeviceInfo();
+initializeDevice();
 
 let icon_index = 0;
-let white_listed_apps = window.TaraBridge.getWhitelistedAppsDetails();
-let filtered_apps = JSON.parse(white_listed_apps);
+let white_listed_apps = taraBridge.getWhitelistedAppsDetails();
+let filtered_apps = white_listed_apps;
 let filter_character = "A-Z : " + filtered_apps.length;
 //console.log("all apps:", filtered_apps);
 
@@ -254,7 +204,7 @@ let filter_character = "A-Z : " + filtered_apps.length;
 const taraFilter = (alphabet) => {
   icon_index = 0;
 
-  filtered_apps = filterByStartingLetter(JSON.parse(white_listed_apps), 'appName', alphabet);
+  filtered_apps = filterByStartingLetter(white_listed_apps, 'appName', alphabet);
   filter_character = alphabet + " : " + filtered_apps.length;
   renderAllApps();
 }
@@ -262,7 +212,7 @@ const taraFilter = (alphabet) => {
 const taraAllApps = () => {
   icon_index = 0;
 
-  filtered_apps = JSON.parse(white_listed_apps);
+  filtered_apps = white_listed_apps;
   filter_character = "A-Z : " + filtered_apps.length;
   renderAllApps();
 
@@ -308,7 +258,7 @@ const allApps = () => {
 };
 
 const recentApps = () => {
-  const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+  const apps = taraBridge.getRunningBackgroundAppsDetails();
   let app_map = "";
   apps.map((app) => {
     app_map += tara.oString("./templates/app_recents_item.html", {
@@ -319,8 +269,8 @@ const recentApps = () => {
       app_category: app.category,
       app_clear_button: (event) => {
         console.log(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
-        window.TaraBridge.stopRunningBackgroundApp(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
-        window.TaraBridge.clearAppCacheByPackage(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
+        taraBridge.stopRunningBackgroundApp(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
+        taraBridge.clearAppCacheByPackage(event.currentTarget.id.replaceAll("_icon_clear_recents", ""));
         renderRecentApps();
       },
       app_play_button: (event) => {
@@ -338,16 +288,16 @@ const renderRecentApps = () => {
   tara.oHtml("recent_apps", "./templates/app_recents_layout.html", {
     recent_button_clear_all: "recent_button_clear_all",
     clear_all_button: (event) => {
-      let recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
-      window.TaraBridge.showToast("Stopping " + recentAppCount + " background apps");
-      const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+      let recentAppCount = taraBridge.getRunningBackgroundAppsCount();
+      taraBridge.showToast("Stopping " + recentAppCount + " background apps");
+      const apps = JSON.parse(taraBridge.getRunningBackgroundAppsDetails());
       let app_map = "";
       apps.map((app) => {
-        window.TaraBridge.stopRunningBackgroundApp(app.packageName);
+        taraBridge.stopRunningBackgroundApp(app.packageName);
       })
       setTimeout(() => {
         renderRecentApps();
-        window.TaraBridge.playNotificationSound("notification");
+        taraBridge.playNotificationSound("notification");
       }, 2000);
     },
     init: () => {
@@ -355,8 +305,8 @@ const renderRecentApps = () => {
         clearInterval(recent_apps_timer);
       }
       recent_apps_timer = setInterval(() => {
-        recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
-        console.log("apps count: ", recentAppCount);
+        recentAppCount = taraBridge.getRunningBackgroundAppsCount();
+        //console.log("apps count: ", recentAppCount);
         if (recentAppCount) {
           tara.oId("recent_app_count").innerHTML = recentAppCount;
           tara.oId("recent_app_count").style.display = "block";
@@ -371,7 +321,7 @@ const renderRecentApps = () => {
 const renderGameMode = (appPackage, appName) => {
   let info = "App running " + appName + " in Turbo Mode"
   tara.oHtml("game_mode_id", "./templates/modal_game_mode.html", {
-    app_game_info: "Turbo ⚡ or Battery 🔋",
+    app_game_info: "Turbo mode: ⚡ or Battery mode: 🔋",
     app_name: appName,
     app_performance_id: appPackage + "_app_performance",
     app_battery_id: appPackage + "_app_battery",
@@ -384,10 +334,10 @@ const renderGameMode = (appPackage, appName) => {
       let appPackage = event.currentTarget.id.replaceAll("_app_performance", "");
       console.log("app name", appName);
       setGameMode(appPackage, "performance");
-      window.TaraBridge.clearGameCacheByPackage(appPackage);
-      const apps = JSON.parse(window.TaraBridge.getRunningBackgroundAppsDetails());
+      taraBridge.clearGameCacheByPackage(appPackage);
+      const apps = JSON.parse(taraBridge.getRunningBackgroundAppsDetails());
       apps.map((app) => {
-        window.TaraBridge.stopRunningBackgroundApp(app.packageName);
+        taraBridge.stopRunningBackgroundApp(app.packageName);
       })
       openApp(appPackage);
       tara.oId('gameModal').close();
@@ -410,18 +360,52 @@ let userInterval = null;
 
 const renderUserTime = () => {
   tara.oHtml("user_time_id", "./templates/user_time.html", {
-    timer_id: "timer_id",
-    timer_value: "00:00:00",
     button_insert_id: "button_insert_id",
     init: () => {
+
+      const containers = document.querySelectorAll('.digit-container');
+      containers.forEach(container => {
+        for (let i = 0; i <= 9; i++) {
+          const div = document.createElement('div');
+          div.className = 'digit';
+          div.textContent = i;
+          container.appendChild(div);
+        }
+      });
+
+      function updateClock(totalSeconds) {
+        const hrs = Math.floor(totalSeconds / 3600) % 24;
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        const hStr = String(hrs).padStart(2, '0');
+        const mStr = String(mins).padStart(2, '0');
+        const sStr = String(secs).padStart(2, '0');
+
+        // FIX: Split strings by explicit character array indices [0] and [1]
+        setDigit('h1', hStr[0]);
+        setDigit('h2', hStr[1]);
+        setDigit('m1', mStr[0]);
+        setDigit('m2', mStr[1]);
+        setDigit('s1', sStr[0]);
+        setDigit('s2', sStr[1]);
+      }
+
+      function setDigit(id, singleDigitValue) {
+        const container = document.getElementById(id);
+        // Translate exactly by 1em intervals matching individual character bounds
+        container.style.transform = `translateY(-${singleDigitValue * 1}em)`;
+      }
+
       if (userInterval != null) {
         clearInterval(userInterval);
       }
       userInterval = setInterval(() => {
-        let rawUserSecondsTime = window.TaraBridge.getTimerRemainingSeconds();
-        //console.log("remaining time", rawUserSecondsTime)
-        let currentUserTime = formatSeconds(rawUserSecondsTime);
-        tara.oId("timer_id").innerHTML = currentUserTime;
+        let rawUserSecondsTime = taraBridge.getTimerRemainingSeconds();
+        console.log("remaining time", rawUserSecondsTime)
+        // let currentUserTime = formatSeconds(rawUserSecondsTime);
+        // tara.oId("timer_id").innerHTML = currentUserTime;
+        updateClock(rawUserSecondsTime);
         if (rawUserSecondsTime <= 15) {
           if (beep_sound) {
             try {
@@ -444,13 +428,13 @@ const renderUserTime = () => {
       if (coinTimer != null) {
         clearTimeout(coinTimer);
       }
-      const bluetoothState = window.TaraBridge.isBluetoothConnected();
+      const bluetoothState = taraBridge.isBluetoothConnected();
       if (bluetoothState) {
         coinFunc();
         tara.oId('coinModal').show();
-        window.TaraBridge.sendBleCommand("DATA:ON");
+        taraBridge.sendBleCommand("DATA:ON");
       } else {
-        window.TaraBridge.showToast("Credit Terminal not connected!");
+        taraBridge.showToast("Credit Terminal not connected!");
       }
     }
   });
@@ -461,7 +445,7 @@ renderRecentApps();
 
 const openRecentAppModal = () => {
   renderRecentApps();
-  let recentAppCount = window.TaraBridge.getRunningBackgroundAppsCount();
+  let recentAppCount = taraBridge.getRunningBackgroundAppsCount();
   if (recentAppCount) {
     tara.oId("recent_button_clear_all").style.display = "block";
   } else {
@@ -471,7 +455,7 @@ const openRecentAppModal = () => {
 }
 
 const marqueueApps = () => {
-  const apps = JSON.parse(white_listed_apps);
+  const apps = white_listed_apps;
   let app_map = "";
   apps.map((app) => {
     app_map += tara.oString("./templates/app_icon.html", {
@@ -558,7 +542,7 @@ const renderAllApps = () => {
               }
             } catch (error) {
               //console.log("Error", error);
-              window.TaraBridge.showToast("No Apps Installed");
+              taraBridge.showToast("No Apps Installed");
             }
           },
           // Reset and trigger animation on slide transition
@@ -597,8 +581,8 @@ tara.oHtml("marqueue_id", "./templates/marqueue_layout.html", {
 });
 
 tara.oHtml("header", "./templates/header_layout.html", {
-  battery_value: window.TaraBridge.getBatteryLevel() + "%",
-  refresh_rate: window.TaraBridge.getScreenRefreshRate() + "hz",
+  battery_value: taraBridge.getBatteryLevel() + "%",
+  refresh_rate: taraBridge.getScreenRefreshRate() + "hz",
   time_id: "time_id",
   ping_id: "ping_id",
   battery_id: "battery_id",
@@ -607,11 +591,11 @@ tara.oHtml("header", "./templates/header_layout.html", {
   temp_id: "temp_id",
   initialize: () => {
     setInterval(() => {
-      const batteryLevel = window.TaraBridge.getBatteryLevel();
-      const displayRefreshRate = window.TaraBridge.getScreenRefreshRate();
-      const pingMs = window.TaraBridge.getNetworkLatency("8.8.8.8");
-      const bleStatus = window.TaraBridge.isBluetoothConnected() == true ? "UP" : "X";
-      const temperatureStatus = window.TaraBridge.getCpuTemp();
+      const batteryLevel = taraBridge.getBatteryLevel();
+      const displayRefreshRate = taraBridge.getScreenRefreshRate();
+      const pingMs = taraBridge.getNetworkLatency("8.8.8.8");
+      const bleStatus = taraBridge.isBluetoothConnected() == true ? "UP" : "X";
+      const temperatureStatus = taraBridge.getCpuTemp();
       tara.oId("ping_id").innerHTML = pingMs + "ms";
       tara.oId("blestatus_id").innerHTML = `${bleStatus}`;
       tara.oId("battery_id").innerHTML = batteryLevel + "%";
@@ -670,7 +654,11 @@ let coinTimer = null;
 const coinFunc = () => {
   coinTimer = setTimeout(() => {
     //console.log("data, total:", totalCoin);
-    totalTime = totalCoin * 60 * 1;
+    if (saved.rates.length > 0) {
+      totalTime = converterCreditToTime(totalCoin, saved.rates) * 60;
+    } else {
+      totalTime = totalCoin * 60 * 3;
+    }
     convertTime(totalTime);
     tara.oId("coins_id").innerHTML = "₱" + totalCoin;
     tara.oId("button_start_id").style.display = "block";
@@ -685,16 +673,16 @@ tara.oHtml("coinModal", "./templates/coin_modal.html", {
       clearTimeout(coinTimer);
     }
     tara.oId('coinModal').close();
-    window.TaraBridge.sendBleCommand("DATA:OFF");
+    taraBridge.sendBleCommand("DATA:OFF");
   },
   button_start_time_event: (event) => {
     if (totalTime > 0) {
       if (coinTimer != null) {
         clearTimeout(coinTimer);
       }
-      totalTime = totalTime + window.TaraBridge.getTimerRemainingSeconds();
-      window.TaraBridge.sendBleCommand("DATA:OFF");
-      window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
+      totalTime = totalTime + taraBridge.getTimerRemainingSeconds();
+      taraBridge.sendBleCommand("DATA:OFF");
+      taraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
       tara.oId('coinModal').close();
       totalCoin = 0;
       totalTime = 0;
@@ -859,7 +847,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // UI Update
     brightnessText.textContent = `${value}%`;
 
-    window.TaraBridge.setScreenBrightness(parseInt(value, 10));
+    taraBridge.setScreenBrightness(parseInt(value, 10));
     // Custom logic placeholder (e.g., updating a CSS filter or saving settings)
     //console.log(`System Brightness updated to: ${value}%`);
     if (slide_select) {
@@ -872,7 +860,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function onAudioChange(value) {
     // UI Update
     audioText.textContent = `${value}%`;
-    window.TaraBridge.setAudioLevel(parseInt(value, 10));
+    taraBridge.setAudioLevel(parseInt(value, 10));
     // Custom logic placeholder (e.g., mapping to a media player audio gain node)
     //console.log(`System Audio volume updated to: ${value}%`);
     if (slide_select) {
@@ -885,8 +873,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3. Inject initial values programmatically 
   // (This overrides any 'value="..."' attribute hardcoded in your HTML)
-  brightnessInput.value = window.TaraBridge.getScreenBrightness();
-  audioInput.value = window.TaraBridge.getAudioLevel();
+  brightnessInput.value = taraBridge.getScreenBrightness();
+  audioInput.value = taraBridge.getAudioLevel();
 
   // 4. Fire callbacks immediately on mount to sync text readouts
   onBrightnessChange(brightnessInput.value);
@@ -901,3 +889,26 @@ document.addEventListener("DOMContentLoaded", () => {
     onAudioChange(event.target.value);
   });
 });
+
+function converterCreditToTime(credit, rates) {
+  let totalMinutes = 0;
+  let remainingCredit = credit;
+
+  // Sort rates from highest price to lowest to guarantee largest tier selection first
+  const sortedRates = [...rates].sort((a, b) => b.price - a.price);
+
+  for (const rate of sortedRates) {
+    if (remainingCredit <= 0) break;
+
+    if (remainingCredit >= rate.price) {
+      const multiplier = Math.floor(remainingCredit / rate.price);
+
+      totalMinutes += multiplier * rate.minutes;
+      remainingCredit -= multiplier * rate.price;
+    }
+  }
+
+  return totalMinutes;
+}
+
+

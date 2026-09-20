@@ -52,7 +52,20 @@
     </g>
   </svg>
 </button>
-<span id="timer_id" class="dock-timer">${timer_value}</span>
+
+<div class="clock-container">
+  <div class="clock">
+    <div class="digit-container" id="h1"></div>
+    <div class="digit-container" id="h2"></div>
+    <div class="separator">:</div>
+    <div class="digit-container" id="m1"></div>
+    <div class="digit-container" id="m2"></div>
+    <div class="separator">:</div>
+    <div class="digit-container" id="s1"></div>
+    <div class="digit-container" id="s2"></div>
+  </div>
+</div>
+
 <button
   onclick="${button_insert_show_event}"
   id="${button_insert_id}"
