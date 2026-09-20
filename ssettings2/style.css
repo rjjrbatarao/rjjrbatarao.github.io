@@ -292,6 +292,11 @@ select {
   position: relative;
   overflow: hidden;
 }
+
+.hide {
+  display: none;
+}
+
 .metric-top {
   display: flex;
   align-items: center;

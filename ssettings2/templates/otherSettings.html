@@ -33,7 +33,7 @@
         /></label>
       </div>
     </div>
-    <div class="card panel">
+    <div class="card panel" hidden>
       <h2>Messaging</h2>
       ${value3}<label class="field"
         >Email address<input
@@ -53,6 +53,7 @@
         For safety, the token stays in memory only and is cleared when you
         reload. No messages are sent from this frontend.
       </p>
+      <button class="btn danger" id="clear-sales">Clear Sales</button>
     </div>
   </div>
   <button class="btn primary" type="submit">Save settings</button>

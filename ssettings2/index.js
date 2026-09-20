@@ -1,128 +1,48 @@
 
-const tara = new ObraJS();
+const taraBridge = new KioskService();
+
+taraBridge.showToast("Action completed successfully!");
+
+const todaySalesJson = taraBridge.getTodaySalesList();
+const tatalCount = taraBridge.getTotalSalesCount();
+const tatalSum = taraBridge.getTotalSalesSum();
+const todayGrouped = taraBridge.getGroupedByCredit();
+const dailySales = taraBridge.getDailySalesSummary();
+const weeklySales = taraBridge.getWeeklySalesSummary();
+const monthSales = taraBridge.getMonthlySalesSummary();
+
+// console.log("Latest sale:", todaySalesJson);
+// console.log("count:", tatalCount);
+// console.log("sum:", tatalSum);
+// console.log("grouped:", todayGrouped);
+// console.log("dailySales:", dailySales);
+// console.log("weeklySales:", weeklySales);
+// console.log("monthlySales:", monthSales);
+
+console.log("flatten: ", convertKeys(todaySalesJson, ['credit', 'timestamp']));
 
 
-
-const taraFilter = (menu) => {
+const menuItems = (menu) => {
     console.log(menu);
     if (menu == "dashboard") {
-        tara.oHtml("app-root", `./templates/${menu}.html`, {
+        obrajs.oHtml("app-root", `./templates/${menu}.html`, {
             init: () => {
                 metrics();
-                if (window.Chart) {
-                    Chart.defaults.color = "#c5d3ee";
-                    Chart.defaults.font.family = "'DM Sans', sans-serif";
-                    Chart.defaults.font.size = 10;
-                    Chart.defaults.plugins.legend.display = false;
-                    const ctx = $("#revenue").getContext("2d");
-                    const gradient = ctx.createLinearGradient(0, 0, 0, 240);
-                    gradient.addColorStop(0, "rgba(183,186,255,.24)");
-                    gradient.addColorStop(1, "rgba(183,186,255,0)");
-                    revenueChart = new Chart(ctx, {
-                        type: "line",
-                        data: {
-                            labels: [],
-                            datasets: [
-                                {
-                                    label: "Current period",
-                                    data: [],
-                                    borderColor: "#b7baff",
-                                    borderWidth: 2.5,
-                                    backgroundColor: gradient,
-                                    fill: true,
-                                    tension: 0.4,
-                                    pointRadius: 0,
-                                    pointHoverRadius: 5,
-                                },
-                                {
-                                    label: "Previous period",
-                                    data: [],
-                                    borderColor: "#40c4ff",
-                                    borderDash: [5, 5],
-                                    borderWidth: 1.5,
-                                    tension: 0.4,
-                                    pointRadius: 0,
-                                },
-                            ],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            interaction: { intersect: false, mode: "index" },
-                            plugins: {
-                                tooltip: {
-                                    backgroundColor: "#110e34",
-                                    padding: 12,
-                                    callbacks: {
-                                        label: (c) => c.dataset.label + ": $" + c.parsed.y.toLocaleString(),
-                                    },
-                                },
-                            },
-                            scales: {
-                                x: {
-                                    grid: { display: false },
-                                    border: { display: false },
-                                    ticks: { maxRotation: 0 },
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    border: { display: false },
-                                    grid: { color: "#35415c" },
-                                    ticks: {
-                                        maxTicksLimit: 5,
-                                        padding: 10,
-                                        callback: (v) => "$" + v / 1000 + "k",
-                                    },
-                                },
-                            },
-                        },
-                    });
-                    updateChart();
-                    trafficChart = new Chart($("#traffic"), {
-                        type: "doughnut",
-                        data: {
-                            labels: ["Direct", "Organic search", "Referral", "Social"],
-                            datasets: [
-                                {
-                                    data: [42, 28, 18, 12],
-                                    backgroundColor: ["#b7baff", "#40c4ff", "#64ffda", "#ffd740"],
-                                    borderColor: "#151c30",
-                                    borderWidth: 5,
-                                    borderRadius: 5,
-                                    hoverOffset: 4,
-                                },
-                            ],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            cutout: "79%",
-                            plugins: {
-                                tooltip: {
-                                    callbacks: { label: (c) => c.label + ": " + c.parsed + "%" },
-                                },
-                            },
-                        },
-                    });
-                } else {
-                    $("#revenue").parentElement.innerHTML =
-                        '<div class="fallback">Revenue chart requires Chart.js.<br>Open this file in a browser with internet access.</div>';
-                    $("#traffic").style.visibility = "hidden";
-                }
-
+                renderCharts();
             }
         });
     } else {
         selectPage(menu);
     }
-
-
 }
 
 
 const renderApp = () => {
-    tara.oHtml("app-root", "./templates/dashboard.html", {
-
+    obrajs.oHtml("app-root", "./templates/dashboard.html", {
+        init: () => {
+            metrics();
+            renderCharts();
+        }
     });
 }
 
@@ -144,89 +64,93 @@ var swiper3 = new Swiper('.xsmall-swiper', {
     }
 });
 
-
-const $ = (s) => document.querySelector(s);
 let factor = 1,
     interval = "weekly",
     revenueChart,
     trafficChart,
     expanded = false;
-const customers = [
-    ["Olivia Rhye", "olivia@acme.co", "Completed", "Sep 30, 2026", 249],
-    ["Phoenix Baker", "phoenix@studio.io", "Completed", "Sep 30, 2026", 129],
-    ["Lana Steiner", "lana@design.co", "Pending", "Sep 29, 2026", 349],
-    ["Demi Wilkinson", "demi@layers.com", "Completed", "Sep 29, 2026", 199],
-    ["Drew Cano", "drew@orbit.co", "Completed", "Sep 28, 2026", 499],
-    ["Natali Craig", "natali@studio.io", "Pending", "Sep 28, 2026", 89],
-    ["Andi Lane", "andi@acme.co", "Completed", "Sep 27, 2026", 249],
-];
+// const customers = [
+//     ["Olivia Rhye", "olivia@acme.co", "Completed", "Sep 30, 2026", 249],
+//     ["Phoenix Baker", "phoenix@studio.io", "Completed", "Sep 30, 2026", 129],
+//     ["Lana Steiner", "lana@design.co", "Pending", "Sep 29, 2026", 349],
+//     ["Demi Wilkinson", "demi@layers.com", "Completed", "Sep 29, 2026", 199],
+//     ["Drew Cano", "drew@orbit.co", "Completed", "Sep 28, 2026", 499],
+//     ["Natali Craig", "natali@studio.io", "Pending", "Sep 28, 2026", 89],
+//     ["Andi Lane", "andi@acme.co", "Completed", "Sep 27, 2026", 249],
+// ];
 function metrics() {
     const cards = [
         [
-            "Total revenue",
-            "$" + Math.round(48295 * factor).toLocaleString(),
-            "12.8",
+            "Today Total",
+            "₱" + taraBridge.getTotalCreditToday().toLocaleString(),
+            "100",
             "chart",
         ],
         [
-            "New customers",
-            Math.round(1248 * factor).toLocaleString(),
-            "8.2",
+            "Yesterday Total",
+            "₱" + taraBridge.getTotalCreditYesterday().toLocaleString(),
+            "100",
             "users",
         ],
-        ["Total orders", Math.round(1842 * factor).toLocaleString(), "16.4", "bag"],
-        ["Conversion rate", "3.62%", "2.1", "arrow"],
+        ["Weekly Total ", "₱" + taraBridge.getTotalCreditWeekly().toLocaleString(), "100", "bag"],
+        ["Monthly Total", "₱" + taraBridge.getTotalCreditMonthly().toLocaleString(), "100", "arrow"],
     ];
-    $("#metrics").innerHTML = cards
-        .map(
-            ([label, value, change, icon], i) =>
-                `<div class="card metric"><div class="metric-top">${label}<svg class="icon"><use href="#${icon}"/></svg></div><div class="value">${value}</div><div class="change">↗ ${change}%<span>vs. previous period</span></div><svg class="spark" viewBox="0 0 80 32"><path d="M1 29 10 22 19 25 29 16 38 20 48 ${i % 2 ? 11 : 15} 58 17 68 7 79 3" fill="none" stroke="#b6b1ff" stroke-width="1.7"/></svg></div>`,
+    obrajs.oId("metrics").innerHTML = cards
+        .map(([label, value, change, icon], i) =>
+            OrbitUI.render("metricCard", {
+                value0: label,
+                value1: icon,
+                value2: value,
+                value3: change,
+                value4: i % 2 ? 11 : 15,
+            }),
         )
         .join("");
-    $("#visitors").textContent = Math.round(24892 * factor).toLocaleString();
+    obrajs.oId("sales").textContent = Math.round(
+        taraBridge.getTotalSalesSum() * factor,
+    ).toLocaleString();
 }
-function rows() {
-    const term = $("#search").value.toLowerCase();
-    const list = customers.filter((c) =>
-        c.join(" ").toLowerCase().includes(term),
-    );
-    $("#rows").innerHTML =
-        list
-            .slice(0, expanded ? 99 : 4)
-            .map(
-                (c) =>
-                    `<tr><td><div class="customer"><span class="initials">${c[0]
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join(
-                            "",
-                        )}</span><div>${c[0]}<small>${c[1]}</small></div></div></td><td><span class="status ${c[2] === "Pending" ? "pending" : ""}">${c[2]}</span></td><td>${c[3]}</td><td class="amount">$${c[4].toFixed(2)}</td></tr>`,
-            )
-            .join("") || '<tr><td colspan="4">No matching transactions.</td></tr>';
-}
+
 let timer;
 function toast(text) {
-    $("#toast").textContent = text;
-    $("#toast").style.display = "block";
+    obrajs.oId("toast").textContent = text;
+    obrajs.oId("toast").style.display = "block";
     clearTimeout(timer);
-    timer = setTimeout(() => ($("#toast").style.display = "none"), 3500);
+    timer = setTimeout(() => (obrajs.oId("toast").style.display = "none"), 3500);
 }
 function chartData() {
+    const dailyCredit = convertKeys(dailySales, ['coinAmount']).coinAmount;
+    const dailyTimestampEpoch = convertKeys(dailySales, ['day']).day;
+    const dailyTimestampDate = dailyTimestampEpoch.map(function (num) {
+        return epochToMMDD(num);
+    });
+
+    const weeklyCredit = convertKeys(weeklySales, ['coinAmount']).coinAmount;
+    // const weeklyTimestampEpoch = convertKeys(weeklySales, ['week']).week;
+    // const weeklyTimestampDate = weeklyTimestampEpoch.map(function (num) {
+    //     return num;
+    // });
+
+    const monthlyCredit = convertKeys(monthSales, ['coinAmount']).coinAmount;
+    const monthlyTimestampEpoch = convertKeys(monthSales, ['month']).month;
+    const monthlyTimestampDate = monthlyTimestampEpoch.map(function (num) {
+        return epochToMM(num);
+    });
+
     const base =
         interval === "daily"
             ? [
-                3200, 4100, 3650, 5200, 4400, 6100, 5700, 7400, 6200, 8300, 7600,
-                10200,
+                ...dailyCredit
             ]
             : interval === "monthly"
-                ? [8200, 11200, 9400]
-                : [4200, 6300, 4900, 7900, 6600, 10200];
+                ? [...monthlyCredit]
+                : [...weeklyCredit];
     const labels =
         interval === "daily"
-            ? Array.from({ length: 12 }, (_, i) => "Day " + (i + 1))
+            ? [...dailyTimestampDate]
             : interval === "monthly"
-                ? ["Jul", "Aug", "Sep"]
-                : ["Sep 1", "Sep 6", "Sep 12", "Sep 18", "Sep 24", "Sep 30"];
+                ? [...monthlyTimestampDate]
+                : Array.from({ length: weeklyCredit.length }, (_, i) => "Week " + (i + 1));
     return { base: base.map((v) => Math.round(v * factor)), labels };
 }
 function updateChart() {
@@ -234,115 +158,123 @@ function updateChart() {
     const { base, labels } = chartData();
     revenueChart.data.labels = labels;
     revenueChart.data.datasets[0].data = base;
-    revenueChart.data.datasets[1].data = base.map((v, i) =>
-        Math.round(v * (i % 2 ? 0.72 : 0.8)),
-    );
+    // revenueChart.data.datasets[1].data = base.map((v, i) =>
+    //     Math.round(v * (i % 2 ? 0.72 : 0.8)),
+    // );
     revenueChart.update();
+
+
 }
 
-metrics();
-//rows();
-if (window.Chart) {
-    Chart.defaults.color = "#c5d3ee";
-    Chart.defaults.font.family = "'DM Sans', sans-serif";
-    Chart.defaults.font.size = 10;
-    Chart.defaults.plugins.legend.display = false;
-    const ctx = $("#revenue").getContext("2d");
-    const gradient = ctx.createLinearGradient(0, 0, 0, 240);
-    gradient.addColorStop(0, "rgba(183,186,255,.24)");
-    gradient.addColorStop(1, "rgba(183,186,255,0)");
-    revenueChart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: "Current period",
-                    data: [],
-                    borderColor: "#b7baff",
-                    borderWidth: 2.5,
-                    backgroundColor: gradient,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 5,
+
+
+function renderCharts() {
+    if (window.Chart) {
+        Chart.defaults.color = "#c5d3ee";
+        Chart.defaults.font.family = "'DM Sans', sans-serif";
+        Chart.defaults.font.size = 10;
+        Chart.defaults.plugins.legend.display = false;
+        const ctx = obrajs.oId("revenue").getContext("2d");
+        const gradient = ctx.createLinearGradient(0, 0, 0, 240);
+        gradient.addColorStop(0, "rgba(183,186,255,.24)");
+        gradient.addColorStop(1, "rgba(183,186,255,0)");
+        revenueChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Sales: ",
+                        data: [],
+                        borderColor: "#b7baff",
+                        borderWidth: 2.5,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                    },
+                    // {
+                    //     label: "Previous period",
+                    //     data: [],
+                    //     borderColor: "#40c4ff",
+                    //     borderDash: [5, 5],
+                    //     borderWidth: 1.5,
+                    //     tension: 0.4,
+                    //     pointRadius: 0,
+                    // },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { intersect: false, mode: "index" },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: "#110e34",
+                        padding: 12,
+                        callbacks: {
+                            label: (c) => c.dataset.label + ": ₱" + c.parsed.y.toLocaleString(),
+                        },
+                    },
                 },
-                {
-                    label: "Previous period",
-                    data: [],
-                    borderColor: "#40c4ff",
-                    borderDash: [5, 5],
-                    borderWidth: 1.5,
-                    tension: 0.4,
-                    pointRadius: 0,
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { intersect: false, mode: "index" },
-            plugins: {
-                tooltip: {
-                    backgroundColor: "#110e34",
-                    padding: 12,
-                    callbacks: {
-                        label: (c) => c.dataset.label + ": $" + c.parsed.y.toLocaleString(),
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { maxRotation: 0 },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        border: { display: false },
+                        grid: { color: "#35415c" },
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            callback: (v) => "₱" + v,
+                        },
                     },
                 },
             },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    border: { display: false },
-                    ticks: { maxRotation: 0 },
-                },
-                y: {
-                    beginAtZero: true,
-                    border: { display: false },
-                    grid: { color: "#35415c" },
-                    ticks: {
-                        maxTicksLimit: 5,
-                        padding: 10,
-                        callback: (v) => "$" + v / 1000 + "k",
+        });
+        updateChart();
+        const ringData = convertPercent(todayGrouped);
+
+        trafficChart = new Chart(obrajs.oId("traffic"), {
+            type: "doughnut",
+            data: {
+                labels: [...ringData.credit],
+                datasets: [
+                    {
+                        data: [...ringData.percent],
+                        backgroundColor: [...getRandomColorArray(ringData.credit.length)],
+                        borderColor: "#151c30",
+                        borderWidth: 5,
+                        borderRadius: 5,
+                        hoverOffset: 4,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "79%",
+                plugins: {
+                    tooltip: {
+                        callbacks: { label: (c) => c.label + ": " + c.parsed + "%" },
                     },
                 },
             },
-        },
-    });
-    updateChart();
-    trafficChart = new Chart($("#traffic"), {
-        type: "doughnut",
-        data: {
-            labels: ["Direct", "Organic search", "Referral", "Social"],
-            datasets: [
-                {
-                    data: [42, 28, 18, 12],
-                    backgroundColor: ["#b7baff", "#40c4ff", "#64ffda", "#ffd740"],
-                    borderColor: "#151c30",
-                    borderWidth: 5,
-                    borderRadius: 5,
-                    hoverOffset: 4,
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: "79%",
-            plugins: {
-                tooltip: {
-                    callbacks: { label: (c) => c.label + ": " + c.parsed + "%" },
-                },
-            },
-        },
-    });
-} else {
-    $("#revenue").parentElement.innerHTML =
-        '<div class="fallback">Revenue chart requires Chart.js.<br>Open this file in a browser with internet access.</div>';
-    $("#traffic").style.visibility = "hidden";
+        });
+    } else {
+        obrajs.oId("revenue").parentElement.innerHTML =
+            '<div class="fallback">Revenue chart requires Chart.js.<br>Open this file in a browser with internet access.</div>';
+        obrajs.oId("traffic").style.visibility = "hidden";
+    }
 }
-$("#period").addEventListener("change", (e) => {
+
+
+obrajs.oId("period").addEventListener("change", (e) => {
     factor = e.target.value === "7" ? 0.26 : e.target.value === "90" ? 2.85 : 1;
     metrics();
     updateChart();
@@ -350,45 +282,62 @@ $("#period").addEventListener("change", (e) => {
 });
 document.querySelectorAll("[data-interval]").forEach((b) =>
     b.addEventListener("click", () => {
-        document.querySelector(".tabs .selected").classList.remove("selected");
-        b.classList.add("selected");
+        document.querySelectorAll("[data-interval]").forEach((tab) => {
+            tab.classList.toggle("selected", tab === b);
+        });
         interval = b.dataset.interval;
         updateChart();
     }),
 );
-//$("#search").addEventListener("input", rows);
-$("#view-all").addEventListener("click", () => {
-    expanded = !expanded;
-    rows();
-    $("#view-all").textContent = expanded ? "Show less ↑" : "View all ↗";
-});
-// $("#notifications").addEventListener("click", () =>
-//     toast("You’re all caught up. No new notifications."),
-// );
-// $("#upgrade").addEventListener("click", () =>
-//     toast("You’re exploring a demo. Pro subscriptions are not connected."),
-// );
+
+
 document.querySelectorAll("[data-nav]").forEach((b) =>
     b.addEventListener("click", () => {
         const n = b.dataset.nav;
         if (n === "Overview") window.scrollTo({ top: 0, behavior: "smooth" });
         else if (n === "Analytics")
-            $(".charts").scrollIntoView({ behavior: "smooth" });
+            obrajs.oId("analytics-charts").scrollIntoView({ behavior: "smooth" });
         else if (n === "Transactions" || n === "Customers") {
-            $("#transactions").scrollIntoView({ behavior: "smooth" });
+            obrajs.oId("transactions").scrollIntoView({ behavior: "smooth" });
             expanded = true;
             rows();
-            $("#view-all").textContent = "Show less ↑";
-        } else if (n === "Reports") $("#export").click();
+            obrajs.oId("view-all").textContent = "Show less ↑";
+        } else if (n === "Reports") obrajs.oId("export").click();
         else toast(n + " is not connected in this static demo.");
     }),
 );
 document.addEventListener("keydown", (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        $("#search").focus();
+        obrajs.oId("search").focus();
     }
 });
+// obrajs.oId("export").addEventListener("click", () => {
+//     const csv =
+//         "Orbit analytics — sample data\r\nPeriod," +
+//         obrajs.oId("period").selectedOptions[0].text +
+//         "\r\nRevenue," +
+//         Math.round(48295 * factor) +
+//         "\r\nNew customers," +
+//         Math.round(1248 * factor) +
+//         "\r\nOrders," +
+//         Math.round(1842 * factor) +
+//         "\r\nConversion rate,3.62%\r\n\r\nCustomer,Email,Status,Date,Amount\r\n" +
+//         customers
+//             .map((c) =>
+//                 c.map((v) => '"' + String(v).replaceAll('"', '""') + '"').join(","),
+//             )
+//             .join("\r\n");
+//     const url = URL.createObjectURL(
+//         new Blob([csv], { type: "text/csv;charset=utf-8;" }),
+//     );
+//     const a = document.createElement("a");
+//     a.href = url;
+//     a.download = "orbit-analytics-report.csv";
+//     a.click();
+//     setTimeout(() => URL.revokeObjectURL(url), 1000);
+//     toast("Your report has been exported.");
+// });
 
 
 
@@ -412,7 +361,9 @@ const defaults = () => ({
 });
 let state = defaults();
 try {
-    const saved = JSON.parse(localStorage.getItem("orbit-device-settings"));
+    //const saved = JSON.parse(localStorage.getItem("orbit-device-settings"));
+    const saved = JSON.parse(taraBridge.getSecureData("orbit-device-settings", JSON.stringify(state)));
+    console.log("persistent data: ", saved);
     if (saved) state = { ...state, ...saved };
 } catch (_) { }
 let page = "",
@@ -429,14 +380,20 @@ const escape = (text) =>
                 "'": "&#39;",
             })[c],
     );
+
 const notify = (text) => toast(text);
+/**
+ * 
+ * 
+ */
 const persist = () => {
     try {
         // Tokens remain in memory only: do not persist credentials to localStorage.
-        localStorage.setItem(
-            "orbit-device-settings",
-            JSON.stringify({ ...state, others: { ...state.others, token: "" } }),
-        );
+        // localStorage.setItem(
+        //     "orbit-device-settings",
+        //     JSON.stringify({ ...state, others: { ...state.others, token: "" } }),
+        // );
+        taraBridge.setSecureData("orbit-device-settings", JSON.stringify({ ...state, others: { ...state.others, token: "" } }));
         return true;
     } catch (_) {
         notify(
@@ -445,6 +402,10 @@ const persist = () => {
         return false;
     }
 };
+/**
+ * 
+ * 
+ */
 const toggle = (id, title, description, checked) =>
     OrbitUI.render("toggleSwitch", {
         value0: id,
@@ -453,6 +414,10 @@ const toggle = (id, title, description, checked) =>
         value3: id,
         value4: checked ? "checked" : "",
     });
+/**
+ * 
+ * 
+ */
 function shell(title, description, content) {
     OrbitUI.mount("app-root", "pageShell", {
         value0: title,
@@ -460,6 +425,10 @@ function shell(title, description, content) {
         value2: content,
     });
 }
+/**
+ * 
+ * 
+ */
 function selectPage(key) {
     page = key;
 
@@ -495,11 +464,15 @@ document.querySelectorAll("[data-nav]").forEach((button) =>
             obrajs.oId("analytics-charts").scrollIntoView({ behavior: "smooth" });
     }),
 );
+/**
+ * 
+ * 
+ */
 function renderImages() {
     const key = page,
         data = state[key];
     shell(
-        key === "game" ? "Game" : "Lockscreen",
+        key === "game" ? "Game Menu" : "Lockscreen",
         "Manage your image library and slideshow preferences.",
         OrbitUI.render("imageSettings", {
             value0: data.images.length,
@@ -550,11 +523,16 @@ function renderImages() {
     };
     obrajs.oId("clear-images").onclick = () => {
         if (!data.images.length) return notify("Image cache is already empty.");
-        if (!confirm(`Remove all ${key} images from this browser?`)) return;
+        //if (!confirm(`Remove all ${key} images from this browser?`)) return;
         capture();
         data.images = [];
         if (persist()) notify("Image cache cleared.");
         renderImages();
+    };
+    obrajs.oId("clear-web-cache").onclick = () => {
+        if (!data.images.length) return notify("Web cache is already empty.");
+        //if (!confirm(`Remove all ${key} images from this browser?`)) return;
+        if (persist()) notify("Web cache cleared.");
     };
     document.querySelectorAll("[data-remove]").forEach(
         (button) =>
@@ -598,6 +576,10 @@ function renderImages() {
         if (page === key) renderImages();
     });
 }
+/**
+ * 
+ * 
+ */
 function renderRates() {
     const rate = state.rates.find((r) => r.id === editing);
     shell(
@@ -677,6 +659,10 @@ function renderRates() {
         }
     };
 }
+/**
+ * 
+ * 
+ */
 function renderOthers() {
     const data = state.others;
     shell(
@@ -722,4 +708,100 @@ function renderOthers() {
         if (persist())
             notify("Settings saved. Device integration is not connected.");
     };
+    obrajs.oId("clear-sales").onclick = () => {
+        if (!data.images.length) return notify("Sales Database is already empty.");
+        //if (!confirm(`Remove all ${key} images from this browser?`)) return;
+        capture();
+        data.images = [];
+        if (persist()) notify("Sales database cleared.");
+        renderImages();
+    };
 }
+
+
+
+const epochToMMDD = (epochTime) => {
+    const date = new Date(epochTime);
+    return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+const epochToMM = (epochTime) => {
+    const date = new Date(epochTime);
+    return date.toLocaleDateString('en-US', {
+        month: 'short',
+    });
+}
+
+function convertKeys(arr, keysToExtract) {
+    let result = {};
+    // Initialize empty arrays for each requested key
+    keysToExtract.forEach(key => result[key] = []);
+    // Populate the arrays
+    arr.forEach(item => {
+        keysToExtract.forEach(key => {
+            if (item.hasOwnProperty(key)) {
+                result[key].push(item[key]);
+            }
+        });
+    });
+
+    return result;
+}
+
+
+const convertPercent = (arr) => {
+    // 1. Calculate the total sum of counts
+    const totalCount = arr.reduce((sum, item) => sum + item.count, 0);
+
+    // 2. Map the data into the target object structure
+    return {
+        credit: arr.map(item => item.credit),
+        count: arr.map(item => item.count),
+        percent: arr.map(item => Number(((item.count / totalCount) * 100).toFixed(2)))
+    };
+};
+
+const getRandomColorArray = (count) => {
+    const colors = [];
+    // Golden ratio conjugate ensures maximum hue distance between consecutive items
+    const goldenRatioConjugate = 0.618033988749895;
+
+    // Randomize the starting point on the color wheel
+    let hue = Math.random();
+
+    for (let i = 0; i < count; i++) {
+        hue = (hue + goldenRatioConjugate) % 1;
+        const h = hue * 360;
+
+        // Fixed high saturation & balanced lightness for a vibrant pastel look
+        const saturation = 85;
+        const lightness = 65;
+
+        // Convert HSL to Hex
+        const s = saturation / 100;
+        const l = lightness / 100;
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        const m = l - c / 2;
+        let r = 0, g = 0, b = 0;
+
+        if (0 <= h && h < 60) { r = c; g = x; b = 0; }
+        else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
+        else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
+        else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
+        else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
+        else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
+
+        const toHex = (val) => {
+            const hex = Math.round((val + m) * 255).toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        };
+
+        colors.push(`#${toHex(r)}${toHex(g)}${toHex(b)}`);
+    }
+
+    return colors;
+};
