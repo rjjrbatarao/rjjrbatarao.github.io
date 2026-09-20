@@ -10,10 +10,12 @@ const ASSETS_TO_CACHE = [
     '/sloader2/midori.umd.js',
     '/sloader2/three.min.js',
     '/sloader2/settings.js',
+    '/sloader2/taraKiosk.js',
     '/sloader2/sst.ttf',
     '/sloader2/templates/coin_modal.html',
     '/sloader2/templates/user_timer.html',
     '/sloader2/templates/settings.html',
+    '/sloader2/templates/screen_blocker.html',
     '/sloader2/beep.mp3',
 ];
 

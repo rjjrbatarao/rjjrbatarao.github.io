@@ -1,14 +1,16 @@
 
 const tara = new ObraJS();
 const beep_sound = new Audio("beep.mp3");
+const overlay = document.querySelector('.loading-overlay');
+
 
 window.onKioskLockscreenShown = function () {
   // Called function when webview is shown
-  if (window.TaraBridge) {
-    if (window.TaraBridge.isLockscreen() == true) {
-      const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+  if (taraBridge) {
+    if (taraBridge.isLockscreen() == true) {
+      const remainingTime = taraBridge.getTimerRemainingSeconds();
       if (remainingTime > 0) {
-        window.TaraBridge.pauseBackgroundTimer();
+        taraBridge.pauseBackgroundTimer();
         tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
         tara.oId("button_resume_id").style.display = "block";
         tara.oId("button_insert_id").style.display = "none";
@@ -19,12 +21,12 @@ window.onKioskLockscreenShown = function () {
         tara.oId("button_resume_id").style.display = "none";
         tara.oId("button_insert_id").style.display = "block";
       }
-      window.TaraBridge.setGameDoNotDisturb(false);
-      window.TaraBridge.setKeepScreenAwake(true);
+      taraBridge.setGameDoNotDisturb(false);
+      taraBridge.setKeepScreenAwake(true);
     }
     setTimeout(() => {
-      if (window.TaraBridge.isLockscreen() == true) {
-        const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+      if (taraBridge.isLockscreen() == true) {
+        const remainingTime = taraBridge.getTimerRemainingSeconds();
         if (remainingTime > 0) {
 
         } else {
@@ -36,18 +38,24 @@ window.onKioskLockscreenShown = function () {
           tara.oId("button_insert_id").style.display = "block";
         }
       } else {
-        window.TaraBridge.showToast("Resuming Session");
+        taraBridge.showToast("Resuming Session");
       }
     }, 1000 * 20); // clear after 1 minute
   }
 }
 
 
+
 window.onKioskLockscreenBle = function (data) {
   //console.log("got coin: ", data);
-  const user_coin = parseInt(data.replace("DATA:", ""));
-  if (user_coin > 0) {
-    totalCoin += user_coin;
+  const creditAmount = parseInt(data.replace("DATA:", ""));
+  const paymentType = "COIN"; // e.g., "COIN", "BILL", "GCASH", "MAYA"
+  if (creditAmount > 0) {
+    totalCoin += creditAmount;
+    const isSuccess = taraBridge.addSale("", creditAmount, paymentType);
+    // if (isSuccess) {
+    //   console.log("Sale recorded successfully with auto-generated UUIDv7!");
+    // }
   }
   if (beep_sound) {
     try {
@@ -91,23 +99,24 @@ function convertTime(totalSeconds) {
 }
 
 function onLoadEvent() {
-  if (window.TaraBridge) {
+  if (taraBridge) {
+
     // 1. Get tablet info
-    const info = {
-      osVersion: window.TaraBridge.getOsVersion(),
-      sdkVersion: window.TaraBridge.getSdkInt(),
-      deviceModel: window.TaraBridge.getDeviceModel(),
-      manufacturer: window.TaraBridge.getManufacturer(),
-      appVersion: window.TaraBridge.getAppVersion(),
-      batteryLevel: window.TaraBridge.getBatteryLevel() + "%",
-      isCharging: window.TaraBridge.isCharging(),
-      isMenu: window.TaraBridge.isMenu(),
-      isLockscreen: window.TaraBridge.isLockscreen(),
-      wifiIp: window.TaraBridge.getWifiIpAddress(),
-      ethIp: window.TaraBridge.getEthernetIpAddress(),
-      deviceSerial: window.TaraBridge.getDeviceSerial(),
-      displayRefreshRate: window.TaraBridge.getScreenRefreshRate(),
-    };
+    // const info = {
+    //   osVersion: taraBridge.getOsVersion(),
+    //   sdkVersion: taraBridge.getSdkInt(),
+    //   deviceModel: taraBridge.getDeviceModel(),
+    //   manufacturer: taraBridge.getManufacturer(),
+    //   appVersion: taraBridge.getAppVersion(),
+    //   batteryLevel: taraBridge.getBatteryLevel() + "%",
+    //   isCharging: taraBridge.isCharging(),
+    //   isMenu: taraBridge.isMenu(),
+    //   isLockscreen: taraBridge.isLockscreen(),
+    //   wifiIp: taraBridge.getWifiIpAddress(),
+    //   ethIp: taraBridge.getEthernetIpAddress(),
+    //   deviceSerial: taraBridge.getDeviceSerial(),
+    //   displayRefreshRate: taraBridge.getScreenRefreshRate(),
+    // };
     //console.log("Device System Info:", info);
     // test to clear the packages
     tara.oHtml("coinModal", "./templates/coin_modal.html", {
@@ -117,16 +126,16 @@ function onLoadEvent() {
           clearTimeout(coinTimer);
         }
         tara.oId('coinModal').close();
-        window.TaraBridge.sendBleCommand("DATA:OFF");
+        taraBridge.sendBleCommand("DATA:OFF");
       },
       button_start_time_event: (event) => {
         if (totalTime > 0) {
           if (coinTimer != null) {
             clearTimeout(coinTimer);
           }
-          window.TaraBridge.sendBleCommand("DATA:OFF");
-          window.TaraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
-          window.TaraBridge.moveToMenuWebview();
+          taraBridge.sendBleCommand("DATA:OFF");
+          taraBridge.startBackgroundTimer(totalTime + 1, true); // setting this to true calls lockscreen natively
+          taraBridge.moveToMenuWebview();
           tara.oId('coinModal').close();
           totalCoin = 0;
           totalTime = 0;
@@ -146,30 +155,30 @@ function onLoadEvent() {
         if (coinTimer != null) {
           clearTimeout(coinTimer);
         }
-		const bluetoothState = window.TaraBridge.isBluetoothConnected();
-		if (bluetoothState) {
-			coinFunc();
-			tara.oId('coinModal').show();
-			window.TaraBridge.sendBleCommand("DATA:ON");
-		} else {
-			window.TaraBridge.showToast("Credit Terminal not connected!");
-		}
+        const bluetoothState = taraBridge.isBluetoothConnected();
+        if (bluetoothState) {
+          coinFunc();
+          tara.oId('coinModal').show();
+          taraBridge.sendBleCommand("DATA:ON");
+        } else {
+          taraBridge.showToast("Credit Terminal not connected!");
+        }
       },
       button_resume_event: (event) => {
-        window.TaraBridge.moveToMenuWebview();
+        taraBridge.moveToMenuWebview();
       }
     });
 
-    tara.oHtml("settings_id", "./templates/settings.html", {
-    });
+    // tara.oHtml("settings_id", "./templates/settings.html", {
+    // });
 
     /**
      * if we still have time move to game menu
      */
-    const remainingTime = window.TaraBridge.getTimerRemainingSeconds();
+    const remainingTime = taraBridge.getTimerRemainingSeconds();
     if (remainingTime > 0) {
       // show resume button
-      window.TaraBridge.pauseBackgroundTimer();
+      taraBridge.pauseBackgroundTimer();
       tara.oId("screen_status_id").innerHTML = "PAUSED 🔒";
       tara.oId("button_resume_id").style.display = "block";
       tara.oId("button_insert_id").style.display = "none";
@@ -183,13 +192,13 @@ onLoadEvent();
 
 //  Remove Google Accounts
 function removeAccounts() {
-  if (window.TaraBridge && window.TaraBridge.removeGoogleAccount) {
-    const isSuccess = window.TaraBridge.removeGoogleAccount();
+  if (taraBridge && taraBridge.removeGoogleAccount) {
+    const isSuccess = taraBridge.removeGoogleAccount();
     // has issue showing no accounts exist
     if (isSuccess) {
-      window.TaraBridge.showToast("All accounts cleared!");
+      taraBridge.showToast("All accounts cleared!");
     } else {
-      //window.TaraBridge.showToast("No account exist");
+      //taraBridge.showToast("No account exist");
     }
   } else {
     console.warn("TaraBridge interface not available.");
@@ -198,12 +207,12 @@ function removeAccounts() {
 
 //  Clear Standard Media Folders (Downloads, DCIM, Pictures, Videos)
 function clearAllMedia() {
-  if (window.TaraBridge && window.TaraBridge.clearDefaultMediaFolders) {
-    const isSuccess = window.TaraBridge.clearDefaultMediaFolders();
+  if (taraBridge && taraBridge.clearDefaultMediaFolders) {
+    const isSuccess = taraBridge.clearDefaultMediaFolders();
     if (isSuccess) {
-      window.TaraBridge.showToast("All default media folders cleared!");
+      taraBridge.showToast("All default media folders cleared!");
     } else {
-      window.TaraBridge.showToast("Some files could not be deleted.");
+      taraBridge.showToast("Some files could not be deleted.");
     }
   } else {
     console.warn("TaraBridge interface not available.");
@@ -213,13 +222,13 @@ function clearAllMedia() {
 
 //  Clear all app cache
 function clearAllAppCache() {
-  if (window.TaraBridge && window.TaraBridge.clearAllGameCache) {
-    const isSuccess = window.TaraBridge.clearAllGameCache();
-    window.TaraBridge.clearAllAppCacheExcludingGames();
+  if (taraBridge && taraBridge.clearAllGameCache) {
+    const isSuccess = taraBridge.clearAllGameCache();
+    taraBridge.clearAllAppCacheExcludingGames();
     if (isSuccess) {
-      window.TaraBridge.showToast("All package cache cleared!");
+      taraBridge.showToast("All package cache cleared!");
     } else {
-      window.TaraBridge.showToast("No packages exist");
+      taraBridge.showToast("No packages exist");
     }
   } else {
     console.warn("TaraBridge interface not available.");
@@ -229,7 +238,12 @@ function clearAllAppCache() {
 const coinFunc = () => {
   coinTimer = setTimeout(() => {
     //console.log("data, total:", totalCoin);
-    totalTime = totalCoin * 60 * 1;
+    if (saved.rates.length > 0) {
+      totalTime = converterCreditToTime(totalCoin, saved.rates) * 60;
+    } else {
+      totalTime = totalCoin * 60 * 3;
+    }
+
     convertTime(totalTime);
     tara.oId("coins_id").innerHTML = "₱" + totalCoin;
     tara.oId("button_start_id").style.display = "block";
@@ -251,3 +265,23 @@ function formatSeconds(totalSeconds) {
 }
 
 
+function converterCreditToTime(credit, rates) {
+  let totalMinutes = 0;
+  let remainingCredit = credit;
+
+  // Sort rates from highest price to lowest to guarantee largest tier selection first
+  const sortedRates = [...rates].sort((a, b) => b.price - a.price);
+
+  for (const rate of sortedRates) {
+    if (remainingCredit <= 0) break;
+
+    if (remainingCredit >= rate.price) {
+      const multiplier = Math.floor(remainingCredit / rate.price);
+
+      totalMinutes += multiplier * rate.minutes;
+      remainingCredit -= multiplier * rate.price;
+    }
+  }
+
+  return totalMinutes;
+}

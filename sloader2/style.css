@@ -132,21 +132,20 @@ svg {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px); /* Safari support */
 
-	--aug-clip-t1: initial;
-    --aug-clip-t2: initial;
-    --aug-clip-r1: initial;
-    --aug-clip-r2: initial;
-    --aug-clip-l1: initial;
-    --aug-clip-l2: initial;
-	--aug-clip-b1: initial;
-    --aug-clip-b2: initial;
-	--aug-t-extend1: 50%;
-    --aug-r-extend1: 50%;
-    --aug-l-extend1: 50%;
-	--aug-b-extend1: 50%;
-   --aug-border-all: 10px;
+  --aug-clip-t1: initial;
+  --aug-clip-t2: initial;
+  --aug-clip-r1: initial;
+  --aug-clip-r2: initial;
+  --aug-clip-l1: initial;
+  --aug-clip-l2: initial;
+  --aug-clip-b1: initial;
+  --aug-clip-b2: initial;
+  --aug-t-extend1: 50%;
+  --aug-r-extend1: 50%;
+  --aug-l-extend1: 50%;
+  --aug-b-extend1: 50%;
+  --aug-border-all: 10px;
   --aug-border-bg: linear-gradient(rgb(89, 71, 255), rgb(60, 179, 113));
-
 }
 
 /* The Backdrop Overlay (dim and blur everything behind the modal) */
@@ -564,4 +563,55 @@ label {
   flex-direction: row; /* Stacks items vertically */
   gap: 12px; /* Sets exact spacing between the buttons */
   width: max-content; /* Keeps column only as wide as the buttons */
+}
+
+/* Fullscreen fixed overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10, 10, 15, 0.4); /* Dark translucent tint */
+  backdrop-filter: blur(12px); /* The core glass blur effect */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  z-index: 9999;
+}
+
+/* Hidden state class */
+.loading-overlay.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; /* Prevents clicking hidden overlay */
+}
+
+/* Central gaming glass card */
+.glass-card {
+  padding: 40px 60px;
+  text-align: center;
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Simple loading spinner styling */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #00ffcc; /* Gamer cyan accent */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

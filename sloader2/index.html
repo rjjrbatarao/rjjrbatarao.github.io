@@ -12,23 +12,23 @@
   </head>
   <body>
     <canvas id="canvas"></canvas>
-    <button
-      class="s-button accent-btn toggle-ui-btn"
-      id="open-ui-btn"
-      onclick="toggleSettingsUI(true)"
-    >
-      ⚙️
-    </button>
-    <div class="ui-container" id="settings_id"></div>
+
+    <div class="loading-overlay" id="screen_blocker_id"></div>
     <div id="user_time_id" class="horizontal-dock"></div>
     <div class="status-style">
       <div class="lock-style" id="screen_status_id">LOCKED 🔒</div>
       <div class="timer-style" id="remaining_time_id">00:00:00</div>
     </div>
-    <dialog id="coinModal" class="game-modal" data-augmented-ui="tl-clip-x br-clip-x b-clip-x both"></dialog>
+    <dialog
+      id="coinModal"
+      class="game-modal"
+      data-augmented-ui="tl-clip-x br-clip-x b-clip-x both"
+    ></dialog>
     <script src="obrajs.js"></script>
-    <script src="index.js"></script>
+    <script src="taraKiosk.js"></script>
     <script src="settings.js"></script>
+    <script src="index.js"></script>
+
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

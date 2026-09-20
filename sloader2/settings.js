@@ -1,4 +1,25 @@
 const LOCAL_STORAGE_KEY = 'midori_demo_settings_v4';
+const taraBridge = new KioskService();
+
+const defaults = () => ({
+    game: { images: [], random: false, auto: true, interval: 10 },
+    lockscreen: { images: [], random: false, auto: true, interval: 15 },
+    rates: [],
+    others: {
+        from: "22:00",
+        to: "06:00",
+        restart: "04:00",
+        email: "",
+        token: "",
+        messaging: false,
+    },
+});
+
+let state = defaults();
+
+const saved = JSON.parse(taraBridge.getSecureData("orbit-device-settings", JSON.stringify(state)));
+console.log("persistent data: ", saved);
+
 
 const DEFAULT_IMAGE_URLS = [
     "./wallpapers/ml/0.jpeg",
@@ -48,14 +69,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const canvas = document.getElementById('canvas');
     renderer = new midori.BackgroundRenderer(canvas);
 
-    loadSettingsFromLocalStorage();
+    if (taraBridge) {
+        const start_time = convertMilitaryToStandard(saved.others.from);
+        const closing_time = convertMilitaryToStandard(saved.others.to);
+        tara.oHtml("screen_blocker_id", "./templates/screen_blocker.html", {
+            title: "Admin Notice ⚠️",
+            message: "Curfew hours: " + start_time + " to " + closing_time
+        });
+    }
+
+    loadSettingsFromNativeStorage();
+
     await loadAllImageTextures();
 
     if (images.length > 0) {
         await renderer.setBackground(images[0]);
     }
 
-    applySettingsToUI();
     applyDemoCameraEffects();
 
     if (settings.autoTransition.enabled) {
@@ -64,208 +94,87 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
-
-toggleSettingsUI(false);
-// --- UI TOGGLE MANAGEMENT ---
-function toggleSettingsUI(show) {
-    const panel = document.getElementById('settings_id');
-    const openBtn = document.getElementById('open-ui-btn');
-
-    if (show) {
-        panel.classList.remove('hidden');
-        openBtn.classList.remove('visible');
-    } else {
-        panel.classList.add('hidden');
-        openBtn.classList.add('visible');
-    }
-}
-
 // --- DYNAMIC IMAGE MANAGEMENT ---
 async function loadAllImageTextures() {
     images = [];
-    for (const url of settings.imageUrls) {
-        try {
-            const texture = await midori.loadImage(url);
-            images.push(texture);
-        } catch (err) {
-            //console.warn("Failed to load image texture from URL:", url, err);
+    if (isDeepEqual(saved, state)) {
+        for (const url of settings.imageUrls) {
+            try {
+                const texture = await midori.loadImage(url);
+                images.push(texture);
+            } catch (err) {
+                //console.warn("Failed to load image texture from URL:", url, err);
+            }
+        }
+    } else {
+        if (saved.lockscreen.images.length > 0) {
+            for (const url of saved.lockscreen.images) {
+                try {
+                    const texture = await midori.loadImage(url.src);
+                    //console.log(url.name);
+                    images.push(texture);
+                } catch (err) {
+                    //console.warn("Failed to load image texture from URL:", url, err);
+                }
+            }
+        } else {
+            for (const url of settings.imageUrls) {
+                try {
+                    const texture = await midori.loadImage(url);
+                    images.push(texture);
+                } catch (err) {
+                    //console.warn("Failed to load image texture from URL:", url, err);
+                }
+            }
         }
     }
 }
 
-async function addImageUrlFromInput() {
-    const input = document.getElementById('input-image-url');
-    const url = input.value.trim();
-
-    if (!url) return;
-
-    if (settings.imageUrls.includes(url)) {
-        window.TaraBridge.showToast("This URL is already in your image list.");
-        return;
-    }
-
-    try {
-        const texture = await midori.loadImage(url);
-        settings.imageUrls.push(url);
-        images.push(texture);
-        input.value = '';
-        renderImageList();
-        saveSettingsToLocalStorage();
-    } catch (e) {
-        window.TaraBridge.showToast("Failed to load image. Please verify the URL and CORS headers.");
-    }
+function onActiveWindow() {
+    //console.log("Currently INSIDE active hours!");
+    overlay.classList.add('hide');
 }
 
-async function removeImageUrl(index) {
-    if (settings.imageUrls.length <= 1) {
-        window.TaraBridge.showToast("You must keep at least one image in the list.");
-        return;
-    }
-
-    settings.imageUrls.splice(index, 1);
-    images.splice(index, 1);
-
-    if (imageIndex >= images.length) {
-        imageIndex = 0;
-    }
-
-    renderImageList();
-    saveSettingsToLocalStorage();
-
-    // Instantly switch to the active index image if running
-    if (images[imageIndex]) {
-        await renderer.setBackground(images[imageIndex]);
-        applyDemoCameraEffects();
-    }
+function onInactiveWindow() {
+    //console.log("Currently OUTSIDE active hours!");
+    //taraBridge.showToast("CURFEW: Uwi na po kayo gabi na!");
+    overlay.classList.remove('hide');
 }
 
-function renderImageList() {
-    const container = document.getElementById('image-list-container');
-    container.innerHTML = '';
 
-    settings.imageUrls.forEach((url, idx) => {
-        const item = document.createElement('div');
-        item.className = 'image-item';
-
-        const text = document.createElement('span');
-        text.innerText = `${idx + 1}. ${url}`;
-        text.title = url;
-
-        const removeBtn = document.createElement('button');
-        removeBtn.className = 'remove-btn s-button';
-        removeBtn.innerText = 'Remove';
-        removeBtn.onclick = () => removeImageUrl(idx);
-
-        item.appendChild(text);
-        item.appendChild(removeBtn);
-        container.appendChild(item);
-    });
-}
 
 // --- LOCALSTORAGE & DEFAULTS MANAGEMENT ---
-function loadSettingsFromLocalStorage() {
+function loadSettingsFromNativeStorage() {
     try {
-        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (saved) {
-            settings = { ...DEFAULTS, ...JSON.parse(saved) };
+        // IF true then advance settings is not set
+        if (isDeepEqual(saved, state)) {
+            //console.log("Settings is default: ");
+            settings = { ...DEFAULTS }
+        } else {
+            //console.log("loading transition: ");
+            settings = {
+                ...DEFAULTS, autoTransition: {
+                    enabled: saved.lockscreen.auto,
+                    random: saved.lockscreen.random,
+                    interval: saved.lockscreen.interval
+                }
+            }
+
+            // Arguments: StartTime, EndTime, Interval (ms), InsideCallbackName, OutsideCallbackName
+            taraBridge.scheduleTimeCallbacks(
+                saved.others.from,           // Start Time (1:00 PM)
+                saved.others.to,           // End Time (2:00 PM)
+                5000,              // Check interval: every 5 seconds (5000ms)
+                "onActiveWindow",   // Function name when active
+                "onInactiveWindow"  // Function name when inactive
+            );
         }
+
     } catch (e) {
         console.warn("Unable to load settings from localStorage:", e);
     }
 }
 
-function saveSettingsToLocalStorage() {
-    try {
-        readSettingsFromUI();
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(settings));
-    } catch (e) {
-        console.warn("Unable to save settings to localStorage:", e);
-    }
-}
-
-async function resetSettingsToDefaults() {
-    settings = JSON.parse(JSON.stringify(DEFAULTS));
-    await loadAllImageTextures();
-    renderImageList();
-    applySettingsToUI();
-    saveSettingsToLocalStorage();
-
-    if (images.length > 0) {
-        imageIndex = 0;
-        await renderer.setBackground(images[0]);
-    }
-
-    applyDemoCameraEffects();
-    syncEffects();
-
-    if (autoTimer) clearTimeout(autoTimer);
-    if (settings.autoTransition.enabled) {
-        scheduleNextAutoTransition();
-    }
-}
-
-function applySettingsToUI() {
-    document.getElementById('slider-sway').value = settings.camera.sway;
-    document.getElementById('slider-panRange').value = settings.camera.panRange;
-    document.getElementById('slider-zoomRange').value = settings.camera.zoomRange;
-    document.getElementById('slider-panDuration').value = settings.camera.panDuration;
-    document.getElementById('slider-rotate').value = settings.camera.rotation;
-    document.getElementById('slider-wobble').value = settings.camera.wobble;
-
-    document.getElementById('check-random').checked = settings.autoTransition.random;
-    document.getElementById('slider-interval').value = settings.autoTransition.interval;
-
-    const autoBtn = document.getElementById('btn-autoTransition');
-    if (settings.autoTransition.enabled) {
-        autoBtn.innerText = 'Auto Transitions: ON';
-        autoBtn.classList.add('active');
-    } else {
-        autoBtn.innerText = 'Auto Transitions: OFF';
-        autoBtn.classList.remove('active');
-    }
-
-    Object.keys(settings.effects).forEach(effectKey => {
-        const btn = document.getElementById(`btn-${effectKey}`);
-        if (btn) btn.classList.toggle('active', settings.effects[effectKey]);
-    });
-
-    renderImageList();
-    updateReadouts();
-}
-
-function readSettingsFromUI() {
-    settings.camera.sway = parseFloat(document.getElementById('slider-sway').value);
-    settings.camera.panRange = parseFloat(document.getElementById('slider-panRange').value);
-    settings.camera.zoomRange = parseFloat(document.getElementById('slider-zoomRange').value);
-    settings.camera.panDuration = parseFloat(document.getElementById('slider-panDuration').value);
-    settings.camera.rotation = parseFloat(document.getElementById('slider-rotate').value);
-    settings.camera.wobble = parseFloat(document.getElementById('slider-wobble').value);
-
-    settings.autoTransition.random = document.getElementById('check-random').checked;
-    settings.autoTransition.interval = parseFloat(document.getElementById('slider-interval').value);
-}
-
-function updateReadouts() {
-    document.getElementById('val-sway').innerText = settings.camera.sway.toFixed(3);
-    document.getElementById('val-panRange').innerText = settings.camera.panRange.toFixed(2);
-    document.getElementById('val-zoomRange').innerText = settings.camera.zoomRange.toFixed(2);
-    document.getElementById('val-panDuration').innerText = settings.camera.panDuration.toFixed(1) + 's';
-    document.getElementById('val-rotate').innerText = settings.camera.rotation.toFixed(1) + '°';
-    document.getElementById('val-wobble').innerText = settings.camera.wobble.toFixed(3);
-    document.getElementById('val-interval').innerText = settings.autoTransition.interval.toFixed(1) + 's';
-}
-
-function onSettingsChanged() {
-    readSettingsFromUI();
-    updateReadouts();
-    saveSettingsToLocalStorage();
-    applyDemoCameraEffects();
-
-    if (settings.autoTransition.enabled) {
-        if (autoTimer) clearTimeout(autoTimer);
-        scheduleNextAutoTransition();
-    }
-}
 
 function resolveEasing(category, mode) {
     if (!midori || !midori.Easings) return (t) => t;
@@ -360,23 +269,6 @@ function applyDemoCameraEffects() {
     } else if (typeof camera.offset === 'function') {
         camera.offset({ x: 0, y: 0, z: 0, zr: 0 });
     }
-}
-
-function toggleAutoTransition() {
-    settings.autoTransition.enabled = !settings.autoTransition.enabled;
-
-    const btn = document.getElementById('btn-autoTransition');
-    if (settings.autoTransition.enabled) {
-        btn.innerText = 'Auto Transitions: ON';
-        btn.classList.add('active');
-        scheduleNextAutoTransition();
-    } else {
-        btn.innerText = 'Auto Transitions: OFF';
-        btn.classList.remove('active');
-        if (autoTimer) clearTimeout(autoTimer);
-    }
-
-    saveSettingsToLocalStorage();
 }
 
 // --- Track the previous transition globally ---
@@ -545,6 +437,47 @@ function toggleEffect(effectKey) {
     const btn = document.getElementById(`btn-${effectKey}`);
     if (btn) btn.classList.toggle('active', settings.effects[effectKey]);
 
-    saveSettingsToLocalStorage();
+    //saveSettingsToLocalStorage();
     syncEffects();
+}
+
+function isDeepEqual(obj1, obj2) {
+    // If both are the exact same primitive or reference
+    if (obj1 === obj2) return true;
+
+    // If either is not an object, or is null, they aren't equal
+    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+        return false;
+    }
+
+    // Get keys of both objects
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    // Must have the same number of properties
+    if (keys1.length !== keys2.length) return false;
+
+    // Recursively verify every key and value
+    for (const key of keys1) {
+        if (!keys2.includes(key) || !isDeepEqual(obj1[key], obj2[key])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function convertMilitaryToStandard(militaryTime) {
+    // Split the string into hours and minutes
+    const [hoursStr, minutesStr] = militaryTime.split(':');
+    let hours = parseInt(hoursStr, 10);
+
+    // Determine AM or PM suffix
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    // Return formatted string
+    return `${hours}:${minutesStr} ${ampm}`;
 }
