@@ -8,6 +8,7 @@ const slide_select = new Audio("slide.mp3");
 const beep_sound = new Audio("beep.mp3");
 const overlay = document.querySelector('.loading-overlay');
 
+//window.onKioskMenuShown = null;
 window.onKioskMenuShown = function () {
   // Called function when webview is shown
   if (taraBridge) {
@@ -31,6 +32,7 @@ window.onKioskMenuShown = function () {
   }
 }
 
+//window.onKioskMenuBle = null;
 window.onKioskMenuBle = function (data) {
   //console.log("got coin: ", data);
   const creditAmount = parseInt(data.replace("DATA:", ""));
@@ -335,7 +337,7 @@ const renderGameMode = (appPackage, appName) => {
       console.log("app name", appName);
       setGameMode(appPackage, "performance");
       taraBridge.clearGameCacheByPackage(appPackage);
-      const apps = JSON.parse(taraBridge.getRunningBackgroundAppsDetails());
+      const apps = taraBridge.getRunningBackgroundAppsDetails();
       apps.map((app) => {
         taraBridge.stopRunningBackgroundApp(app.packageName);
       })
