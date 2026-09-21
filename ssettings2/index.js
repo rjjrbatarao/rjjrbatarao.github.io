@@ -715,7 +715,6 @@ function renderOthers() {
         //data.images = [];
         taraBridge.deleteAllSales();
         if (persist()) notify("Sales database cleared.");
-        renderImages();
     };
 }
 
