@@ -490,8 +490,8 @@ function renderImages() {
                 : '<div class="empty">No images yet.<br><br>Add images to build your slideshow.</div>',
             value2: toggle(
                 "randomize",
-                "Randomize images",
-                "Play images in a shuffled order.",
+                "Randomize effect",
+                "Play effect in image transition.",
                 data.random,
             ),
             value3: toggle(
