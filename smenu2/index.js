@@ -18,6 +18,7 @@ window.onKioskMenuShown = function () {
       if (remainingTime > 0) {
         taraBridge.resumeBackgroundTimer();
       }
+      taraBridge.setScreenBrightness(85);
       taraBridge.setGameDoNotDisturb(false);
       taraBridge.setKeepScreenAwake(true);
       taraBridge.playNotificationSound("notification");
@@ -404,7 +405,7 @@ const renderUserTime = () => {
       }
       userInterval = setInterval(() => {
         let rawUserSecondsTime = taraBridge.getTimerRemainingSeconds();
-        console.log("remaining time", rawUserSecondsTime)
+        // console.log("remaining time", rawUserSecondsTime)
         // let currentUserTime = formatSeconds(rawUserSecondsTime);
         // tara.oId("timer_id").innerHTML = currentUserTime;
         updateClock(rawUserSecondsTime);
