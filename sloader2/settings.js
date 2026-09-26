@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const closing_time = convertMilitaryToStandard(saved.others.to);
         tara.oHtml("screen_blocker_id", "./templates/screen_blocker.html", {
             title: "Admin Notice ⚠️",
-            message: "Curfew hours: " + start_time + " to " + closing_time
+            message: "Operating hours: " + start_time + " to " + closing_time
         });
     }
 
@@ -139,6 +139,7 @@ function onInactiveWindow() {
     //console.log("Currently OUTSIDE active hours!");
     //taraBridge.showToast("CURFEW: Uwi na po kayo gabi na!");
     overlay.classList.remove('hide');
+	taraBridge.setScreenBrightness(2);
 }
 
 
