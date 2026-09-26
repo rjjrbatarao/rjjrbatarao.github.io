@@ -33,7 +33,7 @@ window.onKioskLockscreenShown = function () {
           clearAllAppCache();
           removeAccounts();
           clearAllMedia();
-          taraBridge.setScreenBrightness(4);
+          taraBridge.setScreenBrightness(2);
           tara.oId("button_resume_id").style.display = "none";
           tara.oId("button_insert_id").style.display = "block";
         }
@@ -160,6 +160,7 @@ function onLoadEvent() {
           coinFunc();
           tara.oId('coinModal').show();
           taraBridge.sendBleCommand("DATA:ON");
+		  taraBridge.setScreenBrightness(80);
         } else {
           taraBridge.showToast("Credit Terminal not connected!");
         }
