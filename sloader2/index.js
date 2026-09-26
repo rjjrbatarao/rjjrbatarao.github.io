@@ -33,7 +33,7 @@ window.onKioskLockscreenShown = function () {
           clearAllAppCache();
           removeAccounts();
           clearAllMedia();
-          taraBridge.setScreenBrightness(3);
+          taraBridge.setScreenBrightness(4);
           tara.oId("button_resume_id").style.display = "none";
           tara.oId("button_insert_id").style.display = "block";
         }
