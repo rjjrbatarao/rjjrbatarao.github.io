@@ -1,7 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 :root {
-  --bg: #050510;
-  --panel: #0a091d;
+  --bg: #121212;
+  --panel: #1e1e2e;
   --border: #19163e;
   --muted: #b4b2d3;
   --text: #f9f9ff;
@@ -763,29 +762,6 @@ footer {
   color: #a4a0d1;
 }
 
-/* Material-inspired indigo theme: opaque surfaces and crisp, bright accents. */
-:root {
-  --bg: #0b1020;
-  --panel: #151c30;
-  --border: #394563;
-  --muted: #c2cbe0;
-  --text: #ffffff;
-  --purple: #b7baff;
-  --green: #69f0ae;
-}
-body {
-  background: var(--bg);
-  color: var(--text);
-}
-aside {
-  background: #101729;
-  border-color: #394563;
-}
-.card {
-  background: #151c30;
-  border-color: #394563;
-  box-shadow: 0 3px 8px #0004;
-}
 .workspace {
   background: #1c2540;
   border-color: #465373;

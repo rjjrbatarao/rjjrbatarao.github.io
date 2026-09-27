@@ -529,11 +529,20 @@ function renderImages() {
         if (persist()) notify("Image cache cleared.");
         renderImages();
     };
-    // obrajs.oId("clear-web-cache").onclick = () => {
-    //     if (!data.images.length) return notify("Web cache is already empty.");
-    //     //if (!confirm(`Remove all ${key} images from this browser?`)) return;
-    //     if (persist()) notify("Web cache cleared.");
-    // };
+    obrajs.oId("clear-web-cache").onclick = () => {
+        if (!data.images.length) return notify("Web cache is already empty.");
+        //if (!confirm(`Remove all ${key} images from this browser?`)) return;
+        console.log(page);
+        if (page === "lockscreen") {
+            taraBridge.clearWebCache("LOCKSCREEN");
+        } else if (page === "game") {
+            taraBridge.clearWebCache("MENU");
+        } else {
+            taraBridge.clearWebCache("ALL");
+        }
+
+        if (persist()) notify("Web cache cleared.");
+    };
     document.querySelectorAll("[data-remove]").forEach(
         (button) =>
         (button.onclick = () => {
