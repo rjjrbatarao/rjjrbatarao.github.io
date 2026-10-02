@@ -35,7 +35,7 @@ window.onKioskMenuShown = function () {
 
 //window.onKioskMenuBle = null;
 window.onKioskMenuBle = function (data) {
-  //console.log("got coin: ", data);
+  console.log("got coin: ", data);
   const creditAmount = parseInt(data.replace("DATA:", ""));
   const paymentType = "COIN"; // e.g., "COIN", "BILL", "GCASH", "MAYA"
   if (creditAmount > 0) {
