@@ -47,7 +47,7 @@ window.onKioskLockscreenShown = function () {
 
 
 window.onKioskLockscreenBle = function (data) {
-  //console.log("got coin: ", data);
+  console.log("got coin: ", data);
   const creditAmount = parseInt(data.replace("DATA:", ""));
   const paymentType = "COIN"; // e.g., "COIN", "BILL", "GCASH", "MAYA"
   if (creditAmount > 0) {
@@ -160,7 +160,7 @@ function onLoadEvent() {
           coinFunc();
           tara.oId('coinModal').show();
           taraBridge.sendBleCommand("DATA:ON");
-		  taraBridge.setScreenBrightness(80);
+          taraBridge.setScreenBrightness(80);
         } else {
           taraBridge.showToast("Credit Terminal not connected!");
         }
