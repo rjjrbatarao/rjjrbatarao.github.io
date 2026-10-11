@@ -139,7 +139,7 @@ function onInactiveWindow() {
     //console.log("Currently OUTSIDE active hours!");
     //taraBridge.showToast("CURFEW: Uwi na po kayo gabi na!");
     overlay.classList.remove('hide');
-	taraBridge.setScreenBrightness(2);
+    taraBridge.setScreenBrightness(1);
 }
 
 
@@ -289,7 +289,8 @@ function scheduleNextAutoTransition() {
             selectedType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
         } else {
             const currentTypeIndex = transitionTypes.indexOf(lastTransitionType || 'blend');
-            selectedType = transitionTypes[(currentTypeIndex + 1) % transitionTypes.length];
+            //selectedType = transitionTypes[(currentTypeIndex + 1) % transitionTypes.length];
+            selectedType = transitionTypes[currentTypeIndex % transitionTypes.length];
         }
 
         await triggerTransition(selectedType, settings.autoTransition.random);
