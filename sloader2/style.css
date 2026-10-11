@@ -561,7 +561,8 @@ label {
 .button-column {
   display: flex; /* Activates Flexbox layout */
   flex-direction: row; /* Stacks items vertically */
-  gap: 12px; /* Sets exact spacing between the buttons */
+  justify-content: center;
+  gap: 20px;
   width: max-content; /* Keeps column only as wide as the buttons */
 }
 
