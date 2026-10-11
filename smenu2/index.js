@@ -83,18 +83,23 @@ function triggerToast() {
 
 // 3. Launch an app programmatically from JS
 function openApp(packageName) {
-  const success = taraBridge.launchApp(packageName);
-  if (!success) {
-    alert("App could not be launched!");
+  let recentAppCount = taraBridge.getRunningBackgroundAppsCount();
+  if (recentAppCount >= 2) {
+    taraBridge.showToast("Maximum 2 background apps");
+    taraBridge.showToast("Clear first the app in recents");
+  } else {
+    const success = taraBridge.launchApp(packageName);
+    if (!success) {
+      taraBridge.showToast("App could not be launched!");
+    }
   }
 }
 
 // 4. Launch an app programmatically from JS
 function closeApp(packageName) {
-
   const success = taraBridge.stopApp(packageName);
   if (!success) {
-    alert("App could not be stopped!");
+    taraBridge.showToast("App could not be stopped!");
   }
 }
 
@@ -293,7 +298,7 @@ const renderRecentApps = () => {
     clear_all_button: (event) => {
       let recentAppCount = taraBridge.getRunningBackgroundAppsCount();
       taraBridge.showToast("Stopping " + recentAppCount + " background apps");
-      const apps = JSON.parse(taraBridge.getRunningBackgroundAppsDetails());
+      const apps = taraBridge.getRunningBackgroundAppsDetails();
       let app_map = "";
       apps.map((app) => {
         taraBridge.stopRunningBackgroundApp(app.packageName);
