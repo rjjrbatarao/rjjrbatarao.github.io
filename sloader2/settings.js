@@ -53,7 +53,7 @@ const DEFAULTS = {
     }
 };
 
-let settings = JSON.parse(JSON.stringify(DEFAULTS));
+let settings = DEFAULTS;
 
 let renderer;
 let midori;
@@ -76,6 +76,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             title: "Admin Notice ⚠️",
             message: "Operating hours: " + start_time + " to " + closing_time
         });
+        const restart_schedule = saved.others.restart;
+        const restart_array = restart_schedule.split(":");
+        console.log(restart_array);
+        taraBridge.scheduleDailyRestart(parseInt(restart_array[0], 10), parseInt(restart_array[1], 10));
     }
 
     loadSettingsFromNativeStorage();
