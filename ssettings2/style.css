@@ -9,6 +9,18 @@
 }
 
 * {
+  /* Disables the default callout popup (iOS/Safari) */
+  -webkit-touch-callout: none;
+
+  /* Disables text and element selection magnifying glasses */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard */
+
+  /* Prevents the default touch behaviors like double-tap zoom */
+  touch-action: none;
   box-sizing: border-box;
 }
 
@@ -1057,183 +1069,4 @@ input[type="file"]::file-selector-button {
     0px 10px 15px -3px rgba(0, 0, 0, 0.1),
     0px 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-radius: 5px;
-}
-
-@media (min-width: 1500px) {
-  main {
-    padding-left: 50px;
-    padding-right: 50px;
-  }
-  .chart-area {
-    height: 270px;
-  }
-  .donut {
-    height: 230px;
-  }
-}
-
-@media (max-width: 1150px) {
-  aside {
-    width: 195px;
-    padding: 28px 12px;
-  }
-  main {
-    margin-left: 195px;
-    padding: 0 23px 25px;
-  }
-  .metric {
-    padding: 16px 14px;
-  }
-  .spark {
-    display: none;
-  }
-  td,
-  th {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-  .sources {
-    gap: 14px 10px;
-  }
-  .heading {
-    gap: 15px;
-  }
-  .actions {
-    flex-shrink: 0;
-  }
-  .search {
-    display: none;
-  }
-}
-
-@media (max-width: 900px) {
-  aside {
-    display: flex;
-    position: static;
-    width: 100%;
-    padding: 14px 16px;
-    border-right: 0;
-    border-bottom: 1px solid #394563;
-  }
-  .brand,
-  .workspace,
-  .nav-label,
-  .upgrade,
-  .account {
-    display: none;
-  }
-  main {
-    margin-left: 0;
-  }
-  .mobile-brand {
-    display: inline;
-    color: #a09bf8;
-    font-weight: 700;
-    margin-right: 15px;
-  }
-  .metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .spark {
-    display: block;
-  }
-  .charts,
-  .bottom {
-    grid-template-columns: 1fr 1fr;
-  }
-  .heading {
-    align-items: flex-start;
-  }
-  .actions {
-    flex-direction: column;
-  }
-  .charts .panel:first-child,
-  .bottom .card:first-child,
-  .charts .panel:last-child,
-  .bottom .card:last-child {
-    grid-column: 1/-1;
-  }
-  .sources {
-    max-width: 420px;
-    margin: auto;
-  }
-  .donut {
-    height: 200px;
-  }
-  .nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  .nav button {
-    padding: 9px;
-    font-size: 12px;
-  }
-  .nav .badge {
-    display: none;
-  }
-  .settings-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 500px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .settings-page .heading {
-    gap: 10px;
-  }
-  .rates-actions {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  main {
-    padding: 0 16px 22px;
-  }
-  .topbar {
-    height: 65px;
-  }
-  .heading {
-    flex-direction: column;
-    padding-top: 24px;
-  }
-  .actions {
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .metrics {
-    gap: 10px;
-  }
-  .metric {
-    padding: 15px 12px;
-  }
-  .value {
-    font-size: 25px;
-  }
-  .change {
-    font-size: 9px;
-  }
-  .spark {
-    display: none;
-  }
-  .panel {
-    padding: 18px;
-  }
-  .top-actions {
-    gap: 8px;
-  }
-  .key {
-    display: none;
-  }
-  .tabs button {
-    padding: 5px 8px;
-  }
-  footer {
-    gap: 15px;
-    font-size: 9px;
-  }
 }
