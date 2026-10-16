@@ -607,7 +607,7 @@ tara.oHtml("header", "./templates/header_layout.html", {
       tara.oId("ping_id").innerHTML = pingMs + "ms";
       tara.oId("blestatus_id").innerHTML = `${bleStatus}`;
       tara.oId("battery_id").innerHTML = batteryLevel + "%";
-      tara.oId("refresh_id").innerHTML = displayRefreshRate + "hz";
+      tara.oId("refresh_id").innerHTML = parseInt(displayRefreshRate, 10) + "hz";
       tara.oId("temp_id").innerHTML = ~~temperatureStatus + "°C";
     }, 2000);
     setInterval(() => {

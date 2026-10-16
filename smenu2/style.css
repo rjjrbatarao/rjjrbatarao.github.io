@@ -1666,7 +1666,7 @@ button.bottom-dock::before {
 .clock-container {
   display: inline-flex;
   background: #1a1a1a;
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 6px;
   box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5);
 }
