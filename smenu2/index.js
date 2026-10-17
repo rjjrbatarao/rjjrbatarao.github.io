@@ -19,6 +19,7 @@ window.onKioskMenuShown = function () {
         taraBridge.resumeBackgroundTimer();
       }
       taraBridge.setScreenBrightness(85);
+      taraBridge.setAudioLevel(50);
       taraBridge.setGameDoNotDisturb(false);
       taraBridge.setKeepScreenAwake(true);
       taraBridge.playNotificationSound("notification");
