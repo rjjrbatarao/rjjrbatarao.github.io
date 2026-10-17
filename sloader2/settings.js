@@ -135,15 +135,16 @@ async function loadAllImageTextures() {
 }
 
 function onActiveWindow() {
-    //console.log("Currently INSIDE active hours!");
+    console.log("Currently INSIDE active hours!");
     overlay.classList.add('hide');
 }
 
 function onInactiveWindow() {
-    //console.log("Currently OUTSIDE active hours!");
+    console.log("Currently OUTSIDE active hours!");
     //taraBridge.showToast("CURFEW: Uwi na po kayo gabi na!");
     overlay.classList.remove('hide');
     taraBridge.setScreenBrightness(1);
+    taraBridge.setAudioLevel(0);
 }
 
 

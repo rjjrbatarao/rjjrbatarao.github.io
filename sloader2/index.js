@@ -34,6 +34,7 @@ window.onKioskLockscreenShown = function () {
           removeAccounts();
           clearAllMedia();
           taraBridge.setScreenBrightness(1);
+          taraBridge.setAudioLevel(0);
           tara.oId("button_resume_id").style.display = "none";
           tara.oId("button_insert_id").style.display = "block";
         }
