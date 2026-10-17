@@ -859,9 +859,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Custom logic placeholder (e.g., updating a CSS filter or saving settings)
     //console.log(`System Brightness updated to: ${value}%`);
     if (slide_select) {
-      slide_select.pause();
-      slide_select.currentTime = 0;
-      slide_select.play();
+      try {
+        slide_select.pause();
+        slide_select.currentTime = 0;
+        slide_select.play();
+      } catch (e) {
+
+      }
     }
   }
 
@@ -872,9 +876,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Custom logic placeholder (e.g., mapping to a media player audio gain node)
     //console.log(`System Audio volume updated to: ${value}%`);
     if (slide_select) {
-      slide_select.pause();
-      slide_select.currentTime = 0;
-      slide_select.play();
+      try {
+        slide_select.pause();
+        slide_select.currentTime = 0;
+        slide_select.play();
+      } catch (e) {
+
+      }
     }
   }
 
