@@ -33,7 +33,7 @@ window.onKioskLockscreenShown = function () {
           clearAllAppCache();
           removeAccounts();
           clearAllMedia();
-          taraBridge.setScreenBrightness(2);
+          taraBridge.setScreenBrightness(1);
           tara.oId("button_resume_id").style.display = "none";
           tara.oId("button_insert_id").style.display = "block";
         }
@@ -43,7 +43,6 @@ window.onKioskLockscreenShown = function () {
     }, 1000 * 20); // clear after 1 minute
   }
 }
-
 
 
 window.onKioskLockscreenBle = function (data) {
@@ -100,7 +99,7 @@ function convertTime(totalSeconds) {
 
 function onLoadEvent() {
   if (taraBridge) {
-
+    console.log("launchers: ", taraBridge.getInstalledLauncherPackages())
     // 1. Get tablet info
     // const info = {
     //   osVersion: taraBridge.getOsVersion(),
